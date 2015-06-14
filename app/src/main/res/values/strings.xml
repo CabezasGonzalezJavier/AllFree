@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">FreeAll</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="fragment_map_title">Map</string>
+    <string name="fragment_second_title">Second</string>
+    <string name="fragment_third_title">Third</string>
+    
+    <string name="navigation_drawer_open"></string>
+    <string name="navigation_drawer_close"></string>
+</resources>
