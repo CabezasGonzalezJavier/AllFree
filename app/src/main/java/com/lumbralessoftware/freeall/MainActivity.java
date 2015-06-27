@@ -1,10 +1,12 @@
 package com.lumbralessoftware.freeall;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements ResponseListener 
 
     private ItemsController mItemsController;
     private SectionPagerAdapter mAdapter;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +40,15 @@ public class MainActivity extends AppCompatActivity implements ResponseListener 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.activity_main_tab_layout);
-        ViewPager viewPager = (ViewPager) findViewById(R.id.activity_main_pager);
+        mViewPager = (ViewPager) findViewById(R.id.activity_main_pager);
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
         }
         getData();
         mAdapter = new SectionPagerAdapter(getSupportFragmentManager(),this);
-        viewPager.setAdapter(mAdapter);
-        tabLayout.setupWithViewPager(viewPager);
+        mViewPager.setAdapter(mAdapter);
+        tabLayout.setupWithViewPager(mViewPager);
     }
 
 
@@ -75,4 +78,23 @@ public class MainActivity extends AppCompatActivity implements ResponseListener 
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Pass the activity result to the fragment, which will
+        // then pass the result to the login button.
+
+        Fragment fragment = findFragmentByPosition(2);
+
+        if (fragment != null) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    public Fragment findFragmentByPosition(int position) {
+        return getSupportFragmentManager().findFragmentByTag(
+                "android:switcher:" + mViewPager.getId() + ":"
+                        + mAdapter.getItemId(position));
+    }
 }
