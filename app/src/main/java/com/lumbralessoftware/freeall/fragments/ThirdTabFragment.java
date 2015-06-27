@@ -12,12 +12,14 @@ import android.view.ViewGroup;
 import android.content.Intent;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterApiException;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import com.lumbralessoftware.freeall.R;
+import com.twitter.sdk.android.core.internal.TwitterApiConstants;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -95,7 +97,12 @@ public class ThirdTabFragment extends Fragment {
 
             @Override
             public void failure(TwitterException exception) {
-                // Do something on failure
+                final TwitterApiException apiException = (TwitterApiException) exception;
+                final int errorCode = apiException.getErrorCode();
+                if (errorCode == TwitterApiConstants.Errors.APP_AUTH_ERROR_CODE || errorCode == TwitterApiConstants.Errors.GUEST_AUTH_ERROR_CODE) {
+                    // get new guestAppSession
+                    // optionally retry
+                }
             }
         });
 

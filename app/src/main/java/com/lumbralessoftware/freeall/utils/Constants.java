@@ -7,7 +7,7 @@ public class Constants {
 
     public static final int TOTAL_TABS = 3;
     public static final float ZOOM_MAP = 10.0f;
-    public static final String TWITTER_KEY = "vvgLUmfD5kTRj1XdcXLSyobdF";
-    public static final String TWITTER_SECRET = "bKK5L4bnmu7GU2KUbEMYmU0X6tOCyXyUeS10HLovFlxqvLzKkk";
+    public static final String TWITTER_KEY = "I4Mwu8i3XYpk6BmkvQF9jJIg5";
+    public static final String TWITTER_SECRET = "JqYWdaPTcVYHnmW6BqMtHKsWRRsd55czjphSW6W7jOYnG9KACs";
 
 }
