@@ -8,14 +8,27 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
+import com.lumbralessoftware.freeall.adapters.SectionPagerAdapter;
+import com.lumbralessoftware.freeall.controller.ItemsController;
+import com.lumbralessoftware.freeall.controller.ItemsControllersFactory;
 import com.lumbralessoftware.freeall.fragments.MapTabFragment;
 import com.lumbralessoftware.freeall.fragments.SecondTabFragment;
 import com.lumbralessoftware.freeall.fragments.ThirdTabFragment;
+import com.lumbralessoftware.freeall.interfaces.UpdateableFragment;
+import com.lumbralessoftware.freeall.models.Item;
 import com.lumbralessoftware.freeall.utils.Constants;
+import com.lumbralessoftware.freeall.utils.Utils;
+import com.lumbralessoftware.freeall.webservice.ResponseListener;
+
+import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ResponseListener {
+
+    private ItemsController mItemsController;
+    private SectionPagerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,54 +42,37 @@ public class MainActivity extends AppCompatActivity {
         if (toolbar != null) {
             setSupportActionBar(toolbar);
         }
-
-        viewPager.setAdapter(new SectionPagerAdapter(getSupportFragmentManager()));
+        getData();
+        mAdapter = new SectionPagerAdapter(getSupportFragmentManager(),this);
+        viewPager.setAdapter(mAdapter);
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    public class SectionPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionPagerAdapter(FragmentManager fm) {
-            super(fm);
+
+    public void getData(){
+        if (Utils.isOnline(this)) {
+
+            ItemsControllersFactory.setsResponseListener(this);
+
+            mItemsController = ItemsControllersFactory.getsItemsController();
+            mItemsController.request();
+
+        }else{
+            Toast.makeText(this, getString(R.string.no_connection), Toast.LENGTH_LONG).show();
         }
 
-        @Override
-        public Fragment getItem(int position) {
-            Fragment fragment = null;
+    }
 
-            switch (position) {
-                case 0:
-                    fragment = new MapTabFragment();
-                    break;
-                case 1:
-                    fragment = new SecondTabFragment();
-                    break;
-                case 2:
-                default:
-                    fragment = new ThirdTabFragment();
-                    break;
+    @Override
+    public void onSuccess(List<Item> successResponse) {
 
-            }
-                return fragment;
-        }
+        mAdapter.update(successResponse);
+    }
 
-        @Override
-        public int getCount() {
-            return Constants.TOTAL_TABS;
-        }
+    @Override
+    public void onError(String errorResponse) {
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return getString(R.string.fragment_map_title);
-                case 1:
-                    return getString(R.string.fragment_second_title);
-                case 2:
-                default:
-                    return getString(R.string.fragment_third_title);
-            }
-        }
     }
 
 }

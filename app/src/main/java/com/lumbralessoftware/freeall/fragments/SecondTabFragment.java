@@ -14,6 +14,7 @@ import com.lumbralessoftware.freeall.R;
 import com.lumbralessoftware.freeall.adapters.ItemsAdapter;
 import com.lumbralessoftware.freeall.controller.ItemsController;
 import com.lumbralessoftware.freeall.controller.ItemsControllersFactory;
+import com.lumbralessoftware.freeall.interfaces.UpdateableFragment;
 import com.lumbralessoftware.freeall.models.Item;
 import com.lumbralessoftware.freeall.utils.Utils;
 import com.lumbralessoftware.freeall.webservice.ResponseListener;
@@ -28,12 +29,12 @@ import java.util.List;
  * Use the {@link SecondTabFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SecondTabFragment extends Fragment implements ResponseListener {
+public class SecondTabFragment extends Fragment implements UpdateableFragment {
 
     private ItemsAdapter mAdapter;
     private ListView mListView;
-    private ItemsController mItemsController;
     private OnFragmentInteractionListener mListener;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -67,23 +68,10 @@ public class SecondTabFragment extends Fragment implements ResponseListener {
         mListView = (ListView) view.findViewById(R.id.fragment_list_listView);
 
 
-        getData();
         return view;
     }
 
-    public void getData(){
-        if (Utils.isOnline(getActivity())) {
 
-            ItemsControllersFactory.setsResponseListener(this);
-
-            mItemsController = ItemsControllersFactory.getsItemsController();
-            mItemsController.request();
-
-        }else{
-            Toast.makeText(getActivity(),getString(R.string.no_connection),Toast.LENGTH_LONG).show();
-        }
-
-    }
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -102,19 +90,14 @@ public class SecondTabFragment extends Fragment implements ResponseListener {
         mListener = null;
     }
 
-    @Override
-    public void onSuccess(List<Item> successResponse) {
-        showList(successResponse);
-    }
-
-    @Override
-    public void onError(String errorResponse) {
-
-    }
-
     public void showList(List<Item> list){
         mListView.setAdapter(new ItemsAdapter(getActivity(), 0, list));
 //        mListView.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void update(List<Item> items) {
+        showList(items);
     }
 
     /**
