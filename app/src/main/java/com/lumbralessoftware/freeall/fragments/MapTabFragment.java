@@ -38,7 +38,6 @@ public class MapTabFragment extends Fragment {
 
      * @return A new instance of fragment MapFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static MapTabFragment newInstance() {
         MapTabFragment fragment = new MapTabFragment();
         Bundle args = new Bundle();
@@ -68,7 +67,6 @@ public class MapTabFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -98,7 +96,6 @@ public class MapTabFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
 
@@ -134,7 +131,15 @@ public class MapTabFragment extends Fragment {
                     .getMap();
             // Check if we were successful in obtaining the map.
             if (mGoogleMap != null) {
-                setUpMap();
+                mGoogleMap.setMyLocationEnabled(true);
+
+//                CameraPosition cameraPosition = new CameraPosition.Builder()
+//                        .zoom(17)                   // Sets the zoom
+//                        .bearing(90)                // Sets the orientation of the camera to east
+//                        .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+//                        .build();                   // Creates a CameraPosition from the builder
+//                mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(mGoogleMap.getCameraPosition()));
+//                setUpMap();
             }
         }
     }
@@ -156,4 +161,5 @@ public class MapTabFragment extends Fragment {
         ft.commit();
         super.onPause();
     }
+
 }
