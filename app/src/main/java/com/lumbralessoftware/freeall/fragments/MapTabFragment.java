@@ -17,10 +17,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.lumbralessoftware.freeall.R;
+import com.lumbralessoftware.freeall.utils.Constants;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -141,28 +141,15 @@ public class MapTabFragment extends Fragment {
                 mGoogleMap.setMyLocationEnabled(true);
 
                 mGoogleMap.setOnMyLocationChangeListener(myLocationChangeListener);
-//                mGoogleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
-//                    @Override
-//                    public void onCameraChange(CameraPosition cameraPosition) {
-//                        LocationManager service = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
-//                        Criteria criteria = new Criteria();
-//                        String provider = service.getBestProvider(criteria, false);
-//                        Location location = service.getLastKnownLocation(provider);
-//                        LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-//                        if(mGoogleMap != null){
-//                            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
-//                        }
-//                    }
-//                });
 
-//                mUserLocation = new LatLng(0,0);
-//                if (mGoogleMap.getMyLocation()!=null){
-//                    mUserLocation = new LatLng(mGoogleMap.getMyLocation().getLatitude(),mGoogleMap.getMyLocation().getLongitude());
-//                }else{
-//                    lastLocation();
-//                }
-//                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(mUserLocation, 16);
-//                    mGoogleMap.animateCamera(cameraUpdate);
+                mUserLocation = new LatLng(0,0);
+                if (mGoogleMap.getMyLocation()!=null){
+                    mUserLocation = new LatLng(mGoogleMap.getMyLocation().getLatitude(),mGoogleMap.getMyLocation().getLongitude());
+                }else{
+                    lastLocation();
+                }
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(mUserLocation, Constants.ZOOM_MAP);
+                mGoogleMap.animateCamera(cameraUpdate);
 //                setUpMap();
             }
         }
@@ -201,7 +188,7 @@ public class MapTabFragment extends Fragment {
         public void onMyLocationChange(Location location) {
             LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
             if(mGoogleMap != null){
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, Constants.ZOOM_MAP));
             }
         }
     };

@@ -11,6 +11,7 @@
 
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -33,6 +34,9 @@
             </intent-filter>
         </activity>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="dd4637fbaf0e8aca24a5a25647fce0cbe40f9c2c" />
     </application>
 
 </manifest>

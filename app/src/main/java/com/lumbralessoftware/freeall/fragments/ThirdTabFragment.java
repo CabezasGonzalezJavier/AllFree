@@ -4,9 +4,18 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import android.content.Intent;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterAuthToken;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import com.lumbralessoftware.freeall.R;
 
@@ -19,6 +28,7 @@ import com.lumbralessoftware.freeall.R;
  * create an instance of this fragment.
  */
 public class ThirdTabFragment extends Fragment {
+    private TwitterLoginButton mTwitterButton;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,7 +75,31 @@ public class ThirdTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_third, container, false);
+        View view = inflater.inflate(R.layout.fragment_third, container, false);
+
+        mTwitterButton = (TwitterLoginButton) view.findViewById(R.id.activity_login_twitter_button);
+        mTwitterButton.setCallback(new Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> result) {
+                // Do something with result, which provides a TwitterSession for making API calls
+
+
+                long user = result.data.getUserId();
+
+                TwitterAuthToken authToken = result.data.getAuthToken();
+                String token = authToken.token;
+                Log.d("tokenTwitter", token);
+                String secret = authToken.secret;
+                Log.d("secrettokenTwitter",secret);
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                // Do something on failure
+            }
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
