@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.lumbralessoftware.freeall.adapters.SectionPagerAdapter;
 import com.lumbralessoftware.freeall.controller.ItemsController;
-import com.lumbralessoftware.freeall.controller.ItemsControllersFactory;
+import com.lumbralessoftware.freeall.controller.ControllersFactory;
 import com.lumbralessoftware.freeall.models.Item;
 import com.lumbralessoftware.freeall.utils.Utils;
 import com.lumbralessoftware.freeall.interfaces.ItemResponseListener;
@@ -48,9 +48,9 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
     public void getData(){
         if (Utils.isOnline(this)) {
 
-            ItemsControllersFactory.setsResponseListener(this);
+            ControllersFactory.setsItemResponseListener(this);
 
-            mItemsController = ItemsControllersFactory.getsItemsController();
+            mItemsController = ControllersFactory.getsItemsController();
             mItemsController.request();
 
         }else{

@@ -10,6 +10,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.content.Intent;
+import android.widget.Toast;
+
+import com.lumbralessoftware.freeall.controller.ControllersFactory;
+import com.lumbralessoftware.freeall.controller.ItemsController;
+import com.lumbralessoftware.freeall.controller.RegistrationController;
+import com.lumbralessoftware.freeall.controller.SharedPreferenceController;
+import com.lumbralessoftware.freeall.interfaces.ItemResponseHandler;
+import com.lumbralessoftware.freeall.interfaces.ItemResponseListener;
+import com.lumbralessoftware.freeall.interfaces.RegistrationResponseListener;
+import com.lumbralessoftware.freeall.models.Item;
+import com.lumbralessoftware.freeall.models.Registration;
+import com.lumbralessoftware.freeall.models.Token;
+import com.lumbralessoftware.freeall.utils.Constants;
+import com.lumbralessoftware.freeall.utils.Utils;
+import com.lumbralessoftware.freeall.webservice.Client;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterApiException;
@@ -21,6 +36,8 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.lumbralessoftware.freeall.R;
 import com.twitter.sdk.android.core.internal.TwitterApiConstants;
 
+import java.util.List;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -29,8 +46,10 @@ import com.twitter.sdk.android.core.internal.TwitterApiConstants;
  * Use the {@link ThirdTabFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ThirdTabFragment extends Fragment {
+public class ThirdTabFragment extends Fragment implements RegistrationResponseListener {
     private TwitterLoginButton mTwitterButton;
+    private RegistrationController mRegistrationController;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -67,6 +86,10 @@ public class ThirdTabFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ControllersFactory.setsRegistrationResponseListener(this);
+        SharedPreferenceController.initializeInstance(getActivity());
+
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -84,15 +107,24 @@ public class ThirdTabFragment extends Fragment {
             @Override
             public void success(Result<TwitterSession> result) {
                 // Do something with result, which provides a TwitterSession for making API calls
-
-
                 long user = result.data.getUserId();
 
                 TwitterAuthToken authToken = result.data.getAuthToken();
-                String token = authToken.token;
-                Log.d("tokenTwitter", token);
+                String atoken = authToken.token;
+                Log.d("tokenTwitter", atoken);
                 String secret = authToken.secret;
-                Log.d("secrettokenTwitter",secret);
+                Log.d("secrettokenTwitter", secret);
+                SharedPreferenceController.getInstance().setTwitterAccess(atoken);
+                SharedPreferenceController.getInstance().setTwitterSecret(secret);
+
+                if (Utils.isOnline(getActivity())) {
+                    mRegistrationController = ControllersFactory.getsRegistrationController();
+                    mRegistrationController.request(atoken, secret);
+
+                }else{
+                    Toast.makeText(getActivity(), getString(R.string.no_connection), Toast.LENGTH_LONG).show();
+                }
+
             }
 
             @Override
@@ -147,4 +179,14 @@ public class ThirdTabFragment extends Fragment {
         mTwitterButton.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public void onSuccess(Registration successResponse) {
+
+        SharedPreferenceController.getInstance().setAccessToken(successResponse.getAccessToken());
+    }
+
+    @Override
+    public void onError(String errorResponse) {
+
+    }
 }
