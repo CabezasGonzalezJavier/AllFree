@@ -11,4 +11,6 @@ public class Constants {
     public static final String TWITTER_SECRET = "JqYWdaPTcVYHnmW6BqMtHKsWRRsd55czjphSW6W7jOYnG9KACs";
     public static final String URL = "http://allfree-lumbrales.rhcloud.com/api";
 
+    public static final String FONT_PATH = "fonts/aller_bdl.ttf";
+
 }

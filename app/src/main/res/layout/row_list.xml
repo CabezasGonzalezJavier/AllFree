@@ -14,8 +14,7 @@
         android:scaleType="centerCrop"
         android:contentDescription="TODO"/>
 
-    <!--<com.thedeveloperworldisyours.pureconnect.view.CustomTextView-->
-    <TextView
+    <com.lumbralessoftware.freeall.views.CustomTextView
         android:id="@+id/row_list_category"
         android:layout_width="fill_parent"
         android:layout_height="26dip"
@@ -27,8 +26,7 @@
         android:text="Description"
         android:textSize="12sp"/>
 
-    <!--<com.thedeveloperworldisyours.pureconnect.view.CustomTextView-->
-    <TextView
+    <com.lumbralessoftware.freeall.views.CustomTextView
         android:id="@+id/row_list_name"
         android:layout_width="fill_parent"
         android:maxLines="1"

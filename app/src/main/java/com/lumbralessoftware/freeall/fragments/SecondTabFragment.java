@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.lumbralessoftware.freeall.R;
 import com.lumbralessoftware.freeall.adapters.ItemsAdapter;
 import com.lumbralessoftware.freeall.controller.ItemsController;
 import com.lumbralessoftware.freeall.controller.ItemsControllersFactory;
 import com.lumbralessoftware.freeall.models.Item;
+import com.lumbralessoftware.freeall.utils.Utils;
 import com.lumbralessoftware.freeall.webservice.ResponseListener;
 
 import java.util.List;
@@ -65,12 +67,22 @@ public class SecondTabFragment extends Fragment implements ResponseListener {
         mListView = (ListView) view.findViewById(R.id.fragment_list_listView);
 
 
-        ItemsControllersFactory.setsResponseListener(this);
-
-        mItemsController = ItemsControllersFactory.getsItemsController();
-        mItemsController.request();
-
+        getData();
         return view;
+    }
+
+    public void getData(){
+        if (Utils.isOnline(getActivity())) {
+
+            ItemsControllersFactory.setsResponseListener(this);
+
+            mItemsController = ItemsControllersFactory.getsItemsController();
+            mItemsController.request();
+
+        }else{
+            Toast.makeText(getActivity(),getString(R.string.no_connection),Toast.LENGTH_LONG).show();
+        }
+
     }
 
     public void onButtonPressed(Uri uri) {
