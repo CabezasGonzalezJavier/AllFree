@@ -9,5 +9,6 @@ public class Constants {
     public static final float ZOOM_MAP = 10.0f;
     public static final String TWITTER_KEY = "I4Mwu8i3XYpk6BmkvQF9jJIg5";
     public static final String TWITTER_SECRET = "JqYWdaPTcVYHnmW6BqMtHKsWRRsd55czjphSW6W7jOYnG9KACs";
+    public static final String URL = "http://allfree-lumbrales.rhcloud.com/api";
 
 }
