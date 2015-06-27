@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,19 +12,14 @@ import android.widget.Toast;
 import com.lumbralessoftware.freeall.adapters.SectionPagerAdapter;
 import com.lumbralessoftware.freeall.controller.ItemsController;
 import com.lumbralessoftware.freeall.controller.ItemsControllersFactory;
-import com.lumbralessoftware.freeall.fragments.MapTabFragment;
-import com.lumbralessoftware.freeall.fragments.SecondTabFragment;
-import com.lumbralessoftware.freeall.fragments.ThirdTabFragment;
-import com.lumbralessoftware.freeall.interfaces.UpdateableFragment;
 import com.lumbralessoftware.freeall.models.Item;
-import com.lumbralessoftware.freeall.utils.Constants;
 import com.lumbralessoftware.freeall.utils.Utils;
-import com.lumbralessoftware.freeall.webservice.ResponseListener;
+import com.lumbralessoftware.freeall.interfaces.ItemResponseListener;
 
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements ResponseListener {
+public class MainActivity extends AppCompatActivity implements ItemResponseListener {
 
     private ItemsController mItemsController;
     private SectionPagerAdapter mAdapter;

@@ -2,18 +2,18 @@ package com.lumbralessoftware.freeall.controller;
 
 import com.lumbralessoftware.freeall.models.Item;
 import com.lumbralessoftware.freeall.webservice.Client;
-import com.lumbralessoftware.freeall.webservice.ResponseHandler;
-import com.lumbralessoftware.freeall.webservice.ResponseListener;
+import com.lumbralessoftware.freeall.interfaces.ItemResponseHandler;
+import com.lumbralessoftware.freeall.interfaces.ItemResponseListener;
 
 import java.util.List;
 
 /**
  * Created by javiergonzalezcabezas on 27/6/15.
  */
-public class ItemsController implements ResponseHandler {
-    public ResponseListener mResponseListener;
+public class ItemsController implements ItemResponseHandler {
+    public ItemResponseListener mResponseListener;
 
-    public ItemsController(ResponseListener mResponseListener) {
+    public ItemsController(ItemResponseListener mResponseListener) {
         this.mResponseListener = mResponseListener;
     }
 

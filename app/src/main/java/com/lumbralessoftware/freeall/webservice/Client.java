@@ -2,6 +2,7 @@ package com.lumbralessoftware.freeall.webservice;
 
 import android.util.Log;
 
+import com.lumbralessoftware.freeall.interfaces.ItemResponseHandler;
 import com.lumbralessoftware.freeall.models.Item;
 import com.lumbralessoftware.freeall.utils.Constants;
 import com.squareup.okhttp.OkHttpClient;
@@ -36,7 +37,7 @@ public class Client {
 
     }
 
-    public static void getAllItems(final ResponseHandler responseHandler){
+    public static void getAllItems(final ItemResponseHandler responseHandler){
         Callback<List<Item>> callback = new Callback<List<Item>>() {
             @Override
             public void success(List<Item> allfrees, Response response) {

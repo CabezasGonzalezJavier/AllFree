@@ -1,6 +1,6 @@
 package com.lumbralessoftware.freeall.controller;
 
-import com.lumbralessoftware.freeall.webservice.ResponseListener;
+import com.lumbralessoftware.freeall.interfaces.ItemResponseListener;
 
 /**
  * Created by javiergonzalezcabezas on 27/6/15.
@@ -8,9 +8,9 @@ import com.lumbralessoftware.freeall.webservice.ResponseListener;
 public class ItemsControllersFactory {
 
     private  static ItemsController sItemsController;
-    private  static ResponseListener sResponseListener;
+    private  static ItemResponseListener sResponseListener;
 
-    public static void setsResponseListener(ResponseListener responseListener){
+    public static void setsResponseListener(ItemResponseListener responseListener){
         sResponseListener = responseListener;
     }
 

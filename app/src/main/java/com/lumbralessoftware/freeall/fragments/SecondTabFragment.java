@@ -8,16 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.lumbralessoftware.freeall.R;
 import com.lumbralessoftware.freeall.adapters.ItemsAdapter;
-import com.lumbralessoftware.freeall.controller.ItemsController;
-import com.lumbralessoftware.freeall.controller.ItemsControllersFactory;
 import com.lumbralessoftware.freeall.interfaces.UpdateableFragment;
 import com.lumbralessoftware.freeall.models.Item;
-import com.lumbralessoftware.freeall.utils.Utils;
-import com.lumbralessoftware.freeall.webservice.ResponseListener;
 
 import java.util.List;
 
