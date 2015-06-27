@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +76,6 @@ public class MapTabFragment extends Fragment {
     }
 
 
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -108,6 +108,9 @@ public class MapTabFragment extends Fragment {
         setUpMapIfNeeded();
     }
 
+
+
+
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
@@ -127,7 +130,7 @@ public class MapTabFragment extends Fragment {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mGoogleMap == null) {
             // Try to obtain the map from the SupportMapFragment.
-            mGoogleMap = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_map_map))
+            mGoogleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map_map))
                     .getMap();
             // Check if we were successful in obtaining the map.
             if (mGoogleMap != null) {
@@ -144,5 +147,13 @@ public class MapTabFragment extends Fragment {
      */
     private void setUpMap() {
         mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+    }
+    @Override
+    public void onPause() {
+        Fragment fragment = (getFragmentManager().findFragmentById(R.id.fragment_map_map));
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.remove(fragment);
+        ft.commit();
+        super.onPause();
     }
 }

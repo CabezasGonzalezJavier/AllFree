@@ -42,15 +42,22 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+            Fragment fragment = null;
+
             switch (position) {
                 case 0:
-                    return new MapTabFragment();
+                    fragment = new MapTabFragment();
+                    break;
                 case 1:
-                    return new SecondTabFragment();
+                    fragment = new SecondTabFragment();
+                    break;
                 case 2:
                 default:
-                    return new ThirdTabFragment();
+                    fragment = new ThirdTabFragment();
+                    break;
+
             }
+                return fragment;
         }
 
         @Override
