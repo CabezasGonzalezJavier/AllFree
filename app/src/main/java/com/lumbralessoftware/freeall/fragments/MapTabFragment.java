@@ -150,7 +150,7 @@ public class MapTabFragment extends Fragment {
     }
     @Override
     public void onPause() {
-        Fragment fragment = (getFragmentManager().findFragmentById(R.id.fragment_map_map));
+        Fragment fragment = (getChildFragmentManager().findFragmentById(R.id.fragment_map_map));
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.remove(fragment);
         ft.commit();
