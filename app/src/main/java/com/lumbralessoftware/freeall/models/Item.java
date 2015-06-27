@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by javiergonzalezcabezas on 27/6/15.
  */
-public class Allfree {
+public class Item {
 
     @Expose
     private Integer id;

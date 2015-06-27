@@ -1,6 +1,8 @@
 package com.lumbralessoftware.freeall.webservice;
 
-import com.lumbralessoftware.freeall.models.Allfree;
+import android.util.Log;
+
+import com.lumbralessoftware.freeall.models.Item;
 import com.lumbralessoftware.freeall.utils.Constants;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -18,8 +20,8 @@ import retrofit.http.GET;
  */
 public class Client {
     public interface ClientInterface{
-        @GET("//items/")
-        void getItems(Callback<List<Allfree>> callback);
+        @GET("/items")
+        void getItems(Callback<List<Item>> callback);
     }
 
     public static ClientInterface initRestAdapter()
@@ -31,19 +33,21 @@ public class Client {
                 .setEndpoint(Constants.URL)
                 .build()
                 .create(ClientInterface.class);
+
     }
 
-    public static void getAllItems(){
-        Callback<Allfree> callback = new Callback<Allfree>() {
+    public static void getAllItems(final ResponseHandler responseHandler){
+        Callback<List<Item>> callback = new Callback<List<Item>>() {
             @Override
-            public void success(Allfree allfree, Response response) {
-
+            public void success(List<Item> allfrees, Response response) {
+                responseHandler.sendResponseSusccesful(allfrees);
             }
 
             @Override
             public void failure(RetrofitError error) {
-
+                Log.d("Client","error");
             }
         };
+        Client.initRestAdapter().getItems(callback);
     }
 }
