@@ -1,6 +1,9 @@
 package com.lumbralessoftware.freeall.fragments;
 
 import android.app.Activity;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,9 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.lumbralessoftware.freeall.R;
@@ -27,6 +33,7 @@ import com.lumbralessoftware.freeall.R;
 public class MapTabFragment extends Fragment {
     /** Local variables **/
     GoogleMap mGoogleMap;
+    LatLng mUserLocation;
 
 
     private OnFragmentInteractionListener mListener;
@@ -133,12 +140,29 @@ public class MapTabFragment extends Fragment {
             if (mGoogleMap != null) {
                 mGoogleMap.setMyLocationEnabled(true);
 
-//                CameraPosition cameraPosition = new CameraPosition.Builder()
-//                        .zoom(17)                   // Sets the zoom
-//                        .bearing(90)                // Sets the orientation of the camera to east
-//                        .tilt(30)                   // Sets the tilt of the camera to 30 degrees
-//                        .build();                   // Creates a CameraPosition from the builder
-//                mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(mGoogleMap.getCameraPosition()));
+                mGoogleMap.setOnMyLocationChangeListener(myLocationChangeListener);
+//                mGoogleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+//                    @Override
+//                    public void onCameraChange(CameraPosition cameraPosition) {
+//                        LocationManager service = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
+//                        Criteria criteria = new Criteria();
+//                        String provider = service.getBestProvider(criteria, false);
+//                        Location location = service.getLastKnownLocation(provider);
+//                        LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+//                        if(mGoogleMap != null){
+//                            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+//                        }
+//                    }
+//                });
+
+//                mUserLocation = new LatLng(0,0);
+//                if (mGoogleMap.getMyLocation()!=null){
+//                    mUserLocation = new LatLng(mGoogleMap.getMyLocation().getLatitude(),mGoogleMap.getMyLocation().getLongitude());
+//                }else{
+//                    lastLocation();
+//                }
+//                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(mUserLocation, 16);
+//                    mGoogleMap.animateCamera(cameraUpdate);
 //                setUpMap();
             }
         }
@@ -161,5 +185,25 @@ public class MapTabFragment extends Fragment {
         ft.commit();
         super.onPause();
     }
+
+    public void lastLocation(){
+        LocationManager service = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String provider = service.getBestProvider(criteria, false);
+        Location location = service.getLastKnownLocation(provider);
+        if (location!=null){
+            mUserLocation = new LatLng(location.getLatitude(),location.getLongitude());
+        }
+    }
+
+    private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
+        @Override
+        public void onMyLocationChange(Location location) {
+            LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+            if(mGoogleMap != null){
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+            }
+        }
+    };
 
 }
