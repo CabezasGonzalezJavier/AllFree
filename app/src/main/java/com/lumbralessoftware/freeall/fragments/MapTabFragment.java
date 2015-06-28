@@ -1,6 +1,7 @@
 package com.lumbralessoftware.freeall.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -18,8 +19,10 @@ import com.google.android.gms.maps.GoogleMap;
 
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.lumbralessoftware.freeall.R;
+import com.lumbralessoftware.freeall.activities.DetailActivity;
 import com.lumbralessoftware.freeall.adapters.WindowsAdapter;
 import com.lumbralessoftware.freeall.interfaces.UpdateableFragment;
 import com.lumbralessoftware.freeall.models.Item;
@@ -160,9 +163,17 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
         }
     }
 
-    private void setUpMap(Item item) {
+    private void setUpMap(final Item item) {
         mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(Float.parseFloat(item.getLocation().getLatPosition()), Float.parseFloat(item.getLocation().getLongPosition()))));
-        mGoogleMap.setInfoWindowAdapter(new WindowsAdapter(getActivity(),item));
+        mGoogleMap.setInfoWindowAdapter(new WindowsAdapter(getActivity(), item));
+        mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                intent.putExtra(Constants.DETAIL, item);
+                getActivity().startActivity(intent);
+            }
+        });
     }
     @Override
     public void onPause() {
