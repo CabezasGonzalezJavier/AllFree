@@ -156,13 +156,13 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
 
     private void drawnPoints(){
         for (Item item : mItemList){
-            setUpMap(item.getLocation().getLatPosition(), item.getLocation().getLongPosition(), item.getName(),item.getImage());
+            setUpMap(item);
         }
     }
 
-    private void setUpMap(String lat,String lon, String title, String image) {
-        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(Float.parseFloat(lat), Float.parseFloat(lon))).title(title).snippet(image));
-        mGoogleMap.setInfoWindowAdapter(new WindowsAdapter(getActivity()));
+    private void setUpMap(Item item) {
+        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(Float.parseFloat(item.getLocation().getLatPosition()), Float.parseFloat(item.getLocation().getLongPosition()))));
+        mGoogleMap.setInfoWindowAdapter(new WindowsAdapter(getActivity(),item));
     }
     @Override
     public void onPause() {

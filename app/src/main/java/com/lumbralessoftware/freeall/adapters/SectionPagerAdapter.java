@@ -59,7 +59,7 @@ public class SectionPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return mActivity.getString(R.string.fragment_map_title);
             case 1:
-                return mActivity.getString(R.string.fragment_second_title);
+                return mActivity.getString(R.string.fragment_list_title);
             case 2:
             default:
                 return mActivity.getString(R.string.fragment_third_title);
