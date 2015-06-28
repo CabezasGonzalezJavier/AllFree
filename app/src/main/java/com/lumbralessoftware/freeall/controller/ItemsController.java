@@ -16,31 +16,15 @@ import java.util.List;
 /**
  * Created by javiergonzalezcabezas on 27/6/15.
  */
-public class ItemsController implements ItemResponseHandler, VoteResponseHandler, ItemRequestResponseHandler {
+public class ItemsController implements ItemResponseHandler {
     public ItemResponseListener mResponseListener;
-    public VoteResponseListener mVoteResponseListener;
-    public ItemRequestResponseListener mItemRequestResponseListener;
 
-    public ItemsController(ItemResponseListener mResponseListener, VoteResponseListener voteResponseListener) {
+    public ItemsController(ItemResponseListener mResponseListener) {
         this.mResponseListener = mResponseListener;
-        mVoteResponseListener = voteResponseListener;
-    }
-
-    public void setItemRequestResponseListener(ItemRequestResponseListener responseListener)
-    {
-        mItemRequestResponseListener = responseListener;
     }
 
     public void request(){
         Client.getAllItems(this);
-    }
-
-    public void vote(Integer itemId, Double score) {
-        Client.voteItem(this, itemId, score);
-    }
-
-    public void want(Integer itemId, ItemRequest item) {
-        Client.wantItem(this, itemId, item);
     }
 
     @Override
@@ -48,15 +32,6 @@ public class ItemsController implements ItemResponseHandler, VoteResponseHandler
         mResponseListener.onSuccess(response);
     }
 
-    @Override
-    public void sendResponseSusccesful(VotingResult response) {
-        mVoteResponseListener.onSuccess(response);
-    }
-
-    @Override
-    public void sendResponseSusccesful(ItemRequest response) {
-        mItemRequestResponseListener.onSuccess(response);
-    }
 
     @Override
     public void sendResponseFail(String error) {

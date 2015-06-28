@@ -20,7 +20,6 @@ import com.lumbralessoftware.freeall.adapters.SectionPagerAdapter;
 import com.lumbralessoftware.freeall.controller.ItemsController;
 import com.lumbralessoftware.freeall.controller.ControllersFactory;
 import com.lumbralessoftware.freeall.controller.SharedPreferenceController;
-import com.lumbralessoftware.freeall.interfaces.VoteResponseListener;
 import com.lumbralessoftware.freeall.models.Item;
 import com.lumbralessoftware.freeall.models.VotingResult;
 import com.lumbralessoftware.freeall.utils.Utils;
@@ -29,7 +28,7 @@ import com.lumbralessoftware.freeall.interfaces.ItemResponseListener;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements ItemResponseListener, VoteResponseListener {
+public class MainActivity extends AppCompatActivity implements ItemResponseListener {
 
     private ItemsController mItemsController;
     private SectionPagerAdapter mAdapter;
@@ -60,9 +59,7 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
 
     public void getData(){
         if (Utils.isOnline(this)) {
-
             ControllersFactory.setItemResponseListener(this);
-            ControllersFactory.setsVoteResponseListener(this);
             mItemsController = ControllersFactory.getItemsController();
             mItemsController.request();
         }else{
@@ -75,15 +72,6 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
     public void onSuccess(List<Item> successResponse) {
 
         mAdapter.update(successResponse);
-    }
-
-    public void onSuccess(VotingResult successResponse) {
-        Toast.makeText(this, successResponse.getRating().toString(), Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onError(String errorResponse) {
-
     }
 
     @Override
@@ -147,5 +135,10 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
         int id = item.getItemId();
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onError(String errorResponse) {
+        Toast.makeText(this, errorResponse, Toast.LENGTH_LONG).show();
     }
 }

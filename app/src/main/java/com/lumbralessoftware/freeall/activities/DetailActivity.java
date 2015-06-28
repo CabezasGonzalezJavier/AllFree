@@ -11,9 +11,12 @@ import android.widget.Toast;
 import com.lumbralessoftware.freeall.R;
 import com.lumbralessoftware.freeall.controller.ControllersFactory;
 import com.lumbralessoftware.freeall.controller.ItemsController;
+import com.lumbralessoftware.freeall.controller.UserController;
 import com.lumbralessoftware.freeall.interfaces.ItemRequestResponseListener;
+import com.lumbralessoftware.freeall.interfaces.VoteResponseListener;
 import com.lumbralessoftware.freeall.models.Item;
 import com.lumbralessoftware.freeall.models.ItemRequest;
+import com.lumbralessoftware.freeall.models.VotingResult;
 import com.lumbralessoftware.freeall.utils.Constants;
 import com.lumbralessoftware.freeall.utils.Utils;
 import com.lumbralessoftware.freeall.views.CircleTransform;
@@ -24,20 +27,19 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DetailActivity extends AppCompatActivity implements ItemRequestResponseListener{
+public class DetailActivity extends AppCompatActivity implements ItemRequestResponseListener, VoteResponseListener {
 
     private Item mItem;
-    private ItemsController mItemsController;
+    private UserController mUserController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        //ControllersFactory.setItemResponseListener(this);
-        mItemsController = ControllersFactory.getItemsController();
-        mItemsController.setItemRequestResponseListener(this);
-
+        ControllersFactory.setItemRequestResponseListener(this);
+        ControllersFactory.setsVoteResponseListener(this);
+        mUserController = ControllersFactory.getUserController();
 
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
@@ -91,10 +93,14 @@ public class DetailActivity extends AppCompatActivity implements ItemRequestResp
 
     }
 
+    private void voteItem(Double rating) {
+        mUserController.vote(mItem.getId(), rating);
+    }
+
     private void requestItem(String message) {
         ItemRequest request = new ItemRequest();
         request.setMessage(message);
-        mItemsController.want(mItem.getId(), request);
+        mUserController.want(mItem.getId(), request);
     }
 
     @Override
@@ -125,9 +131,14 @@ public class DetailActivity extends AppCompatActivity implements ItemRequestResp
 
     }
 
+
+    public void onSuccess(VotingResult successResponse) {
+        Toast.makeText(this, successResponse.getRating().toString(), Toast.LENGTH_LONG).show();
+    }
+
     @Override
     public void onError(String errorResponse) {
-        Toast.makeText(this, "Error", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, errorResponse, Toast.LENGTH_LONG).show();
 
     }
 }

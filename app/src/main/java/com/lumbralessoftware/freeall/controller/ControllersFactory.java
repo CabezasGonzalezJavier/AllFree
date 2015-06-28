@@ -11,8 +11,10 @@ import com.lumbralessoftware.freeall.interfaces.VoteResponseListener;
 public class ControllersFactory {
 
     private  static ItemsController sItemsController;
-    private  static ItemResponseListener sItemsResponseListener;
+    private  static UserController sUserController;
 
+    private  static ItemResponseListener sItemsResponseListener;
+    private  static ItemRequestResponseListener sItemRequestResponseListener;
     private  static VoteResponseListener sVoteResponseListener;
     private  static RegistrationController sRegistrationController;
     private  static RegistrationResponseListener sRegistrationResponseListener;
@@ -23,12 +25,23 @@ public class ControllersFactory {
     public static void setsVoteResponseListener(VoteResponseListener responseListener){
         sVoteResponseListener = responseListener;
     }
+    public static void setItemRequestResponseListener(ItemRequestResponseListener responseListener){
+        sItemRequestResponseListener = responseListener;
+    }
 
     public static ItemsController getItemsController() {
         if (sItemsController == null) {
-            sItemsController = new ItemsController(sItemsResponseListener, sVoteResponseListener);
+            sItemsController = new ItemsController(sItemsResponseListener);
         }
         return sItemsController;
+    }
+
+    public static UserController getUserController() {
+
+        if (sUserController == null) {
+            sUserController = new UserController(sVoteResponseListener, sItemRequestResponseListener);
+        }
+        return sUserController;
     }
 
     public static void setRegistrationResponseListener(RegistrationResponseListener responseListener){
