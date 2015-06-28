@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.lumbralessoftware.freeall.R;
 import com.lumbralessoftware.freeall.fragments.MapTabFragment;
-import com.lumbralessoftware.freeall.fragments.SecondTabFragment;
+import com.lumbralessoftware.freeall.fragments.ListFragment;
 import com.lumbralessoftware.freeall.fragments.ThirdTabFragment;
 import com.lumbralessoftware.freeall.interfaces.UpdateableFragment;
 import com.lumbralessoftware.freeall.models.Item;
@@ -37,7 +37,7 @@ public class SectionPagerAdapter extends FragmentPagerAdapter {
                 fragment = new MapTabFragment();
                 break;
             case 1:
-                fragment = new SecondTabFragment();
+                fragment = new ListFragment();
                 break;
             case 2:
             default:

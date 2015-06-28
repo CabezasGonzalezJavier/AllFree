@@ -1,34 +1,39 @@
 package com.lumbralessoftware.freeall.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.lumbralessoftware.freeall.R;
+import com.lumbralessoftware.freeall.activities.DetailActivity;
 import com.lumbralessoftware.freeall.adapters.ItemsAdapter;
 import com.lumbralessoftware.freeall.interfaces.UpdateableFragment;
 import com.lumbralessoftware.freeall.models.Item;
+import com.lumbralessoftware.freeall.utils.Constants;
 
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SecondTabFragment.OnFragmentInteractionListener} interface
+ * {@link ListFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SecondTabFragment#newInstance} factory method to
+ * Use the {@link ListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SecondTabFragment extends Fragment implements UpdateableFragment {
+public class ListFragment extends Fragment implements UpdateableFragment, AdapterView.OnItemClickListener {
 
     private ItemsAdapter mAdapter;
     private ListView mListView;
     private OnFragmentInteractionListener mListener;
+    private List<Item> mItems;
 
 
     /**
@@ -39,12 +44,12 @@ public class SecondTabFragment extends Fragment implements UpdateableFragment {
 
      * @return A new instance of fragment SecondFragment.
      */
-    public static SecondTabFragment newInstance() {
-        SecondTabFragment fragment = new SecondTabFragment();
+    public static ListFragment newInstance() {
+        ListFragment fragment = new ListFragment();
         return fragment;
     }
 
-    public SecondTabFragment() {
+    public ListFragment() {
         // Required empty public constructor
     }
 
@@ -58,9 +63,10 @@ public class SecondTabFragment extends Fragment implements UpdateableFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_second, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
 
         mListView = (ListView) view.findViewById(R.id.fragment_list_listView);
+        mListView.setOnItemClickListener(this);
 
 
         return view;
@@ -85,14 +91,24 @@ public class SecondTabFragment extends Fragment implements UpdateableFragment {
         mListener = null;
     }
 
-    public void showList(List<Item> list){
-        mListView.setAdapter(new ItemsAdapter(getActivity(), 0, list));
+    public void showList(){
+        mListView.setAdapter(new ItemsAdapter(getActivity(), 0, mItems));
 //        mListView.setOnItemClickListener(this);
     }
 
     @Override
     public void update(List<Item> items) {
-        showList(items);
+        mItems = items;
+        showList();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra(Constants.DETAIL, mItems.get(position));
+        startActivity(intent);
+
     }
 
     /**

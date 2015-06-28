@@ -3,10 +3,12 @@ package com.lumbralessoftware.freeall.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by javiergonzalezcabezas on 27/6/15.
  */
-public class Item {
+public class Item implements Serializable {
 
     @Expose
     private Integer id;
