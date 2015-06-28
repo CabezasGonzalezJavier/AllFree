@@ -119,7 +119,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/activity_detail_edittext"
                 android:layout_marginTop="@dimen/activity_detail_margeTop"
-                android:background="@android:color/white"
+                android:background="@android:color/black"
+                android:textColor="@android:color/white"
                 android:text="@string/fragment_map_marker_button" />
         </RelativeLayout>
     </ScrollView>
