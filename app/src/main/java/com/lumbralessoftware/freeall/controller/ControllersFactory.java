@@ -1,5 +1,6 @@
 package com.lumbralessoftware.freeall.controller;
 
+import com.lumbralessoftware.freeall.interfaces.ItemRequestResponseListener;
 import com.lumbralessoftware.freeall.interfaces.ItemResponseListener;
 import com.lumbralessoftware.freeall.interfaces.RegistrationResponseListener;
 import com.lumbralessoftware.freeall.interfaces.VoteResponseListener;
@@ -11,6 +12,7 @@ public class ControllersFactory {
 
     private  static ItemsController sItemsController;
     private  static ItemResponseListener sItemsResponseListener;
+
     private  static VoteResponseListener sVoteResponseListener;
     private  static RegistrationController sRegistrationController;
     private  static RegistrationResponseListener sRegistrationResponseListener;

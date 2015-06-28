@@ -2,10 +2,12 @@ package com.lumbralessoftware.freeall.webservice;
 
 import android.util.Log;
 
+import com.lumbralessoftware.freeall.interfaces.ItemRequestResponseHandler;
 import com.lumbralessoftware.freeall.interfaces.ItemResponseHandler;
 import com.lumbralessoftware.freeall.interfaces.RegistrationResponseHandler;
 import com.lumbralessoftware.freeall.interfaces.VoteResponseHandler;
 import com.lumbralessoftware.freeall.models.Item;
+import com.lumbralessoftware.freeall.models.ItemRequest;
 import com.lumbralessoftware.freeall.models.Registration;
 import com.lumbralessoftware.freeall.models.Token;
 import com.lumbralessoftware.freeall.models.VotingResult;
@@ -47,6 +49,8 @@ public class Client {
 
         @GET("/vote/{itemId}/")
         void getItemVote(@Path("itemId") Integer itemId, @Query("punctuation") Double score, @Header("Authorization") String authorization, Callback<VotingResult> callback);
+        @POST("/request/{itemId}/")
+        void postRequestItem(@Path("itemId") Integer itemId, @Body ItemRequest item, @Header("Authorization") String authorization, Callback<ItemRequest> callback);
 
     }
 
@@ -90,6 +94,22 @@ public class Client {
         };
 
         Client.initRestAdapter().getItemVote(itemId, score, Utils.getAuthorizationHeader(), callback);
+    }
+
+    public static void wantItem(final ItemRequestResponseHandler responseHandler, Integer itemId, ItemRequest item) {
+        Callback<ItemRequest> callback = new Callback<ItemRequest>() {
+            @Override
+            public void success(ItemRequest data, Response response) {
+                responseHandler.sendResponseSusccesful(data);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Utils.logResponse("WANTITEM", error);
+            }
+        };
+
+        Client.initRestAdapter().postRequestItem(itemId, item, Utils.getAuthorizationHeader(), callback);
     }
 
     public static void postRegistrationToken(final RegistrationResponseHandler responseHandler, String backend, Token token) {
