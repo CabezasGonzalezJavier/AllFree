@@ -76,8 +76,8 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
         TextView description = (TextView) findViewById(R.id.activity_detail_description);
         TextView dateTextView = (TextView) findViewById(R.id.activity_detail_date);
         RatingBar ratingBar = (RatingBar) findViewById(R.id.activity_detail_ratingBar);
-        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-        stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
+        //LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+        //stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
 
         mEditText = (EditText) findViewById(R.id.activity_detail_edittext);
         Button sentButton = (Button) findViewById(R.id.activity_detail_button);
