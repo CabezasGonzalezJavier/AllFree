@@ -68,6 +68,7 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setRetainInstance(true);
         super.onCreate(savedInstanceState);
 
 
@@ -174,14 +175,6 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
                 getActivity().startActivity(intent);
             }
         });
-    }
-    @Override
-    public void onPause() {
-        Fragment fragment = (getChildFragmentManager().findFragmentById(R.id.fragment_map_map));
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ft.remove(fragment);
-        ft.commit();
-        super.onPause();
     }
 
     public void lastLocation(){

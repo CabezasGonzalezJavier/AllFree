@@ -22,6 +22,7 @@ import com.lumbralessoftware.freeall.controller.ControllersFactory;
 import com.lumbralessoftware.freeall.controller.SharedPreferenceController;
 import com.lumbralessoftware.freeall.models.Item;
 import com.lumbralessoftware.freeall.models.VotingResult;
+import com.lumbralessoftware.freeall.utils.Constants;
 import com.lumbralessoftware.freeall.utils.Utils;
 import com.lumbralessoftware.freeall.interfaces.ItemResponseListener;
 
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.activity_main_tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.activity_main_pager);
+        mViewPager.setOffscreenPageLimit(Constants.TOTAL_TABS);
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);

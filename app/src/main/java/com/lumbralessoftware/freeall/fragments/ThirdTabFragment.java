@@ -85,6 +85,7 @@ public class ThirdTabFragment extends Fragment implements RegistrationResponseLi
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setRetainInstance(true);
         super.onCreate(savedInstanceState);
         ControllersFactory.setRegistrationResponseListener(this);
         SharedPreferenceController.initializeInstance(getActivity());

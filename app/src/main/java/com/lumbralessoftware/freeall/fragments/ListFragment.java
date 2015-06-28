@@ -55,6 +55,7 @@ public class ListFragment extends Fragment implements UpdateableFragment, Adapte
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setRetainInstance(true);
         super.onCreate(savedInstanceState);
 
     }
