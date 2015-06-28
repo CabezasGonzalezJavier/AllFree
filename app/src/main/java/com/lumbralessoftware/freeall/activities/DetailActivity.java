@@ -51,10 +51,19 @@ public class DetailActivity extends AppCompatActivity {
 
 //        DateFormat parser = ISODateTimeFormat.dateTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        StringBuilder stringBuilderDate = new StringBuilder();
         try {
             Date date = formatter.parse(mItem.getCreated());
             Calendar calendar = Utils.dateToCalendar(date);
-//            calendar.get
+            stringBuilderDate.append(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
+            stringBuilderDate.append("/");
+            stringBuilderDate.append(String.valueOf(calendar.get(Calendar.MONTH)));
+            stringBuilderDate.append("/");
+            stringBuilderDate.append(String.valueOf(calendar.get(Calendar.YEAR)));
+            stringBuilderDate.append(" at ");
+            stringBuilderDate.append(String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
+            stringBuilderDate.append(":");
+            stringBuilderDate.append(String.valueOf(calendar.get(Calendar.MINUTE)));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -64,7 +73,7 @@ public class DetailActivity extends AppCompatActivity {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getString(R.string.activity_detail_title_date));
         stringBuilder.append(": ");
-        stringBuilder.append(mItem.getCreated());
+        stringBuilder.append(stringBuilderDate);
         dateTextView.setText(stringBuilder);
 
         Picasso.with(this).load(mItem.getImage()).transform(new CircleTransform()).into((ImageView) image);
