@@ -12,6 +12,13 @@ import android.view.ViewGroup;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.lumbralessoftware.freeall.controller.ControllersFactory;
 import com.lumbralessoftware.freeall.controller.ItemsController;
 import com.lumbralessoftware.freeall.controller.RegistrationController;
@@ -49,6 +56,8 @@ import java.util.List;
 public class ThirdTabFragment extends Fragment implements RegistrationResponseListener {
     private TwitterLoginButton mTwitterButton;
     private RegistrationController mRegistrationController;
+
+    private CallbackManager callbackManager;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -119,7 +128,7 @@ public class ThirdTabFragment extends Fragment implements RegistrationResponseLi
 
                 if (Utils.isOnline(getActivity())) {
                     mRegistrationController = ControllersFactory.getsRegistrationController();
-                    mRegistrationController.request(atoken, secret);
+                    mRegistrationController.request(Constants.BACKEND_TWITTER, atoken, secret);
 
                 }else{
                     Toast.makeText(getActivity(), getString(R.string.no_connection), Toast.LENGTH_LONG).show();
@@ -135,6 +144,39 @@ public class ThirdTabFragment extends Fragment implements RegistrationResponseLi
                     // get new guestAppSession
                     // optionally retry
                 }
+            }
+        });
+
+        LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
+        loginButton.setReadPermissions("user_friends");
+        // If using in a fragment
+        loginButton.setFragment(this);
+        // Other app specific specialization
+
+        callbackManager = CallbackManager.Factory.create();
+        // Callback registration
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // App code
+                AccessToken at = loginResult.getAccessToken();
+                SharedPreferenceController.getInstance().setFacebookAccess(at.getToken());
+                mRegistrationController = ControllersFactory.getsRegistrationController();
+                mRegistrationController.request(Constants.BACKEND_FACEBOOK, at.getToken(), null);
+            }
+
+            @Override
+            public void onCancel() {
+                // App code
+                Log.d("FACEBOOK", "user cancelled");
+
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+                Log.d("FACEBOOK", "error");
+
             }
         });
 
@@ -177,6 +219,7 @@ public class ThirdTabFragment extends Fragment implements RegistrationResponseLi
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mTwitterButton.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

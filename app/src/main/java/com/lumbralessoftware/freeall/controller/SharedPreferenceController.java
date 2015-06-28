@@ -9,7 +9,10 @@ public class SharedPreferenceController
     private static final String PREF_NAME = "com.lumbralessoftware.freeall";
     private static final String TWITTER_ACCESS = "twitter_access";
     private static final String TWITTER_SECRET = "twitter_secret";
+    private static final String FACEBOOK_ACCESS = "facebook_access";
+
     private static final String ACCESS_TOKEN = "access_token";
+    private static final String REFRESH_TOKEN = "refresh_token";
 
 
 
@@ -58,6 +61,17 @@ public class SharedPreferenceController
         return mPref.getString(TWITTER_SECRET, "");
     }
 
+
+    public void setFacebookAccess(String value)
+    {
+        mPref.edit().putString(FACEBOOK_ACCESS, value).commit();
+    }
+
+    public String getFacebookAccess()
+    {
+        return mPref.getString(FACEBOOK_ACCESS, "");
+    }
+
     public void setAccessToken(String value)
     {
         mPref.edit().putString(ACCESS_TOKEN, value).commit();
@@ -66,5 +80,15 @@ public class SharedPreferenceController
     public String getAccessToken()
     {
         return mPref.getString(ACCESS_TOKEN, "");
+    }
+
+    public void setRefreshToken(String value)
+    {
+        mPref.edit().putString(REFRESH_TOKEN, value).commit();
+    }
+
+    public String getRefreshToken()
+    {
+        return mPref.getString(REFRESH_TOKEN, "");
     }
 }

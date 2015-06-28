@@ -14,4 +14,6 @@
     <string name="navigation_drawer_open"></string>
     <string name="navigation_drawer_close"></string>
     <string name="no_connection">Error connection. You must check your connection.</string>
+    <string name="fb_app_id">668971933246507</string>
+
 </resources>

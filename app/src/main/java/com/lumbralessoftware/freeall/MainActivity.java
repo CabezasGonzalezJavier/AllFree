@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
 import com.lumbralessoftware.freeall.adapters.SectionPagerAdapter;
 import com.lumbralessoftware.freeall.controller.ItemsController;
 import com.lumbralessoftware.freeall.controller.ControllersFactory;
@@ -16,6 +17,9 @@ import com.lumbralessoftware.freeall.models.Item;
 import com.lumbralessoftware.freeall.utils.Utils;
 import com.lumbralessoftware.freeall.interfaces.ItemResponseListener;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Signature;
 import java.util.List;
 
 
@@ -28,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
+
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
