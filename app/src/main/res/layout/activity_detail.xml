@@ -8,70 +8,119 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.lumbralessoftware.freeall.activities.DetailActivity">
 
-    <RelativeLayout
-        android:id="@+id/activity_detail_relative_layout"
-        style="@style/AppTheme.Relative"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/activity_detail_icon"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="5dp"
-            android:contentDescription="TODO"
-            android:scaleType="centerCrop" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/activity_detail_relative_layout"
+                style="@style/AppTheme.Relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white">
+
+                <ImageView
+                    android:id="@+id/activity_detail_icon"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="5dp"
+                    android:contentDescription="TODO"
+                    android:scaleType="centerCrop" />
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@+id/activity_detail_icon"
-            android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@+id/activity_detail_icon"
+                    android:orientation="vertical">
+
+                    <com.lumbralessoftware.freeall.views.CustomTextView
+                        android:id="@+id/activity_detail_name"
+                        style="@style/TittleText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <com.lumbralessoftware.freeall.views.CustomTextView
+                        android:id="@+id/activity_detail_category"
+                        style="@style/NormalText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <com.lumbralessoftware.freeall.views.CustomTextView
-                android:id="@+id/activity_detail_name"
-                style="@style/TittleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <com.lumbralessoftware.freeall.views.CustomTextView
-                android:id="@+id/activity_detail_category"
+                android:id="@+id/activity_detail_date"
                 style="@style/NormalText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_detail_relative_layout"
+                android:layout_marginTop="@dimen/activity_detail_margeTop"
+                android:background="@android:color/white"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin" />
 
-    </RelativeLayout>
+            <com.lumbralessoftware.freeall.views.CustomTextView
+                android:id="@+id/activity_detail_description"
+                style="@style/NormalText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_detail_date"
+                android:layout_marginTop="@dimen/activity_detail_margeTop"
+                android:background="@android:color/white"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin" />
 
-    <com.lumbralessoftware.freeall.views.CustomTextView
-        android:id="@+id/activity_detail_date"
-        style="@style/NormalText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/activity_detail_relative_layout"
-        android:layout_marginTop="2dp"
-        android:background="@android:color/white"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin" />
+            <RelativeLayout
+                android:id="@+id/activity_detail_ratingBar_relative_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_detail_description"
+                android:layout_marginTop="@dimen/activity_detail_margeTop"
+                android:background="@android:color/white">
 
-    <com.lumbralessoftware.freeall.views.CustomTextView
-        android:id="@+id/activity_detail_description"
-        style="@style/NormalText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/activity_detail_date"
-        android:layout_marginTop="2dp"
-        android:background="@android:color/white"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin" />
+                <RatingBar
+                    android:id="@+id/activity_detail_ratingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@android:color/white"
+                    android:numStars="5"
+                    android:paddingTop="4dp" />
+            </RelativeLayout>
 
+            <EditText
+                android:id="@+id/activity_detail_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_detail_ratingBar_relative_layout"
+                android:layout_marginTop="@dimen/activity_detail_margeTop"
+                android:background="@android:color/white"
+                android:hint="@string/activity_detail_hint_edittext"
+                android:imeOptions="actionSend"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:singleLine="true" />
+
+            <Button
+                android:id="@+id/activity_detail_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_detail_edittext"
+                android:layout_marginTop="@dimen/activity_detail_margeTop"
+                android:background="@android:color/white"
+                android:text="@string/fragment_map_marker_button" />
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

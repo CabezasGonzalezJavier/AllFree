@@ -46,20 +46,11 @@ public class WindowsAdapter implements GoogleMap.InfoWindowAdapter {
         TextView name = (TextView) mContentsView.findViewById(R.id.row_marker_name);
         TextView category = (TextView) mContentsView.findViewById(R.id.row_marker_category);
         ImageView image = (ImageView) mContentsView.findViewById(R.id.row_marker_icon);
-        Button button = (Button) mContentsView.findViewById(R.id.row_marker_button);
 
         name.setText(mItem.getName());
         category.setText(mItem.getCategory());
         Picasso.with(mActivity).load(mItem.getImage()).transform(new CircleTransform()).into((ImageView) image);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mActivity, DetailActivity.class);
-                intent.putExtra(Constants.DETAIL, mItem);
-                mActivity.startActivity(intent);
-            }
-        });
         return mContentsView;
     }
 

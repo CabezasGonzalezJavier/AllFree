@@ -45,6 +45,6 @@ public class UserController implements VoteResponseHandler, ItemRequestResponseH
 
     @Override
     public void sendResponseFail(String error) {
-
+        mItemRequestResponseListener.onError(error);
     }
 }
