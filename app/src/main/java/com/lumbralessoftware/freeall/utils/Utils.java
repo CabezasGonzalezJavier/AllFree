@@ -7,6 +7,8 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.lumbralessoftware.freeall.controller.SharedPreferenceController;
+import java.util.Calendar;
+import java.util.Date;
 
 import retrofit.RetrofitError;
 import retrofit.mime.TypedByteArray;
@@ -51,8 +53,13 @@ public class Utils {
         return serverError;
     }
 
-    public static String getAuthorizationHeader()
-    {
+    public static String getAuthorizationHeader() {
         return "Bearer " + SharedPreferenceController.getInstance().getAccessToken();
+    }
+
+    public static Calendar dateToCalendar(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal;
     }
 }

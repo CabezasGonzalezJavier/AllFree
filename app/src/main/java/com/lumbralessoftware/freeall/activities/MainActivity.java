@@ -1,4 +1,4 @@
-package com.lumbralessoftware.freeall;
+package com.lumbralessoftware.freeall.activities;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
+import com.lumbralessoftware.freeall.R;
 import com.lumbralessoftware.freeall.adapters.SectionPagerAdapter;
 import com.lumbralessoftware.freeall.controller.ItemsController;
 import com.lumbralessoftware.freeall.controller.ControllersFactory;
@@ -64,8 +65,6 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
             ControllersFactory.setsVoteResponseListener(this);
             mItemsController = ControllersFactory.getItemsController();
             mItemsController.request();
-            mItemsController.vote(1, 4.3);
-
         }else{
             Toast.makeText(this, getString(R.string.no_connection), Toast.LENGTH_LONG).show();
         }

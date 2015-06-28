@@ -15,5 +15,7 @@ public class Constants {
     public static final String BACKEND_TWITTER = "twitter";
     public static final String BACKEND_FACEBOOK = "facebook";
 
+    public static final String DETAIL = "detail";
+
 
 }
