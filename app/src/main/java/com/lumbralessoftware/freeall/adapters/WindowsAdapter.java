@@ -1,7 +1,9 @@
 package com.lumbralessoftware.freeall.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -9,6 +11,9 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.lumbralessoftware.freeall.R;
+import com.lumbralessoftware.freeall.activities.DetailActivity;
+import com.lumbralessoftware.freeall.models.Item;
+import com.lumbralessoftware.freeall.utils.Constants;
 import com.lumbralessoftware.freeall.views.CircleTransform;
 import com.squareup.picasso.Picasso;
 
@@ -19,10 +24,12 @@ public class WindowsAdapter implements GoogleMap.InfoWindowAdapter {
 
     private final View mContentsView;
     private Activity mActivity;
+    private Item mItem;
 
-    public WindowsAdapter(Activity activity) {
+    public WindowsAdapter(Activity activity, Item item) {
         mContentsView = activity.getLayoutInflater().inflate(R.layout.row_marker, null);
         mActivity = activity;
+        mItem = item;
     }
 
     static class ViewHolder {
@@ -39,11 +46,20 @@ public class WindowsAdapter implements GoogleMap.InfoWindowAdapter {
         TextView name = (TextView) mContentsView.findViewById(R.id.row_marker_name);
         TextView category = (TextView) mContentsView.findViewById(R.id.row_marker_category);
         ImageView image = (ImageView) mContentsView.findViewById(R.id.row_marker_icon);
+        Button button = (Button) mContentsView.findViewById(R.id.row_marker_button);
 
-        name.setText(marker.getTitle());
-        category.setText(marker.getTitle());
-        Picasso.with(mActivity).load(marker.getSnippet()).transform(new CircleTransform()).into((ImageView) image);
+        name.setText(mItem.getName());
+        category.setText(mItem.getCategory());
+        Picasso.with(mActivity).load(mItem.getImage()).transform(new CircleTransform()).into((ImageView) image);
 
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mActivity, DetailActivity.class);
+                intent.putExtra(Constants.DETAIL, mItem);
+                mActivity.startActivity(intent);
+            }
+        });
         return mContentsView;
     }
 

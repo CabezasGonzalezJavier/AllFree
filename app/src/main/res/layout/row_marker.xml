@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:padding="6dip">
 
@@ -8,16 +8,13 @@
         android:id="@+id/row_marker_icon"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="5dp"
-        android:contentDescription="TODO"
         android:scaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_toRightOf="@id/row_marker_icon"
         android:orientation="vertical">
 
@@ -41,6 +38,14 @@
             android:singleLine="true"
             android:textSize="12sp" />
 
+
     </LinearLayout>
+    <Button
+        android:id="@+id/row_marker_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/row_marker_icon"
+        android:text="@string/fragment_map_marker_button"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
