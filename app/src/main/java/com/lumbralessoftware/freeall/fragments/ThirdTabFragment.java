@@ -16,22 +16,15 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.lumbralessoftware.freeall.controller.ControllersFactory;
-import com.lumbralessoftware.freeall.controller.ItemsController;
 import com.lumbralessoftware.freeall.controller.RegistrationController;
 import com.lumbralessoftware.freeall.controller.SharedPreferenceController;
-import com.lumbralessoftware.freeall.interfaces.ItemResponseHandler;
-import com.lumbralessoftware.freeall.interfaces.ItemResponseListener;
 import com.lumbralessoftware.freeall.interfaces.RegistrationResponseListener;
-import com.lumbralessoftware.freeall.models.Item;
 import com.lumbralessoftware.freeall.models.Registration;
-import com.lumbralessoftware.freeall.models.Token;
 import com.lumbralessoftware.freeall.utils.Constants;
 import com.lumbralessoftware.freeall.utils.Utils;
-import com.lumbralessoftware.freeall.webservice.Client;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterApiException;
@@ -42,8 +35,6 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import com.lumbralessoftware.freeall.R;
 import com.twitter.sdk.android.core.internal.TwitterApiConstants;
-
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -95,7 +86,7 @@ public class ThirdTabFragment extends Fragment implements RegistrationResponseLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ControllersFactory.setsRegistrationResponseListener(this);
+        ControllersFactory.setRegistrationResponseListener(this);
         SharedPreferenceController.initializeInstance(getActivity());
 
 
@@ -127,7 +118,7 @@ public class ThirdTabFragment extends Fragment implements RegistrationResponseLi
                 SharedPreferenceController.getInstance().setTwitterSecret(secret);
 
                 if (Utils.isOnline(getActivity())) {
-                    mRegistrationController = ControllersFactory.getsRegistrationController();
+                    mRegistrationController = ControllersFactory.getRegistrationController();
                     mRegistrationController.request(Constants.BACKEND_TWITTER, atoken, secret);
 
                 }else{
@@ -161,7 +152,7 @@ public class ThirdTabFragment extends Fragment implements RegistrationResponseLi
                 // App code
                 AccessToken at = loginResult.getAccessToken();
                 SharedPreferenceController.getInstance().setFacebookAccess(at.getToken());
-                mRegistrationController = ControllersFactory.getsRegistrationController();
+                mRegistrationController = ControllersFactory.getRegistrationController();
                 mRegistrationController.request(Constants.BACKEND_FACEBOOK, at.getToken(), null);
             }
 

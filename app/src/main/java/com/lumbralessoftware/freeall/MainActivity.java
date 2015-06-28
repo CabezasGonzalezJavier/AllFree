@@ -18,17 +18,17 @@ import com.facebook.FacebookSdk;
 import com.lumbralessoftware.freeall.adapters.SectionPagerAdapter;
 import com.lumbralessoftware.freeall.controller.ItemsController;
 import com.lumbralessoftware.freeall.controller.ControllersFactory;
+import com.lumbralessoftware.freeall.controller.SharedPreferenceController;
+import com.lumbralessoftware.freeall.interfaces.VoteResponseListener;
 import com.lumbralessoftware.freeall.models.Item;
+import com.lumbralessoftware.freeall.models.VotingResult;
 import com.lumbralessoftware.freeall.utils.Utils;
 import com.lumbralessoftware.freeall.interfaces.ItemResponseListener;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.Signature;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements ItemResponseListener {
+public class MainActivity extends AppCompatActivity implements ItemResponseListener, VoteResponseListener {
 
     private ItemsController mItemsController;
     private SectionPagerAdapter mAdapter;
@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferenceController.initializeInstance(this.getApplicationContext());
         FacebookSdk.sdkInitialize(this.getApplicationContext());
 
         setContentView(R.layout.activity_main);
@@ -59,10 +60,11 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
     public void getData(){
         if (Utils.isOnline(this)) {
 
-            ControllersFactory.setsItemResponseListener(this);
-
-            mItemsController = ControllersFactory.getsItemsController();
+            ControllersFactory.setItemResponseListener(this);
+            ControllersFactory.setsVoteResponseListener(this);
+            mItemsController = ControllersFactory.getItemsController();
             mItemsController.request();
+            mItemsController.vote(1, 4.3);
 
         }else{
             Toast.makeText(this, getString(R.string.no_connection), Toast.LENGTH_LONG).show();
@@ -74,6 +76,10 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
     public void onSuccess(List<Item> successResponse) {
 
         mAdapter.update(successResponse);
+    }
+
+    public void onSuccess(VotingResult successResponse) {
+        Toast.makeText(this, successResponse.getRating().toString(), Toast.LENGTH_LONG).show();
     }
 
     @Override

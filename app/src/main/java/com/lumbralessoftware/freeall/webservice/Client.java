@@ -4,9 +4,11 @@ import android.util.Log;
 
 import com.lumbralessoftware.freeall.interfaces.ItemResponseHandler;
 import com.lumbralessoftware.freeall.interfaces.RegistrationResponseHandler;
+import com.lumbralessoftware.freeall.interfaces.VoteResponseHandler;
 import com.lumbralessoftware.freeall.models.Item;
 import com.lumbralessoftware.freeall.models.Registration;
 import com.lumbralessoftware.freeall.models.Token;
+import com.lumbralessoftware.freeall.models.VotingResult;
 import com.lumbralessoftware.freeall.utils.Constants;
 import com.lumbralessoftware.freeall.utils.Utils;
 import com.squareup.okhttp.OkHttpClient;
@@ -20,9 +22,11 @@ import retrofit.client.OkClient;
 import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.Header;
 import retrofit.http.Headers;
 import retrofit.http.POST;
 import retrofit.http.Path;
+import retrofit.http.Query;
 
 /**
  * Created by javiergonzalezcabezas on 27/6/15.
@@ -31,19 +35,22 @@ public class Client {
 
     public static final String REGISTRATION = "REGISTRATION";
 
-    public interface ClientInterface{
+    public interface ClientInterface {
         @GET("/api/items")
         void getItems(Callback<List<Item>> callback);
+
         @Headers({
                 "Content-Type: application/json",
         })
         @POST("/oauth/register-by-token/{backend}/")
         void postRegistration(@Path("backend") String backend, @Body Token token, Callback<Registration> callback);
 
+        @GET("/vote/{itemId}/")
+        void getItemVote(@Path("itemId") Integer itemId, @Query("punctuation") Double score, @Header("Authorization") String authorization, Callback<VotingResult> callback);
+
     }
 
-    public static ClientInterface initRestAdapter()
-    {
+    public static ClientInterface initRestAdapter() {
         OkHttpClient client = new OkHttpClient();
 
         return (ClientInterface) new RestAdapter.Builder()
@@ -54,7 +61,7 @@ public class Client {
 
     }
 
-    public static void getAllItems(final ItemResponseHandler responseHandler){
+    public static void getAllItems(final ItemResponseHandler responseHandler) {
         Callback<List<Item>> callback = new Callback<List<Item>>() {
             @Override
             public void success(List<Item> allfrees, Response response) {
@@ -63,10 +70,26 @@ public class Client {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("Client","error");
+                Log.d("Client", "error");
             }
         };
         Client.initRestAdapter().getItems(callback);
+    }
+
+    public static void voteItem(final VoteResponseHandler responseHandler, Integer itemId, Double score) {
+        Callback<VotingResult> callback = new Callback<VotingResult>() {
+            @Override
+            public void success(VotingResult data, Response response) {
+                responseHandler.sendResponseSusccesful(data);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Utils.logResponse("VOTING", error);
+            }
+        };
+
+        Client.initRestAdapter().getItemVote(itemId, score, Utils.getAuthorizationHeader(), callback);
     }
 
     public static void postRegistrationToken(final RegistrationResponseHandler responseHandler, String backend, Token token) {

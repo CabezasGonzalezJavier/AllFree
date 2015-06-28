@@ -6,6 +6,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.lumbralessoftware.freeall.controller.SharedPreferenceController;
+
 import retrofit.RetrofitError;
 import retrofit.mime.TypedByteArray;
 
@@ -47,5 +49,10 @@ public class Utils {
         }
         
         return serverError;
+    }
+
+    public static String getAuthorizationHeader()
+    {
+        return "Bearer " + SharedPreferenceController.getInstance().getAccessToken();
     }
 }
