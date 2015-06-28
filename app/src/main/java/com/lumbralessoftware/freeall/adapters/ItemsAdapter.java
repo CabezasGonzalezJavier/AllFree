@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lumbralessoftware.freeall.R;
@@ -61,7 +62,7 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
         holder.mName.setText(mItemList.get(position).getName());
         holder.mCategory.setText(mItemList.get(position).getCategory());
 
-//        Picasso.with(mActivity).load(mItemList.get(position).getImage()).transform(new CircleTransform()).into((Target) holder.mImage);
+        Picasso.with(mActivity).load(mItemList.get(position).getImage()).transform(new CircleTransform()).into((ImageView) holder.mImage);
 
         return rowView;
     }

@@ -20,7 +20,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.lumbralessoftware.freeall.R;
+import com.lumbralessoftware.freeall.adapters.WindowsAdapter;
+import com.lumbralessoftware.freeall.interfaces.UpdateableFragment;
+import com.lumbralessoftware.freeall.models.Item;
 import com.lumbralessoftware.freeall.utils.Constants;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,11 +36,11 @@ import com.lumbralessoftware.freeall.utils.Constants;
  * Use the {@link MapTabFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapTabFragment extends Fragment {
+public class MapTabFragment extends Fragment implements UpdateableFragment {
     /** Local variables **/
     GoogleMap mGoogleMap;
     LatLng mUserLocation;
-
+    List<Item> mItemList;
 
     private OnFragmentInteractionListener mListener;
 
@@ -92,6 +98,12 @@ public class MapTabFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void update(List<Item> items) {
+        mItemList=items;
+        drawnPoints();
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -116,19 +128,7 @@ public class MapTabFragment extends Fragment {
 
 
     /**
-     * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
-     * installed) and the map has not already been instantiated.. This will ensure that we only ever
-     * call {@link #setUpMap()} once when {@link #mGoogleMap} is not null.
-     * <p/>
-     * If it isn't installed {@link SupportMapFragment} (and
-     * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
-     * install/update the Google Play services APK on their device.
-     * <p/>
-     * A user can return to this FragmentActivity after following the prompt and correctly
-     * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
-     * have been completely destroyed during this process (it is likely that it would only be
-     * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
-     * method in {@link #onResume()} to guarantee that it will be called.
+     *
      */
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
@@ -150,19 +150,19 @@ public class MapTabFragment extends Fragment {
                 }
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(mUserLocation, Constants.ZOOM_MAP);
                 mGoogleMap.animateCamera(cameraUpdate);
-//                setUpMap();
             }
         }
     }
 
-    /**
-     * This is where we can add markers or lines, add listeners or move the camera. In this case, we
-     * just add a marker near Africa.
-     * <p/>
-     * This should only be called once and when we are sure that {@link #mGoogleMap} is not null.
-     */
-    private void setUpMap() {
-        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+    private void drawnPoints(){
+        for (Item item : mItemList){
+            setUpMap(item.getLocation().getLatPosition(), item.getLocation().getLongPosition(), item.getName(),item.getImage());
+        }
+    }
+
+    private void setUpMap(String lat,String lon, String title, String image) {
+        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(Float.parseFloat(lat), Float.parseFloat(lon))).title(title).snippet(image));
+        mGoogleMap.setInfoWindowAdapter(new WindowsAdapter(getActivity()));
     }
     @Override
     public void onPause() {
