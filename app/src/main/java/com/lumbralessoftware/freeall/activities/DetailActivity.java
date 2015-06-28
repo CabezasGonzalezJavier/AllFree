@@ -27,11 +27,17 @@ import java.util.Date;
 public class DetailActivity extends AppCompatActivity implements ItemRequestResponseListener{
 
     private Item mItem;
+    private ItemsController mItemsController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        //ControllersFactory.setItemResponseListener(this);
+        mItemsController = ControllersFactory.getItemsController();
+        mItemsController.setItemRequestResponseListener(this);
+
 
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
@@ -41,12 +47,6 @@ public class DetailActivity extends AppCompatActivity implements ItemRequestResp
 
         mItem = (Item) extras.getSerializable(Constants.DETAIL);
 
-//        ControllersFactory.setItemResponseListener(this);
-        ItemsController itemsController = ControllersFactory.getItemsController();
-        itemsController.setItemRequestResponseListener(this);
-        ItemRequest request = new ItemRequest();
-        request.setMessage("Hi, I want this!");
-        itemsController.want(mItem.getId(), request);
 
         TextView name = (TextView) findViewById(R.id.activity_detail_name);
         TextView category = (TextView) findViewById(R.id.activity_detail_category);
@@ -80,6 +80,12 @@ public class DetailActivity extends AppCompatActivity implements ItemRequestResp
 
         Picasso.with(this).load(mItem.getImage()).transform(new CircleTransform()).into((ImageView) image);
 
+    }
+
+    private void requestItem(String message) {
+        ItemRequest request = new ItemRequest();
+        request.setMessage(message);
+        mItemsController.want(mItem.getId(), request);
     }
 
     @Override
