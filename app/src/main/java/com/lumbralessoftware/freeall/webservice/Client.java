@@ -89,7 +89,7 @@ public class Client {
 
             @Override
             public void failure(RetrofitError error) {
-                Utils.logResponse("VOTING", error);
+                responseHandler.sendResponseFail(Utils.logResponse("VOTING", error));
             }
         };
 
@@ -105,7 +105,7 @@ public class Client {
 
             @Override
             public void failure(RetrofitError error) {
-                Utils.logResponse("WANTITEM", error);
+                responseHandler.sendResponseFail(Utils.logResponse("WANTITEM", error));
             }
         };
 

@@ -1,13 +1,28 @@
 package com.lumbralessoftware.freeall.activities;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.lumbralessoftware.freeall.R;
 import com.lumbralessoftware.freeall.controller.ControllersFactory;
 import com.lumbralessoftware.freeall.controller.ItemsController;
@@ -27,15 +42,21 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DetailActivity extends AppCompatActivity implements ItemRequestResponseListener, VoteResponseListener {
+public class DetailActivity extends AppCompatActivity implements RatingBar.OnRatingBarChangeListener, ItemRequestResponseListener, VoteResponseListener, View.OnClickListener, TextView.OnEditorActionListener {
 
     private Item mItem;
     private UserController mUserController;
+    private EditText mEditText;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        mProgressDialog = new ProgressDialog(DetailActivity.this);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setMessage(getString(R.string.activity_detail_sending));
 
         ControllersFactory.setItemRequestResponseListener(this);
         ControllersFactory.setsVoteResponseListener(this);
@@ -54,6 +75,12 @@ public class DetailActivity extends AppCompatActivity implements ItemRequestResp
         TextView category = (TextView) findViewById(R.id.activity_detail_category);
         TextView description = (TextView) findViewById(R.id.activity_detail_description);
         TextView dateTextView = (TextView) findViewById(R.id.activity_detail_date);
+        RatingBar ratingBar = (RatingBar) findViewById(R.id.activity_detail_ratingBar);
+        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+        stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
+
+        mEditText = (EditText) findViewById(R.id.activity_detail_edittext);
+        Button sentButton = (Button) findViewById(R.id.activity_detail_button);
 
         ImageView image = (ImageView) findViewById(R.id.activity_detail_icon);
 
@@ -62,9 +89,20 @@ public class DetailActivity extends AppCompatActivity implements ItemRequestResp
         category.setText(mItem.getCategory());
         description.setText(mItem.getDescription());
 
-//        DateFormat parser = ISODateTimeFormat.dateTime();
+        dateTextView.setText(stringBuilderWithDate());
+
+        sentButton.setOnClickListener(this);
+        ratingBar.setOnRatingBarChangeListener(this);
+
+        Picasso.with(this).load(mItem.getImage()).transform(new CircleTransform()).into((ImageView) image);
+
+    }
+
+    public String stringBuilderWithDate(){
+
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         StringBuilder stringBuilderDate = new StringBuilder();
+
         try {
             Date date = formatter.parse(mItem.getCreated());
             Calendar calendar = Utils.dateToCalendar(date);
@@ -81,16 +119,12 @@ public class DetailActivity extends AppCompatActivity implements ItemRequestResp
             e.printStackTrace();
         }
 
-
-
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getString(R.string.activity_detail_title_date));
         stringBuilder.append(": ");
         stringBuilder.append(stringBuilderDate);
-        dateTextView.setText(stringBuilder);
 
-        Picasso.with(this).load(mItem.getImage()).transform(new CircleTransform()).into((ImageView) image);
-
+        return stringBuilder.toString();
     }
 
     private void voteItem(Double rating) {
@@ -128,17 +162,74 @@ public class DetailActivity extends AppCompatActivity implements ItemRequestResp
     @Override
     public void onSuccess(ItemRequest successResponse) {
         Toast.makeText(this, "OK", Toast.LENGTH_LONG).show();
-
+        mProgressDialog.dismiss();
     }
 
 
     public void onSuccess(VotingResult successResponse) {
         Toast.makeText(this, successResponse.getRating().toString(), Toast.LENGTH_LONG).show();
+        mProgressDialog.dismiss();
     }
 
     @Override
     public void onError(String errorResponse) {
-        Toast.makeText(this, errorResponse, Toast.LENGTH_LONG).show();
+        final Gson gson = new Gson();
+        final ItemRequest itemRequest = gson.fromJson(errorResponse, ItemRequest.class);
+        Toast.makeText(this, itemRequest.getError(), Toast.LENGTH_LONG).show();
+        mProgressDialog.dismiss();
+    }
 
+    @Override
+    public void onClick(View view) {
+
+        sendMessage();
+
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_SEND)) {
+            sendMessage();
+        }
+        return false;
+    }
+
+    public void sendMessage(){
+        if (mEditText.getText().equals("")) {
+            requestItem(getString(R.string.activity_detail_hint_edittext));
+        } else {
+            requestItem(mEditText.getText().toString());
+        }
+        mEditText.setText("");
+        mProgressDialog.show();
+    }
+
+    public void alertDialog(final float vote){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(getString(R.string.activity_detail_vote));
+        stringBuilder.append(" ");
+        stringBuilder.append(vote);
+        stringBuilder.append(" ");
+        stringBuilder.append(getString(R.string.activity_detail_vote_finish));
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.activity_detail_vote_title))
+                .setMessage(stringBuilder.toString())
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        mProgressDialog.show();
+                        voteItem(Double.valueOf(vote));
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .show();
+
+    }
+
+    @Override
+    public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+        alertDialog(v);
     }
 }

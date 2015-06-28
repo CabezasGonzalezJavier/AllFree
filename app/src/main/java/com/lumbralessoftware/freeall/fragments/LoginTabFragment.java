@@ -39,12 +39,12 @@ import com.twitter.sdk.android.core.internal.TwitterApiConstants;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ThirdTabFragment.OnFragmentInteractionListener} interface
+ * {@link LoginTabFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ThirdTabFragment#newInstance} factory method to
+ * Use the {@link LoginTabFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ThirdTabFragment extends Fragment implements RegistrationResponseListener {
+public class LoginTabFragment extends Fragment implements RegistrationResponseListener {
     private TwitterLoginButton mTwitterButton;
     private RegistrationController mRegistrationController;
 
@@ -70,8 +70,8 @@ public class ThirdTabFragment extends Fragment implements RegistrationResponseLi
      * @return A new instance of fragment ThirdFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ThirdTabFragment newInstance(String param1, String param2) {
-        ThirdTabFragment fragment = new ThirdTabFragment();
+    public static LoginTabFragment newInstance(String param1, String param2) {
+        LoginTabFragment fragment = new LoginTabFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -79,7 +79,7 @@ public class ThirdTabFragment extends Fragment implements RegistrationResponseLi
         return fragment;
     }
 
-    public ThirdTabFragment() {
+    public LoginTabFragment() {
         // Required empty public constructor
     }
 
@@ -101,7 +101,7 @@ public class ThirdTabFragment extends Fragment implements RegistrationResponseLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_third, container, false);
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         mTwitterButton = (TwitterLoginButton) view.findViewById(R.id.activity_login_twitter_button);
         mTwitterButton.setCallback(new Callback<TwitterSession>() {
