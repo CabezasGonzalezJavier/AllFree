@@ -15,11 +15,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
+import com.google.android.gms.maps.model.LatLng;
 import com.lumbralessoftware.freeall.R;
 import com.lumbralessoftware.freeall.adapters.SectionPagerAdapter;
 import com.lumbralessoftware.freeall.controller.ItemsController;
 import com.lumbralessoftware.freeall.controller.ControllersFactory;
 import com.lumbralessoftware.freeall.controller.SharedPreferenceController;
+import com.lumbralessoftware.freeall.fragments.MapTabFragment;
 import com.lumbralessoftware.freeall.models.Item;
 import com.lumbralessoftware.freeall.models.VotingResult;
 import com.lumbralessoftware.freeall.utils.Constants;
@@ -31,6 +33,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ItemResponseListener {
 
+    public static final int LOGIN_FRAGMENT = 2;
+    public static final int MAP_FRAGMENT = 0;
     private ItemsController mItemsController;
     private SectionPagerAdapter mAdapter;
     private ViewPager mViewPager;
@@ -63,7 +67,14 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
         if (Utils.isOnline(this)) {
             ControllersFactory.setItemResponseListener(this);
             mItemsController = ControllersFactory.getItemsController();
-            mItemsController.request();
+            MapTabFragment fragment = (MapTabFragment) findFragmentByPosition(MAP_FRAGMENT);
+            LatLng currentLocation;
+            if (fragment != null) {
+                currentLocation = fragment.getUserLocation();
+            } else {
+                currentLocation = new LatLng(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE);
+            }
+            mItemsController.request(currentLocation);
         }else{
             Toast.makeText(this, getString(R.string.no_connection), Toast.LENGTH_LONG).show();
         }
@@ -83,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
         // Pass the activity result to the fragment, which will
         // then pass the result to the login button.
 
-        Fragment fragment = findFragmentByPosition(2);
+        Fragment fragment = findFragmentByPosition(LOGIN_FRAGMENT);
 
         if (fragment != null) {
             fragment.onActivityResult(requestCode, resultCode, data);

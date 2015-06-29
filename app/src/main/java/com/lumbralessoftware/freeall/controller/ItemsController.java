@@ -1,5 +1,6 @@
 package com.lumbralessoftware.freeall.controller;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.lumbralessoftware.freeall.interfaces.ItemRequestResponseHandler;
 import com.lumbralessoftware.freeall.interfaces.ItemRequestResponseListener;
 import com.lumbralessoftware.freeall.interfaces.VoteResponseHandler;
@@ -23,8 +24,8 @@ public class ItemsController implements ItemResponseHandler {
         this.mResponseListener = mResponseListener;
     }
 
-    public void request(){
-        Client.getAllItems(this);
+    public void request(LatLng coordinates){
+        Client.getAllItems(this, coordinates);
     }
 
     @Override

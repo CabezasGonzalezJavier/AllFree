@@ -2,6 +2,7 @@ package com.lumbralessoftware.freeall.webservice;
 
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.lumbralessoftware.freeall.interfaces.ItemRequestResponseHandler;
 import com.lumbralessoftware.freeall.interfaces.ItemResponseHandler;
 import com.lumbralessoftware.freeall.interfaces.RegistrationResponseHandler;
@@ -39,7 +40,7 @@ public class Client {
 
     public interface ClientInterface {
         @GET("/api/items")
-        void getItems(Callback<List<Item>> callback);
+        void getItems(@Query("lat") Double latitude, @Query("lon") Double longitude, Callback<List<Item>> callback);
 
         @Headers({
                 "Content-Type: application/json",
@@ -65,7 +66,7 @@ public class Client {
 
     }
 
-    public static void getAllItems(final ItemResponseHandler responseHandler) {
+    public static void getAllItems(final ItemResponseHandler responseHandler, LatLng coordinates) {
         Callback<List<Item>> callback = new Callback<List<Item>>() {
             @Override
             public void success(List<Item> allfrees, Response response) {
@@ -77,7 +78,7 @@ public class Client {
                 Log.d("Client", "error");
             }
         };
-        Client.initRestAdapter().getItems(callback);
+        Client.initRestAdapter().getItems(coordinates.latitude, coordinates.longitude, callback);
     }
 
     public static void voteItem(final VoteResponseHandler responseHandler, Integer itemId, Double score) {

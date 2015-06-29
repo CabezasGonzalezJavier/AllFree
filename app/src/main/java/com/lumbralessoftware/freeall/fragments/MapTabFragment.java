@@ -40,6 +40,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class MapTabFragment extends Fragment implements UpdateableFragment {
+
     /** Local variables **/
     GoogleMap mGoogleMap;
     LatLng mUserLocation;
@@ -60,6 +61,11 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
 
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public LatLng getUserLocation()
+    {
+        return mUserLocation;
     }
 
     public MapTabFragment() {
@@ -146,7 +152,7 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
 
                 mGoogleMap.setOnMyLocationChangeListener(myLocationChangeListener);
 
-                mUserLocation = new LatLng(0,0);
+                mUserLocation = new LatLng(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE);
                 if (mGoogleMap.getMyLocation()!=null){
                     mUserLocation = new LatLng(mGoogleMap.getMyLocation().getLatitude(),mGoogleMap.getMyLocation().getLongitude());
                 }else{
@@ -177,7 +183,7 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
         });
     }
 
-    public void lastLocation(){
+    public void lastLocation() {
         LocationManager service = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         String provider = service.getBestProvider(criteria, false);
@@ -190,9 +196,9 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
     private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
         @Override
         public void onMyLocationChange(Location location) {
-            LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+            mUserLocation = new LatLng(location.getLatitude(), location.getLongitude());
             if(mGoogleMap != null){
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, Constants.ZOOM_MAP));
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mUserLocation, Constants.ZOOM_MAP));
             }
         }
     };
