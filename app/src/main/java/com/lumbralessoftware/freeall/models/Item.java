@@ -31,7 +31,7 @@ public class Item implements Serializable {
     private Object expiresOn;
     @SerializedName("user_rating")
     @Expose
-    private Object userRating;
+    private Double userRating;
 
     /**
      *
@@ -200,7 +200,7 @@ public class Item implements Serializable {
      * @return
      * The userRating
      */
-    public Object getUserRating() {
+    public Double getUserRating() {
         return userRating;
     }
 
@@ -209,7 +209,7 @@ public class Item implements Serializable {
      * @param userRating
      * The user_rating
      */
-    public void setUserRating(Object userRating) {
+    public void setUserRating(Double userRating) {
         this.userRating = userRating;
     }
 

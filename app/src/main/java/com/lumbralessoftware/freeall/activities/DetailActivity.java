@@ -48,6 +48,7 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
     private UserController mUserController;
     private EditText mEditText;
     private ProgressDialog mProgressDialog;
+    RatingBar mRatingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
         TextView category = (TextView) findViewById(R.id.activity_detail_category);
         TextView description = (TextView) findViewById(R.id.activity_detail_description);
         TextView dateTextView = (TextView) findViewById(R.id.activity_detail_date);
-        RatingBar ratingBar = (RatingBar) findViewById(R.id.activity_detail_ratingBar);
+        mRatingBar = (RatingBar) findViewById(R.id.activity_detail_ratingBar);
         //LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         //stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
 
@@ -88,11 +89,11 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
         name.setText(mItem.getName());
         category.setText(mItem.getCategory());
         description.setText(mItem.getDescription());
-
+        mRatingBar.setRating(Float.valueOf(String.valueOf(mItem.getUserRating())));
         dateTextView.setText(stringBuilderWithDate());
 
         sentButton.setOnClickListener(this);
-        ratingBar.setOnRatingBarChangeListener(this);
+        mRatingBar.setOnRatingBarChangeListener(this);
 
         Picasso.with(this).load(mItem.getImage()).transform(new CircleTransform()).into((ImageView) image);
 
@@ -168,6 +169,7 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
 
     public void onSuccess(VotingResult successResponse) {
         Toast.makeText(this, successResponse.getRating().toString(), Toast.LENGTH_LONG).show();
+        //mRatingBar.setRating(Float.valueOf(String.valueOf(mItem.getUserRating())));
         mProgressDialog.dismiss();
     }
 
