@@ -93,8 +93,12 @@ public class ListFragment extends Fragment implements UpdateableFragment, Adapte
     }
 
     public void showList(){
-        mListView.setAdapter(new ItemsAdapter(getActivity(), 0, mItems));
+        if (mListView.getAdapter() != null) {
+            ((ItemsAdapter)mListView.getAdapter()).notifyDataSetChanged();
+        } else {
+            mListView.setAdapter(new ItemsAdapter(getActivity(), mItems));
 //        mListView.setOnItemClickListener(this);
+        }
     }
 
     @Override

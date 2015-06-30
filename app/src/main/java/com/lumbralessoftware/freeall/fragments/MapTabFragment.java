@@ -18,6 +18,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -27,6 +28,7 @@ import com.lumbralessoftware.freeall.adapters.WindowsAdapter;
 import com.lumbralessoftware.freeall.interfaces.UpdateableFragment;
 import com.lumbralessoftware.freeall.models.Item;
 import com.lumbralessoftware.freeall.utils.Constants;
+import com.lumbralessoftware.freeall.utils.Utils;
 
 import java.util.Iterator;
 import java.util.List;
@@ -45,7 +47,7 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
     GoogleMap mGoogleMap;
     LatLng mUserLocation;
     List<Item> mItemList;
-
+    private CameraPosition cp;
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -63,11 +65,6 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
         return fragment;
     }
 
-    public LatLng getUserLocation()
-    {
-        return mUserLocation;
-    }
-
     public MapTabFragment() {
         // Required empty public constructor
     }
@@ -76,8 +73,6 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
     public void onCreate(Bundle savedInstanceState) {
         setRetainInstance(true);
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -132,14 +127,12 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
     public void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+        if (cp != null) {
+            mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cp));
+            cp = null;
+        }
     }
 
-
-
-
-    /**
-     *
-     */
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mGoogleMap == null) {
@@ -151,12 +144,10 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
                 mGoogleMap.setMyLocationEnabled(true);
 
                 mGoogleMap.setOnMyLocationChangeListener(myLocationChangeListener);
+                mUserLocation = Utils.getLastLocation(getActivity());
 
-                mUserLocation = new LatLng(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE);
-                if (mGoogleMap.getMyLocation()!=null){
+                if (mGoogleMap.getMyLocation() != null) {
                     mUserLocation = new LatLng(mGoogleMap.getMyLocation().getLatitude(),mGoogleMap.getMyLocation().getLongitude());
-                }else{
-                    lastLocation();
                 }
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(mUserLocation, Constants.ZOOM_MAP);
                 mGoogleMap.animateCamera(cameraUpdate);
@@ -171,25 +162,17 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
     }
 
     private void setUpMap(final Item item) {
-        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(Float.parseFloat(item.getLocation().getLatPosition()), Float.parseFloat(item.getLocation().getLongPosition()))));
-        mGoogleMap.setInfoWindowAdapter(new WindowsAdapter(getActivity(), item));
-        mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra(Constants.DETAIL, item);
-                getActivity().startActivity(intent);
-            }
-        });
-    }
-
-    public void lastLocation() {
-        LocationManager service = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String provider = service.getBestProvider(criteria, false);
-        Location location = service.getLastKnownLocation(provider);
-        if (location!=null){
-            mUserLocation = new LatLng(location.getLatitude(),location.getLongitude());
+        if (mGoogleMap != null) {
+            mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(Float.parseFloat(item.getLocation().getLatPosition()), Float.parseFloat(item.getLocation().getLongPosition()))));
+            mGoogleMap.setInfoWindowAdapter(new WindowsAdapter(getActivity(), item));
+            mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    Intent intent = new Intent(getActivity(), DetailActivity.class);
+                    intent.putExtra(Constants.DETAIL, item);
+                    getActivity().startActivity(intent);
+                }
+            });
         }
     }
 
@@ -197,10 +180,18 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
         @Override
         public void onMyLocationChange(Location location) {
             mUserLocation = new LatLng(location.getLatitude(), location.getLongitude());
-            if(mGoogleMap != null){
+            if (mGoogleMap != null) {
                 mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mUserLocation, Constants.ZOOM_MAP));
+                // Turn off after zoomed into current location
+                mGoogleMap.setOnMyLocationChangeListener(null);
             }
         }
     };
+
+    public void onPause() {
+        super.onPause();
+        cp = mGoogleMap.getCameraPosition();
+        mGoogleMap = null;
+    }
 
 }

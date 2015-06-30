@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,7 +22,7 @@ import java.util.List;
 /**
  * Created by javiergonzalezcabezas on 27/6/15.
  */
-public class ItemsAdapter extends ArrayAdapter<Item> {
+public class ItemsAdapter extends BaseAdapter {
 
     private Activity mActivity;
     private List<Item> mItemList;
@@ -32,10 +33,24 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
         public View mImage;
     }
 
-    public ItemsAdapter(Activity activity, int resource, List<Item> objects) {
-        super(activity, resource, objects);
+    public ItemsAdapter(Activity activity, List<Item> objects) {
         mActivity = activity;
         mItemList = objects;
+    }
+
+    @Override
+    public int getCount() {
+        return mItemList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return mItemList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
     }
 
     @Override

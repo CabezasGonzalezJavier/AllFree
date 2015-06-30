@@ -67,14 +67,7 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
         if (Utils.isOnline(this)) {
             ControllersFactory.setItemResponseListener(this);
             mItemsController = ControllersFactory.getItemsController();
-            MapTabFragment fragment = (MapTabFragment) findFragmentByPosition(MAP_FRAGMENT);
-            LatLng currentLocation;
-            if (fragment != null) {
-                currentLocation = fragment.getUserLocation();
-            } else {
-                currentLocation = new LatLng(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE);
-            }
-            mItemsController.request(currentLocation);
+            mItemsController.request(Utils.getLastLocation(getApplicationContext()));
         }else{
             Toast.makeText(this, getString(R.string.no_connection), Toast.LENGTH_LONG).show();
         }
@@ -83,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
 
     @Override
     public void onSuccess(List<Item> successResponse) {
-
         mAdapter.update(successResponse);
     }
 

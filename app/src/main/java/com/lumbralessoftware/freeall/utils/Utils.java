@@ -2,10 +2,14 @@ package com.lumbralessoftware.freeall.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.lumbralessoftware.freeall.controller.SharedPreferenceController;
 import java.util.Calendar;
 import java.util.Date;
@@ -61,5 +65,18 @@ public class Utils {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal;
+    }
+
+    public static LatLng getLastLocation(Context context) {
+        LocationManager service = (LocationManager) context.getSystemService(context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String provider = service.getBestProvider(criteria, false);
+        Location location = service.getLastKnownLocation(provider);
+        if (location != null) {
+            return new LatLng(location.getLatitude(),location.getLongitude());
+        }
+        else  {
+            return new LatLng(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE);
+        }
     }
 }
