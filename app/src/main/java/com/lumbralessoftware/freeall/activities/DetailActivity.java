@@ -47,7 +47,7 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
     private Item mItem;
     private UserController mUserController;
     private EditText mEditText;
-    private ProgressDialog mProgressDialog;
+    private static ProgressDialog mProgressDialog;
     RatingBar mRatingBar;
 
     @Override

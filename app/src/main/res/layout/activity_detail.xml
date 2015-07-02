@@ -6,7 +6,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.lumbralessoftware.freeall.activities.DetailActivity">
+    tools:context="com.lumbralessoftware.freeall.activities.DetailActivity"
+    android:focusableInTouchMode="true">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -111,7 +112,8 @@
                 android:hint="@string/activity_detail_hint_edittext"
                 android:imeOptions="actionSend"
                 android:padding="@dimen/activity_horizontal_margin"
-                android:singleLine="true" />
+                android:singleLine="false"
+                android:inputType="textMultiLine"/>
 
             <Button
                 android:id="@+id/activity_detail_button"
