@@ -20,6 +20,7 @@ import com.lumbralessoftware.freeall.R;
 import com.lumbralessoftware.freeall.adapters.SectionPagerAdapter;
 import com.lumbralessoftware.freeall.controller.ItemsController;
 import com.lumbralessoftware.freeall.controller.ControllersFactory;
+import com.lumbralessoftware.freeall.controller.SearchController;
 import com.lumbralessoftware.freeall.controller.SharedPreferenceController;
 import com.lumbralessoftware.freeall.fragments.MapTabFragment;
 import com.lumbralessoftware.freeall.models.Item;
@@ -27,6 +28,7 @@ import com.lumbralessoftware.freeall.models.VotingResult;
 import com.lumbralessoftware.freeall.utils.Constants;
 import com.lumbralessoftware.freeall.utils.Utils;
 import com.lumbralessoftware.freeall.interfaces.ItemResponseListener;
+import com.squareup.okhttp.internal.Util;
 
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
     public static final int LOGIN_FRAGMENT = 2;
     public static final int MAP_FRAGMENT = 0;
     private ItemsController mItemsController;
+    private SearchController mSearchController;
     private SectionPagerAdapter mAdapter;
     private ViewPager mViewPager;
 
@@ -72,6 +75,16 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
             Toast.makeText(this, getString(R.string.no_connection), Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    public void search(String name){
+        if (Utils.isOnline(this)) {
+            ControllersFactory.setItemResponseListener(this);
+            mSearchController = ControllersFactory.getsSearchController();
+            mSearchController.request(name);
+        }else{
+            Toast.makeText(this, getString(R.string.no_connection), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -115,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
 
             @Override
             public boolean onQueryTextSubmit(String entryString) {
-
+                search(entryString);
                 return false;
             }
 

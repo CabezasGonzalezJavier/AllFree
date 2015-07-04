@@ -12,6 +12,7 @@ public class ControllersFactory {
 
     private  static ItemsController sItemsController;
     private  static UserController sUserController;
+    public  static SearchController sSearchController;
 
     private  static ItemResponseListener sItemsResponseListener;
     private  static ItemRequestResponseListener sItemRequestResponseListener;
@@ -36,6 +37,13 @@ public class ControllersFactory {
         return sItemsController;
     }
 
+    public static SearchController getsSearchController () {
+        if (sSearchController == null) {
+            sSearchController = new SearchController(sItemsResponseListener);
+        }
+        return sSearchController;
+    }
+
     public static UserController getUserController() {
 
         if (sUserController == null) {
@@ -54,4 +62,6 @@ public class ControllersFactory {
         }
         return sRegistrationController;
     }
+
+
 }

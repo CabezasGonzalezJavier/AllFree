@@ -47,7 +47,7 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
     GoogleMap mGoogleMap;
     LatLng mUserLocation;
     List<Item> mItemList;
-    private CameraPosition cp;
+    private CameraPosition mCp;
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -106,6 +106,7 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
     @Override
     public void update(List<Item> items) {
         mItemList=items;
+        mGoogleMap.clear();
         drawnPoints();
     }
 
@@ -127,9 +128,9 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
     public void onResume() {
         super.onResume();
         setUpMapIfNeeded();
-        if (cp != null) {
-            mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cp));
-            cp = null;
+        if (mCp != null) {
+            mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCp));
+            mCp = null;
         }
     }
 
@@ -190,7 +191,7 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
 
     public void onPause() {
         super.onPause();
-        cp = mGoogleMap.getCameraPosition();
+        mCp = mGoogleMap.getCameraPosition();
         mGoogleMap = null;
     }
 

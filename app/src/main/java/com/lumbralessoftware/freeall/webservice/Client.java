@@ -41,6 +41,8 @@ public class Client {
     public interface ClientInterface {
         @GET("/api/items")
         void getItems(@Query("lat") Double latitude, @Query("lon") Double longitude, Callback<List<Item>> callback);
+        @GET("/api/items")
+        void getForNames(@Query("q") String name, Callback<List<Item>> callback);
 
         @Headers({
                 "Content-Type: application/json",
@@ -79,6 +81,21 @@ public class Client {
             }
         };
         Client.initRestAdapter().getItems(coordinates.latitude, coordinates.longitude, callback);
+    }
+
+    public static void getSearch(final ItemResponseHandler responseHandler, String object){
+        Callback<List<Item>> callback = new Callback<List<Item>>() {
+            @Override
+            public void success(List<Item> items, Response response) {
+                responseHandler.sendResponseSusccesful(items);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d("Client", "error");
+            }
+        };
+        Client.initRestAdapter().getForNames(object,callback);
     }
 
     public static void voteItem(final VoteResponseHandler responseHandler, Integer itemId, Double score) {
@@ -128,4 +145,5 @@ public class Client {
         };
         Client.initRestAdapter().postRegistration(backend, token, callback);
     }
+
 }
