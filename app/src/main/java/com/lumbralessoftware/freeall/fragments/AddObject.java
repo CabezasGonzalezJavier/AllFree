@@ -160,7 +160,7 @@ public class AddObject extends Fragment implements View.OnClickListener{
                 } else {
                     selectedImageUri = data == null ? null : data.getData();
                 }
-                mImageView.setImageBitmap(BitmapFactory.decodeFile(data));
+//                mImageView.setImageBitmap(BitmapFactory.decodeFile(data));
             }
 //        }
     }
