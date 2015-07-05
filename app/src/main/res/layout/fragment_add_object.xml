@@ -1,10 +1,72 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.lumbralessoftware.freeall.fragments.AddObject">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/AppTheme.Relative"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                style="@style/AppTheme.Relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
+                <com.lumbralessoftware.freeall.views.CustomTextView
+                    android:id="@+id/fragment_add_object_name"
+                    style="@style/TittleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="@string/fragment_add_object_title_name"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/fragment_add_object_name_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.lumbralessoftware.freeall.views.CustomTextView
+                    android:id="@+id/fragment_add_object_description"
+                    style="@style/TittleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@string/fragment_add_object_title_description"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/fragment_add_object_description_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:id="@+id/fragment_add_object_add_photo_imgView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/alert_light_frame" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/fragment_add_object_add_photo_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_detail_edittext"
+                android:layout_marginTop="@dimen/activity_detail_margeTop"
+                android:background="@android:color/black"
+                android:text="@string/fragment_map_marker_button"
+                android:textColor="@android:color/white" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

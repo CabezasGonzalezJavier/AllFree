@@ -36,7 +36,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements ItemResponseListener {
 
     public static final int LOGIN_FRAGMENT = 2;
-    public static final int MAP_FRAGMENT = 0;
+    public static final int ADD_FRAGMENT = 3;
+
     private ItemsController mItemsController;
     private SearchController mSearchController;
     private SectionPagerAdapter mAdapter;
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
         if (fragment != null) {
             fragment.onActivityResult(requestCode, resultCode, data);
         }
+
     }
 
     public Fragment findFragmentByPosition(int position) {
