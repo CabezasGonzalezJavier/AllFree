@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.lumbralessoftware.freeall.R;
 import com.lumbralessoftware.freeall.activities.DetailActivity;
+import com.lumbralessoftware.freeall.activities.MainActivity;
 import com.lumbralessoftware.freeall.adapters.ItemsAdapter;
 import com.lumbralessoftware.freeall.interfaces.UpdateableFragment;
 import com.lumbralessoftware.freeall.models.Item;
@@ -33,7 +34,7 @@ public class ListFragment extends Fragment implements UpdateableFragment, Adapte
     private ItemsAdapter mAdapter;
     private ListView mListView;
     private OnFragmentInteractionListener mListener;
-    private List<Item> mItems;
+    private static List<Item> mItems;
 
 
     /**
@@ -69,11 +70,11 @@ public class ListFragment extends Fragment implements UpdateableFragment, Adapte
         mListView = (ListView) view.findViewById(R.id.fragment_list_listView);
         mListView.setOnItemClickListener(this);
 
-
+        if (isAdded() && mItems != null) {
+            mListView.setAdapter(new ItemsAdapter(getActivity(), mItems));
+        }
         return view;
     }
-
-
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

@@ -46,7 +46,7 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
     /** Local variables **/
     GoogleMap mGoogleMap;
     LatLng mUserLocation;
-    List<Item> mItemList;
+    private static List<Item> mItemList;
     private CameraPosition mCp;
     private OnFragmentInteractionListener mListener;
 
@@ -82,6 +82,10 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         setUpMapIfNeeded();
         // Inflate the layout for this fragment
+        if (mItemList != null) {
+            mGoogleMap.clear();
+            drawnPoints();
+        }
         return view;
     }
 
@@ -105,9 +109,11 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
 
     @Override
     public void update(List<Item> items) {
-        mItemList=items;
-        mGoogleMap.clear();
-        drawnPoints();
+        mItemList = items;
+        if (mGoogleMap != null) {
+            mGoogleMap.clear();
+            drawnPoints();
+        }
     }
 
     /**
