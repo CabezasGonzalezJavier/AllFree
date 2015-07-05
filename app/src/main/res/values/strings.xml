@@ -9,7 +9,8 @@
     <string name="fragment_map_title">Map</string>
     <string name="fragment_map_marker_button">I want it!</string>
     <string name="fragment_list_title">List</string>
-    <string name="fragment_third_title">Login</string>
+    <string name="fragment_login_title">Login</string>
+    <string name="fragment_add_object">Add</string>
     
     <string name="navigation_drawer_open"></string>
     <string name="navigation_drawer_close"></string>

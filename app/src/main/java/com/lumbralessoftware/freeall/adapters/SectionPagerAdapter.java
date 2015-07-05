@@ -8,6 +8,7 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import com.lumbralessoftware.freeall.R;
+import com.lumbralessoftware.freeall.fragments.AddObject;
 import com.lumbralessoftware.freeall.fragments.MapTabFragment;
 import com.lumbralessoftware.freeall.fragments.ListFragment;
 import com.lumbralessoftware.freeall.fragments.LoginTabFragment;
@@ -42,8 +43,11 @@ public class SectionPagerAdapter extends FragmentPagerAdapter {
                 fragment = new ListFragment();
                 break;
             case 2:
-            default:
                 fragment = new LoginTabFragment();
+                break;
+            case 3:
+            default:
+                fragment = new AddObject();
                 break;
 
         }
@@ -63,8 +67,10 @@ public class SectionPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return mActivity.getString(R.string.fragment_list_title);
             case 2:
+                return mActivity.getString(R.string.fragment_login_title);
+            case 3:
             default:
-                return mActivity.getString(R.string.fragment_third_title);
+                return mActivity.getString(R.string.fragment_add_object);
         }
     }
 

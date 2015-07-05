@@ -5,7 +5,7 @@ package com.lumbralessoftware.freeall.utils;
  */
 public class Constants {
 
-    public static final int TOTAL_TABS = 3;
+    public static final int TOTAL_TABS = 4;
     public static final float ZOOM_MAP = 10.0f;
     // London lat & long
     public static final double DEFAULT_LATITUDE = 51.500152;
