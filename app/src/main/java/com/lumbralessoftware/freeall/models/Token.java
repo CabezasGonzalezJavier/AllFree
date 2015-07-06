@@ -11,7 +11,9 @@ public class Token {
     @SerializedName("access_secret")
     @Expose
     private String accessSecret;
-
+    @SerializedName("email")
+    @Expose
+    private String email;
     /**
      *
      * @return
@@ -48,4 +50,11 @@ public class Token {
         this.accessSecret = accessSecret;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

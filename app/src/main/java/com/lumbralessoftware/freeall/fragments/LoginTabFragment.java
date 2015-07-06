@@ -1,21 +1,28 @@
 package com.lumbralessoftware.freeall.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.content.Intent;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphRequestAsyncTask;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.lumbralessoftware.freeall.controller.ControllersFactory;
@@ -35,6 +42,9 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import com.lumbralessoftware.freeall.R;
 import com.twitter.sdk.android.core.internal.TwitterApiConstants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,28 +90,53 @@ public class LoginTabFragment extends Fragment implements RegistrationResponseLi
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         mTwitterButton = (TwitterLoginButton) view.findViewById(R.id.activity_login_twitter_button);
+        setupTwitterLogin();
+
+        LoginButton facebookLoginButton = (LoginButton) view.findViewById(R.id.login_button);
+        setupFacebookLogin(facebookLoginButton);
+
+        return view;
+    }
+
+    private void setupTwitterLogin() {
         mTwitterButton.setCallback(new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
                 // Do something with result, which provides a TwitterSession for making API calls
-                long user = result.data.getUserId();
+                final TwitterAuthToken authToken = result.data.getAuthToken();
 
-                TwitterAuthToken authToken = result.data.getAuthToken();
-                String atoken = authToken.token;
-                Log.d("tokenTwitter", atoken);
-                String secret = authToken.secret;
-                Log.d("secrettokenTwitter", secret);
-                SharedPreferenceController.getInstance().setTwitterAccess(atoken);
-                SharedPreferenceController.getInstance().setTwitterSecret(secret);
-
-                if (Utils.isOnline(getActivity())) {
-                    mRegistrationController = ControllersFactory.getRegistrationController();
-                    mRegistrationController.request(Constants.BACKEND_TWITTER, atoken, secret);
-
-                }else{
-                    Toast.makeText(getActivity(), getString(R.string.no_connection), Toast.LENGTH_LONG).show();
+                if (SharedPreferenceController.getInstance().getTwitterEmail().equals("")) {
+                    final EditText input = new EditText(getActivity());
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("Enter your email")
+                            .setMessage("Please, enter your email so that we can put you in touch with the people you deal with.")
+                            .setView(input)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    String email = input.getText().toString();
+                                    String atoken = authToken.token;
+                                    Log.d("tokenTwitter", atoken);
+                                    String secret = authToken.secret;
+                                    Log.d("secrettokenTwitter", secret);
+                                    SharedPreferenceController.getInstance().setTwitterAccess(atoken);
+                                    SharedPreferenceController.getInstance().setTwitterSecret(secret);
+                                    SharedPreferenceController.getInstance().setTwitterEmail(email);
+                                    registerUser(email, atoken, secret);
+                                }
+                            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            // Do nothing.
+                        }
+                    }).show();
+                } else {
+                    String atoken = authToken.token;
+                    Log.d("tokenTwitter", atoken);
+                    String secret = authToken.secret;
+                    Log.d("secrettokenTwitter", secret);
+                    SharedPreferenceController.getInstance().setTwitterAccess(atoken);
+                    SharedPreferenceController.getInstance().setTwitterSecret(secret);
+                    registerUser(SharedPreferenceController.getInstance().getTwitterEmail(), atoken, secret);
                 }
-
             }
 
             @Override
@@ -109,23 +144,45 @@ public class LoginTabFragment extends Fragment implements RegistrationResponseLi
                 Toast.makeText(getActivity(), getString(R.string.login_error), Toast.LENGTH_LONG).show();
             }
         });
+    }
 
-        LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
-        loginButton.setReadPermissions("user_friends");
+    private void registerUser(String email, String atoken, String secret) {
+        if (Utils.isOnline(getActivity())) {
+            mRegistrationController = ControllersFactory.getRegistrationController();
+            mRegistrationController.request(Constants.BACKEND_TWITTER, atoken, secret, email);
+
+        }else{
+            Toast.makeText(getActivity(), getString(R.string.no_connection), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void setupFacebookLogin(LoginButton facebookLoginButton) {
+        facebookLoginButton.setReadPermissions("email");
         // If using in a fragment
-        loginButton.setFragment(this);
+        facebookLoginButton.setFragment(this);
         // Other app specific specialization
 
         callbackManager = CallbackManager.Factory.create();
         // Callback registration
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code
-                AccessToken at = loginResult.getAccessToken();
-                SharedPreferenceController.getInstance().setFacebookAccess(at.getToken());
-                mRegistrationController = ControllersFactory.getRegistrationController();
-                mRegistrationController.request(Constants.BACKEND_FACEBOOK, at.getToken(), null);
+                final AccessToken accessToken = loginResult.getAccessToken();
+                GraphRequestAsyncTask request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject user, GraphResponse graphResponse) {
+
+                        try {
+                            String email = user.getString("email");
+                            //Need User email address after login success.
+                            SharedPreferenceController.getInstance().setFacebookAccess(accessToken.getToken());
+                            registerUser(email, accessToken.getToken(), null);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).executeAsync();
             }
 
             @Override
@@ -142,8 +199,6 @@ public class LoginTabFragment extends Fragment implements RegistrationResponseLi
 
             }
         });
-
-        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

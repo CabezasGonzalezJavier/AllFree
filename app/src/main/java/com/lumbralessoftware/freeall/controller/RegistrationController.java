@@ -22,10 +22,11 @@ public class RegistrationController implements RegistrationResponseHandler {
         this.mResponseListener = mResponseListener;
     }
 
-    public void request(String backend, String access_token, String access_secret) {
+    public void request(String backend, String access_token, String access_secret, String email) {
         Token token = new Token();
         token.setAccessToken(access_token);
         token.setAccessSecret(access_secret);
+        token.setEmail(email);
         Client.postRegistrationToken(this, backend, token);
     }
 
