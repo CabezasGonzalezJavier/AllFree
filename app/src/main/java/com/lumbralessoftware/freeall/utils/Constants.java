@@ -11,9 +11,7 @@ public class Constants {
     public static final double DEFAULT_LATITUDE = 51.500152;
     public static final double DEFAULT_LONGITUDE = -0.126236;
 
-    public static final String TWITTER_KEY = "I4Mwu8i3XYpk6BmkvQF9jJIg5";
-    public static final String TWITTER_SECRET = "JqYWdaPTcVYHnmW6BqMtHKsWRRsd55czjphSW6W7jOYnG9KACs";
-    public static final String URL = "http://allfree-lumbrales.rhcloud.com/";
+    public static final String URL = "http://www.reusame.com/";
 
     public static final String FONT_PATH = "fonts/aller_bdl.ttf";
     public static final String BACKEND_TWITTER = "twitter";

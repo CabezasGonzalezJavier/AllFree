@@ -17,12 +17,12 @@
     
     <string name="navigation_drawer_open"></string>
     <string name="navigation_drawer_close"></string>
-    <string name="no_connection">Error connection. You must check your connection.</string>
-    <string name="fb_app_id">668971933246507</string>
+    <string name="no_connection">Connection error. Please, check your connection and retry.</string>
+    <string name="login_error">Login failed, please try again later.</string>
     <string name="menu_search">Search</string>
     <string name="activity_detail_title">DetailActivity</string>
     <string name="activity_detail_title_date">Added</string>
-    <string name="activity_detail_hint_edittext">Hi, I saw your product and I am very interested. When Can I meet up?</string>
+    <string name="activity_detail_hint_edittext">Hi, I saw your product and I am very interested. When can we meet up?</string>
     <string name="activity_detail_sending">Sending...</string>
     <string name="activity_detail_vote_title">Vote</string>
     <string name="activity_detail_vote">Do you want to vote with </string>

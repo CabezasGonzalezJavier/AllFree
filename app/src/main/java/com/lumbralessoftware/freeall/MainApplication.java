@@ -23,9 +23,8 @@ public class MainApplication extends Application {
 
         initializeTypefaces();
 
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(Constants.TWITTER_KEY, Constants.TWITTER_SECRET);
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(getString(R.string.twitter_app_key), getString(R.string.twitter_app_secret));
         Fabric.with(this, new Twitter(authConfig));
-//        FacebookSdk.sdkInitialize(getApplicationContext());
     }
 
     public static class Fonts

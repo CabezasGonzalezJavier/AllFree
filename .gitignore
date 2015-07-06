@@ -17,3 +17,4 @@ gradle/
 gradlew
 gradlew.bat
 settings.gradle
+app/src/main/res/values/configuration.xml

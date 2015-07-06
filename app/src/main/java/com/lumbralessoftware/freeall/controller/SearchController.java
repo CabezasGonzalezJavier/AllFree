@@ -20,7 +20,7 @@ public class SearchController implements ItemResponseHandler {
     }
 
     public void request(String name){
-        Client.getSearch(this,name);
+        Client.getSearch(this, name);
     }
 
     @Override

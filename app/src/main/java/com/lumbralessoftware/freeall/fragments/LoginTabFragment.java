@@ -106,12 +106,7 @@ public class LoginTabFragment extends Fragment implements RegistrationResponseLi
 
             @Override
             public void failure(TwitterException exception) {
-                final TwitterApiException apiException = (TwitterApiException) exception;
-                final int errorCode = apiException.getErrorCode();
-                if (errorCode == TwitterApiConstants.Errors.APP_AUTH_ERROR_CODE || errorCode == TwitterApiConstants.Errors.GUEST_AUTH_ERROR_CODE) {
-                    // get new guestAppSession
-                    // optionally retry
-                }
+                Toast.makeText(getActivity(), getString(R.string.login_error), Toast.LENGTH_LONG).show();
             }
         });
 
