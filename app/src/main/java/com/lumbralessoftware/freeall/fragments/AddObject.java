@@ -5,11 +5,13 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,8 +21,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.lumbralessoftware.freeall.R;
+import com.lumbralessoftware.freeall.models.Item;
+import com.lumbralessoftware.freeall.models.Location;
 import com.lumbralessoftware.freeall.utils.Utils;
+import com.lumbralessoftware.freeall.webservice.Client;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,6 +48,7 @@ public class AddObject extends Fragment implements View.OnClickListener{
     private Button mAddPhotoButton;
     private ImageView mImageView;
     private static int RESULT_LOAD_IMAGE = 147;
+    Uri mSelectedImageUri;
 
     public static AddObject newInstance() {
         AddObject fragment = new AddObject();
@@ -72,9 +79,46 @@ public class AddObject extends Fragment implements View.OnClickListener{
 
         mImageView = (ImageView) view.findViewById(R.id.fragment_add_object_add_photo_imgView);
 
+        Button newItem = (Button) view.findViewById(R.id.fragment_add_object_add_item_button);
+        newItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Item item = new Item();
+                item.setName("Test name");
+                item.setDescription("test desc");
+                item.setCategory("Other");
+                item.setImage(getPath(mSelectedImageUri));
+                LatLng latLng = Utils.getLastLocation(getActivity());
+                Location location = new Location();
+                location.setLatPosition(String.valueOf(latLng.latitude));
+                location.setLongPosition(String.valueOf(latLng.longitude));
+                location.setLocation("");
+                item.setLocation(location);
+                Client.createItem(item);
+
+            }
+        });
 
         return view;
     }
+
+    public String getPath(Uri uri)
+    {
+        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":")+1);
+        cursor.close();
+
+        cursor = getActivity().getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+        return path;
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -135,7 +179,7 @@ public class AddObject extends Fragment implements View.OnClickListener{
         // Add the camera options.
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[cameraIntents.size()]));
 
-        startActivityForResult(chooserIntent,RESULT_LOAD_IMAGE);
+        startActivityForResult(chooserIntent, RESULT_LOAD_IMAGE);
     }
 
     @Override
@@ -154,11 +198,10 @@ public class AddObject extends Fragment implements View.OnClickListener{
                     }
                 }
 
-                Uri selectedImageUri;
                 if (isCamera) {
-                    selectedImageUri = mOutputFileUri;
+                    mSelectedImageUri = mOutputFileUri;
                 } else {
-                    selectedImageUri = data == null ? null : data.getData();
+                    mSelectedImageUri = data == null ? null : data.getData();
                 }
 //                mImageView.setImageBitmap(BitmapFactory.decodeFile(data));
             }

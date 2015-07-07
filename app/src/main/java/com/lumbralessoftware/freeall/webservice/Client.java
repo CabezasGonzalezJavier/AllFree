@@ -16,6 +16,8 @@ import com.lumbralessoftware.freeall.utils.Constants;
 import com.lumbralessoftware.freeall.utils.Utils;
 import com.squareup.okhttp.OkHttpClient;
 
+import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 import retrofit.Callback;
@@ -27,9 +29,12 @@ import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.Headers;
+import retrofit.http.Multipart;
 import retrofit.http.POST;
+import retrofit.http.Part;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import retrofit.mime.TypedFile;
 
 /**
  * Created by javiergonzalezcabezas on 27/6/15.
@@ -43,7 +48,18 @@ public class Client {
         void getItems(@Query("lat") Double latitude, @Query("lon") Double longitude, Callback<List<Item>> callback);
         @GET("/api/items")
         void getForNames(@Query("q") String name, Callback<List<Item>> callback);
-
+        @Multipart
+        @POST("/api/items")
+        void postItem(@Part("image") TypedFile file,
+                      @Part("name") String name,
+                      @Part("category") String category,
+                      @Part("description") String description,
+                      @Part("location.location") String loc,
+                      @Part("location.lat_position") String lat,
+                      @Part("location.long_position") String lng,
+                      //@Part("expires_on") Date expires, //TODO: Add this
+                      @Header("Authorization") String authorization,
+                    Callback<Item> callback);
         @Headers({
                 "Content-Type: application/json",
         })
@@ -95,7 +111,7 @@ public class Client {
                 Log.d("Client", "error");
             }
         };
-        Client.initRestAdapter().getForNames(object,callback);
+        Client.initRestAdapter().getForNames(object, callback);
     }
 
     public static void voteItem(final VoteResponseHandler responseHandler, Integer itemId, Double score) {
@@ -128,6 +144,35 @@ public class Client {
         };
 
         Client.initRestAdapter().postRequestItem(itemId, item, Utils.getAuthorizationHeader(), callback);
+    }
+
+    public static void createItem(Item item)
+    {
+        Callback<Item> callback = new Callback<Item>() {
+            @Override
+            public void success(Item data, Response response) {
+                Log.e("Upload", "success");
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Utils.logResponse("Upload", error);
+                Log.e("Upload", "error");
+            }
+        };
+        TypedFile typedFile = new TypedFile("multipart/form-data", new File(item.getImage()));
+        Client.initRestAdapter().postItem(
+                typedFile,
+                item.getName(),
+                item.getCategory(),
+                item.getDescription(),
+                item.getLocation().getLocation(),
+                item.getLocation().getLatPosition(),
+                item.getLocation().getLongPosition(),
+                Utils.getAuthorizationHeader(),
+                callback
+        );
     }
 
     public static void postRegistrationToken(final RegistrationResponseHandler responseHandler, String backend, Token token) {

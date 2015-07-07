@@ -79,4 +79,6 @@ public class Utils {
             return new LatLng(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE);
         }
     }
+
+
 }

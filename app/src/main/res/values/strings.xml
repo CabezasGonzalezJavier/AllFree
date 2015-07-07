@@ -8,6 +8,9 @@
 
     <string name="fragment_map_title">Map</string>
     <string name="fragment_map_marker_button">I want it!</string>
+    <string name="fragment_add_image">Chose a Picture</string>
+    <string name="fragment_add_item">Give Away!</string>
+
     <string name="fragment_list_title">List</string>
     <string name="fragment_login_title">Login</string>
 
