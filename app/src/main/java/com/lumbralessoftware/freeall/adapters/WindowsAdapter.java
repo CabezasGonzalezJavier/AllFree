@@ -17,6 +17,8 @@ import com.lumbralessoftware.freeall.utils.Constants;
 import com.lumbralessoftware.freeall.views.CircleTransform;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 /**
  * Created by javiergonzalezcabezas on 28/6/15.
  */
@@ -24,12 +26,12 @@ public class WindowsAdapter implements GoogleMap.InfoWindowAdapter {
 
     private final View mContentsView;
     private Activity mActivity;
-    private Item mItem;
+    private List<Item> mItems;
 
-    public WindowsAdapter(Activity activity, Item item) {
+    public WindowsAdapter(Activity activity, List<Item> items) {
         mContentsView = activity.getLayoutInflater().inflate(R.layout.row_marker, null);
         mActivity = activity;
-        mItem = item;
+        mItems = items;
     }
 
     static class ViewHolder {
@@ -47,9 +49,11 @@ public class WindowsAdapter implements GoogleMap.InfoWindowAdapter {
         TextView category = (TextView) mContentsView.findViewById(R.id.row_marker_category);
         ImageView image = (ImageView) mContentsView.findViewById(R.id.row_marker_icon);
 
-        name.setText(mItem.getName());
-        category.setText(mItem.getCategory());
-        Picasso.with(mActivity).load(mItem.getImage()).transform(new CircleTransform()).into((ImageView) image);
+        // Get the item from the list by retrieving the index from marker's snippet
+        Item item = mItems.get(Integer.valueOf(marker.getSnippet()));
+        name.setText(item.getName());
+        category.setText(item.getCategory());
+        Picasso.with(mActivity).load(item.getImage()).transform(new CircleTransform()).into((ImageView) image);
 
         return mContentsView;
     }

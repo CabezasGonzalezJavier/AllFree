@@ -163,24 +163,37 @@ public class MapTabFragment extends Fragment implements UpdateableFragment {
     }
 
     private void drawnPoints(){
-        for (Item item : mItemList){
-            setUpMap(item);
-        }
-    }
-
-    private void setUpMap(final Item item) {
         if (mGoogleMap != null) {
-            mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(Float.parseFloat(item.getLocation().getLatPosition()), Float.parseFloat(item.getLocation().getLongPosition()))));
-            mGoogleMap.setInfoWindowAdapter(new WindowsAdapter(getActivity(), item));
+            mGoogleMap.setInfoWindowAdapter(new WindowsAdapter(getActivity(), mItemList));
+            // Marker will have item's list position/index in the snippet
             mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
                     Intent intent = new Intent(getActivity(), DetailActivity.class);
-                    intent.putExtra(Constants.DETAIL, item);
+                    intent.putExtra(Constants.DETAIL, mItemList.get(Integer.valueOf(marker.getSnippet())));
                     getActivity().startActivity(intent);
                 }
             });
+
+            int index = 0;
+            for (Item item : mItemList) {
+                setUpMap(item, index++);
+            }
         }
+    }
+
+    /**
+     * Store the index of the item in marker's snippet
+     *
+     * @param item
+     * @param index
+     */
+    private void setUpMap(final Item item, int index) {
+        mGoogleMap.addMarker(
+                new MarkerOptions().position(
+                        new LatLng(Float.parseFloat(item.getLocation().getLatPosition()), Float.parseFloat(item.getLocation().getLongPosition()))
+                ).snippet(String.valueOf(index))
+        );
     }
 
     private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
