@@ -95,7 +95,6 @@ public class AddObject extends Fragment implements View.OnClickListener {
                 item.setCategory("Other");
 
                 if (mImagePath != null) {
-
                     item.setImage(mImagePath);
                     LatLng latLng = Utils.getLastLocation(getActivity());
                     Location location = new Location();
@@ -105,9 +104,11 @@ public class AddObject extends Fragment implements View.OnClickListener {
                     item.setLocation(location);
                     Client.createItem(item);
                 } else {
-                    Toast.makeText(getActivity(),
-                            "No image selected", Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(
+                            getActivity(),
+                            getString(R.string.add_item_no_image),
+                            Toast.LENGTH_SHORT
+                    ).show();
                 }
             }
         });
@@ -195,7 +196,7 @@ public class AddObject extends Fragment implements View.OnClickListener {
         galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
 
         // Chooser of filesystem options.
-        final Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Source");
+        final Intent chooserIntent = Intent.createChooser(galleryIntent, getString(R.string.add_item_img_source));
 
         // Add the camera options.
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[cameraIntents.size()]));
@@ -271,14 +272,18 @@ public class AddObject extends Fragment implements View.OnClickListener {
                 }
             } else if (resultCode == getActivity().RESULT_CANCELED) {
                 // user cancelled Image capture
-                Toast.makeText(getActivity(),
-                        "User cancelled image capture", Toast.LENGTH_SHORT)
-                        .show();
+                Toast.makeText(
+                        getActivity(),
+                        getString(R.string.add_item_no_image),
+                        Toast.LENGTH_SHORT
+                ).show();
             } else {
                 // failed to capture image
-                Toast.makeText(getActivity(),
-                        "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
-                        .show();
+                Toast.makeText(
+                        getActivity(),
+                        getString(R.string.add_item_error_image),
+                        Toast.LENGTH_SHORT
+                ).show();
             }
         }
     }

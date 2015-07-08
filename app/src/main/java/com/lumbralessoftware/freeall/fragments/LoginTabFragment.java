@@ -196,7 +196,7 @@ public class LoginTabFragment extends Fragment implements RegistrationResponseLi
             public void onError(FacebookException exception) {
                 // App code
                 Log.d("FACEBOOK", "error");
-
+                Toast.makeText(getActivity(), getString(R.string.login_error), Toast.LENGTH_LONG).show();
             }
         });
     }

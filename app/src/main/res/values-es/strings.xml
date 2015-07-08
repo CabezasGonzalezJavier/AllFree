@@ -1,0 +1,23 @@
+<resources>
+    <string name="fragment_map_title">Mapa</string>
+    <string name="fragment_map_marker_button">Lo quiero!</string>
+    <string name="fragment_add_image">Escoge una foto</string>
+    <string name="fragment_add_item">Publicar</string>
+    <string name="fragment_list_title">Lista</string>
+    <string name="fragment_login_title">Login</string>
+    <string name="fragment_add_object">Publicar</string>
+    <string name="fragment_add_object_title_name">Nombre:</string>
+    <string name="fragment_add_object_title_description">Descripción:</string>
+    <string name="no_connection">Error de conexión. Por favor, comprueba tu conexión y vuelve a intentarlo.</string>
+    <string name="login_error">Error al iniciar sesion, por favor vuelve a intentarlo.</string>
+    <string name="menu_search">Buscar</string>
+    <string name="activity_detail_title">DetailActivity</string>
+    <string name="activity_detail_title_date">Añadido</string>
+    <string name="activity_detail_hint_edittext">Hola, He visto tu producto y estoy muy interesado. Cuando podemos quedar?</string>
+    <string name="activity_detail_sending">Enviando...</string>
+    <string name="activity_detail_vote_title">Votar</string>
+    <string name="activity_detail_vote">Deseas votar con un %1$s este objeto?</string>
+    <string name="add_item_no_image">Por favor, selecciona una imagen o haz una foto del objeto</string>
+    <string name="add_item_error_image">Ha ocurrido un error, por favor intentalo de nuevo y/o selecciona otra foto.</string>
+    <string name="add_item_img_source">Selecciona...</string>
+</resources>

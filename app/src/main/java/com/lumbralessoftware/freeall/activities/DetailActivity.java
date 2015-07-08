@@ -207,15 +207,9 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
     }
 
     public void alertDialog(final float vote){
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(getString(R.string.activity_detail_vote));
-        stringBuilder.append(" ");
-        stringBuilder.append(vote);
-        stringBuilder.append(" ");
-        stringBuilder.append(getString(R.string.activity_detail_vote_finish));
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.activity_detail_vote_title))
-                .setMessage(stringBuilder.toString())
+                .setMessage(getString(R.string.activity_detail_vote, String.valueOf(vote)))
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         mProgressDialog.show();

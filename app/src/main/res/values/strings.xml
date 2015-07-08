@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FreeAll</string>
+    <string name="app_name">Reusame</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -28,6 +28,8 @@
     <string name="activity_detail_hint_edittext">Hi, I saw your product and I am very interested. When can we meet up?</string>
     <string name="activity_detail_sending">Sending...</string>
     <string name="activity_detail_vote_title">Vote</string>
-    <string name="activity_detail_vote">Do you want to vote with </string>
-    <string name="activity_detail_vote_finish"> this object?</string>
+    <string name="activity_detail_vote">Do you want to vote with %1$s this object?</string>
+    <string name="add_item_no_image">Please, select an existing image or take a picture of the item</string>
+    <string name="add_item_error_image">An error occurred, please try again and/or select another picture.</string>
+    <string name="add_item_img_source">Select Source</string>
 </resources>
