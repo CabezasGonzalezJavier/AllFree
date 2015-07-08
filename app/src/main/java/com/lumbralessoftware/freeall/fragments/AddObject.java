@@ -249,35 +249,36 @@ public class AddObject extends Fragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RESULT_LOAD_IMAGE) {
-            if (resultCode == getActivity().RESULT_CANCELED) {
+
+            if (resultCode == getActivity().RESULT_OK) {
+                final boolean isCamera;
+                if (data == null) {
+                    isCamera = true;
+                } else {
+                    final String action = data.getAction();
+
+                    if (action == null) {
+                        isCamera = false;
+                    } else {
+                        isCamera = action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    }
+                }
+
+                if (isCamera) {
+                    mImagePath = mOutputFileUri.getPath();
+                } else {
+                    mImagePath = data == null ? null : getPath(data.getData());
+                }
+            } else if (resultCode == getActivity().RESULT_CANCELED) {
                 // user cancelled Image capture
                 Toast.makeText(getActivity(),
                         "User cancelled image capture", Toast.LENGTH_SHORT)
                         .show();
-            } else if (resultCode != getActivity().RESULT_OK) {
+            } else {
                 // failed to capture image
                 Toast.makeText(getActivity(),
                         "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
                         .show();
-            }
-
-            final boolean isCamera;
-            if (data == null) {
-                isCamera = true;
-            } else {
-                final String action = data.getAction();
-
-                if (action == null) {
-                    isCamera = false;
-                } else {
-                    isCamera = action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                }
-            }
-
-            if (isCamera) {
-                mImagePath = mOutputFileUri.getPath();
-            } else {
-                mImagePath = data == null ? null : getPath(data.getData());
             }
         }
     }
