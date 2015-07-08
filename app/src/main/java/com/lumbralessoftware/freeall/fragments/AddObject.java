@@ -2,24 +2,25 @@ package com.lumbralessoftware.freeall.fragments;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.lumbralessoftware.freeall.R;
@@ -29,8 +30,11 @@ import com.lumbralessoftware.freeall.utils.Utils;
 import com.lumbralessoftware.freeall.webservice.Client;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,15 +44,17 @@ import java.util.List;
  * Use the {@link AddObject#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddObject extends Fragment implements View.OnClickListener{
+public class AddObject extends Fragment implements View.OnClickListener {
 
-    private Uri mOutputFileUri;
+    private static Uri mOutputFileUri;
     private EditText mNameEditText;
     private EditText mDescripitionEditText;
     private Button mAddPhotoButton;
     private ImageView mImageView;
     private static int RESULT_LOAD_IMAGE = 147;
-    Uri mSelectedImageUri;
+    String mImagePath;
+    private static final String IMAGE_DIRECTORY_NAME = "reusame";
+    public static final int MEDIA_TYPE_IMAGE = 1;
 
     public static AddObject newInstance() {
         AddObject fragment = new AddObject();
@@ -87,35 +93,51 @@ public class AddObject extends Fragment implements View.OnClickListener{
                 item.setName("Test name");
                 item.setDescription("test desc");
                 item.setCategory("Other");
-                item.setImage(getPath(mSelectedImageUri));
-                LatLng latLng = Utils.getLastLocation(getActivity());
-                Location location = new Location();
-                location.setLatPosition(String.valueOf(latLng.latitude));
-                location.setLongPosition(String.valueOf(latLng.longitude));
-                location.setLocation("");
-                item.setLocation(location);
-                Client.createItem(item);
 
+                if (mImagePath != null) {
+
+                    item.setImage(mImagePath);
+                    LatLng latLng = Utils.getLastLocation(getActivity());
+                    Location location = new Location();
+                    location.setLatPosition(String.valueOf(latLng.latitude));
+                    location.setLongPosition(String.valueOf(latLng.longitude));
+                    location.setLocation("");
+                    item.setLocation(location);
+                    Client.createItem(item);
+                } else {
+                    Toast.makeText(getActivity(),
+                            "No image selected", Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
         });
 
         return view;
     }
 
-    public String getPath(Uri uri)
-    {
+    /**
+     * Get the real path when user selected a picture from the gallery
+     *
+     * @param uri
+     * @return
+     */
+    public String getPath(Uri uri) {
+        String path = "";
         Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        String document_id = cursor.getString(0);
-        document_id = document_id.substring(document_id.lastIndexOf(":")+1);
-        cursor.close();
+        if (cursor != null) {
+            cursor.moveToFirst();
+            String document_id = cursor.getString(0);
+            document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+            cursor.close();
 
-        cursor = getActivity().getContentResolver().query(
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
-        cursor.moveToFirst();
-        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-        cursor.close();
+            cursor = getActivity().getContentResolver().query(
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+            cursor.moveToFirst();
+            path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            cursor.close();
+        }
+
         return path;
     }
 
@@ -147,24 +169,23 @@ public class AddObject extends Fragment implements View.OnClickListener{
 
     private void openImageIntent() {
 
-// Determine Uri of camera image to save.
-        final File root = new File(Environment.getExternalStorageDirectory() + File.separator + "MyDir" + File.separator);
-        root.mkdirs();
-        final String fname = "img_"+ System.currentTimeMillis() + ".jpg";
-        final File sdImageMainDirectory = new File(root, fname);
-        mOutputFileUri = Uri.fromFile(sdImageMainDirectory);
+        mOutputFileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
 
         // Camera.
         final List<Intent> cameraIntents = new ArrayList<Intent>();
         final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputFileUri);
+        captureIntent.putExtra("return-data", true);
         final PackageManager packageManager = getActivity().getPackageManager();
         final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
-        for(ResolveInfo res : listCam) {
+        for (ResolveInfo res : listCam) {
             final String packageName = res.activityInfo.packageName;
             final Intent intent = new Intent(captureIntent);
             intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
             intent.setPackage(packageName);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputFileUri);
+            intent.putExtra("return-data", true);
+
             cameraIntents.add(intent);
         }
 
@@ -182,29 +203,82 @@ public class AddObject extends Fragment implements View.OnClickListener{
         startActivityForResult(chooserIntent, RESULT_LOAD_IMAGE);
     }
 
+    /**
+     * Creating file uri to store image/video
+     */
+    public Uri getOutputMediaFileUri(int type) {
+        return Uri.fromFile(getOutputMediaFile(type));
+    }
+
+    /*
+     * returning image / video
+     */
+    private static File getOutputMediaFile(int type) {
+
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                IMAGE_DIRECTORY_NAME);
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d(IMAGE_DIRECTORY_NAME, "Oops! Failed create "
+                        + IMAGE_DIRECTORY_NAME + " directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File mediaFile;
+        if (type == MEDIA_TYPE_IMAGE) {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                    + "IMG_" + timeStamp + ".jpg");
+        } else {
+            return null;
+        }
+
+        return mediaFile;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (resultCode == RESULT_OK) {
-            if (requestCode == RESULT_LOAD_IMAGE) {
-                final boolean isCamera;
-                if (data == null) {
-                    isCamera = true;
-                } else {
-                    final String action = data.getAction();
-                    if (action == null) {
-                        isCamera = false;
-                    } else {
-                        isCamera = action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    }
-                }
+        super.onActivityResult(requestCode, resultCode, data);
 
-                if (isCamera) {
-                    mSelectedImageUri = mOutputFileUri;
-                } else {
-                    mSelectedImageUri = data == null ? null : data.getData();
-                }
-//                mImageView.setImageBitmap(BitmapFactory.decodeFile(data));
+        if (requestCode == RESULT_LOAD_IMAGE) {
+            if (resultCode == getActivity().RESULT_CANCELED) {
+                // user cancelled Image capture
+                Toast.makeText(getActivity(),
+                        "User cancelled image capture", Toast.LENGTH_SHORT)
+                        .show();
+            } else if (resultCode != getActivity().RESULT_OK) {
+                // failed to capture image
+                Toast.makeText(getActivity(),
+                        "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
+                        .show();
             }
-//        }
+
+            final boolean isCamera;
+            if (data == null) {
+                isCamera = true;
+            } else {
+                final String action = data.getAction();
+
+                if (action == null) {
+                    isCamera = false;
+                } else {
+                    isCamera = action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                }
+            }
+
+            if (isCamera) {
+                mImagePath = mOutputFileUri.getPath();
+            } else {
+                mImagePath = data == null ? null : getPath(data.getData());
+            }
+        }
     }
 }
