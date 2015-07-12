@@ -12,6 +12,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/fragment_add_object_linear_layout"
                 style="@style/AppTheme.Relative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -54,19 +55,22 @@
                 <ImageView
                     android:id="@+id/fragment_add_object_add_photo_imgView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/alert_light_frame" />
+                    android:layout_height="190dp"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/no_image" />
+
             </LinearLayout>
 
             <Button
                 android:id="@+id/fragment_add_object_add_photo_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_detail_edittext"
+                android:layout_below="@+id/fragment_add_object_linear_layout"
                 android:layout_marginTop="@dimen/activity_detail_margeTop"
                 android:background="@android:color/black"
                 android:text="@string/fragment_add_image"
                 android:textColor="@android:color/white" />
+
             <Button
                 android:id="@+id/fragment_add_object_add_item_button"
                 android:layout_width="match_parent"

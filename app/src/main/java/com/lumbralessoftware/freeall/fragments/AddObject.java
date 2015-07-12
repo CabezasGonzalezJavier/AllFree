@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -46,7 +47,7 @@ import java.util.Locale;
  */
 public class AddObject extends Fragment implements View.OnClickListener {
 
-    private static Uri mOutputFileUri;
+    private static Uri sOutputFileUri;
     private EditText mNameEditText;
     private EditText mDescripitionEditText;
     private Button mAddPhotoButton;
@@ -143,7 +144,6 @@ public class AddObject extends Fragment implements View.OnClickListener {
     }
 
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
 
     }
@@ -170,12 +170,12 @@ public class AddObject extends Fragment implements View.OnClickListener {
 
     private void openImageIntent() {
 
-        mOutputFileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+        sOutputFileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
 
         // Camera.
         final List<Intent> cameraIntents = new ArrayList<Intent>();
         final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputFileUri);
+        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, sOutputFileUri);
         captureIntent.putExtra("return-data", true);
         final PackageManager packageManager = getActivity().getPackageManager();
         final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
@@ -184,7 +184,7 @@ public class AddObject extends Fragment implements View.OnClickListener {
             final Intent intent = new Intent(captureIntent);
             intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
             intent.setPackage(packageName);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputFileUri);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, sOutputFileUri);
             intent.putExtra("return-data", true);
 
             cameraIntents.add(intent);
@@ -266,10 +266,11 @@ public class AddObject extends Fragment implements View.OnClickListener {
                 }
 
                 if (isCamera) {
-                    mImagePath = mOutputFileUri.getPath();
+                    mImagePath = sOutputFileUri.getPath();
                 } else {
                     mImagePath = data == null ? null : getPath(data.getData());
                 }
+                mImageView.setImageBitmap(BitmapFactory.decodeFile(mImagePath));
             } else if (resultCode == getActivity().RESULT_CANCELED) {
                 // user cancelled Image capture
                 Toast.makeText(
