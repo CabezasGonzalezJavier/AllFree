@@ -266,23 +266,17 @@ public class AddObject extends Fragment implements View.OnClickListener {
 
             if (resultCode == getActivity().RESULT_OK) {
                 final boolean isCamera;
-                if (data == null) {
-                    isCamera = true;
-                } else {
-                    final String action = data.getAction();
 
-                    if (action == null) {
-                        isCamera = false;
-                    } else {
-                        isCamera = action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                // By default assume user took a picture
+                mImagePath = mCapturedPhotoPath;
+
+                if (data != null) {
+                    if (data.getData() != null) {
+                        // If there is a uri in intent's data, use it (image gallery)
+                        mImagePath = getPath(data.getData());
                     }
                 }
 
-                if (isCamera) {
-                    mImagePath = mCapturedPhotoPath;
-                } else {
-                    mImagePath = data == null ? null : getPath(data.getData());
-                }
                 mImageView.setImageBitmap(BitmapFactory.decodeFile(mImagePath));
             } else if (resultCode == getActivity().RESULT_CANCELED) {
                 // user cancelled Image capture
