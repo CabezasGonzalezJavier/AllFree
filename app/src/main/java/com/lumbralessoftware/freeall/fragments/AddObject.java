@@ -47,12 +47,14 @@ import java.util.Locale;
  */
 public class AddObject extends Fragment implements View.OnClickListener {
 
-    private static Uri sOutputFileUri;
+    public static final String SAVED_PHOTO_PATH = "mCapturedPhotoPath";
+    public static final String SAVED_IMG_PATH = "mImagePath";
     private EditText mNameEditText;
     private EditText mDescripitionEditText;
     private Button mAddPhotoButton;
     private ImageView mImageView;
     private static int RESULT_LOAD_IMAGE = 147;
+    private String mCapturedPhotoPath;
     String mImagePath;
     private static final String IMAGE_DIRECTORY_NAME = "reusame";
     public static final int MEDIA_TYPE_IMAGE = 1;
@@ -71,6 +73,9 @@ public class AddObject extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (savedInstanceState != null) {
+            mCapturedPhotoPath = savedInstanceState.getString(SAVED_PHOTO_PATH);
+        }
     }
 
     @Override
@@ -85,6 +90,13 @@ public class AddObject extends Fragment implements View.OnClickListener {
         mAddPhotoButton.setOnClickListener(this);
 
         mImageView = (ImageView) view.findViewById(R.id.fragment_add_object_add_photo_imgView);
+
+        if (savedInstanceState != null) {
+            mImagePath = savedInstanceState.getString(SAVED_IMG_PATH);
+            if (mImagePath != null) {
+                mImageView.setImageBitmap(BitmapFactory.decodeFile(mImagePath));
+            }
+        }
 
         Button newItem = (Button) view.findViewById(R.id.fragment_add_object_add_item_button);
         newItem.setOnClickListener(new View.OnClickListener() {
@@ -170,12 +182,13 @@ public class AddObject extends Fragment implements View.OnClickListener {
 
     private void openImageIntent() {
 
-        sOutputFileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+        Uri outputFileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+        mCapturedPhotoPath = outputFileUri.getPath();
 
         // Camera.
         final List<Intent> cameraIntents = new ArrayList<Intent>();
         final Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, sOutputFileUri);
+        captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
         captureIntent.putExtra("return-data", true);
         final PackageManager packageManager = getActivity().getPackageManager();
         final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
@@ -184,7 +197,7 @@ public class AddObject extends Fragment implements View.OnClickListener {
             final Intent intent = new Intent(captureIntent);
             intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
             intent.setPackage(packageName);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, sOutputFileUri);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
             intent.putExtra("return-data", true);
 
             cameraIntents.add(intent);
@@ -266,7 +279,7 @@ public class AddObject extends Fragment implements View.OnClickListener {
                 }
 
                 if (isCamera) {
-                    mImagePath = sOutputFileUri.getPath();
+                    mImagePath = mCapturedPhotoPath;
                 } else {
                     mImagePath = data == null ? null : getPath(data.getData());
                 }
@@ -287,5 +300,12 @@ public class AddObject extends Fragment implements View.OnClickListener {
                 ).show();
             }
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString(SAVED_PHOTO_PATH, mCapturedPhotoPath);
+        savedInstanceState.putString(SAVED_IMG_PATH, mImagePath);
     }
 }
