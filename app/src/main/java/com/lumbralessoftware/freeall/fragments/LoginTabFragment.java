@@ -121,7 +121,7 @@ public class LoginTabFragment extends Fragment implements RegistrationResponseLi
                                     SharedPreferenceController.getInstance().setTwitterAccess(atoken);
                                     SharedPreferenceController.getInstance().setTwitterSecret(secret);
                                     SharedPreferenceController.getInstance().setTwitterEmail(email);
-                                    registerUser(email, atoken, secret);
+                                    registerUser(Constants.BACKEND_TWITTER, email, atoken, secret);
                                 }
                             }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
@@ -135,7 +135,7 @@ public class LoginTabFragment extends Fragment implements RegistrationResponseLi
                     Log.d("secrettokenTwitter", secret);
                     SharedPreferenceController.getInstance().setTwitterAccess(atoken);
                     SharedPreferenceController.getInstance().setTwitterSecret(secret);
-                    registerUser(SharedPreferenceController.getInstance().getTwitterEmail(), atoken, secret);
+                    registerUser(Constants.BACKEND_TWITTER, SharedPreferenceController.getInstance().getTwitterEmail(), atoken, secret);
                 }
             }
 
@@ -146,10 +146,10 @@ public class LoginTabFragment extends Fragment implements RegistrationResponseLi
         });
     }
 
-    private void registerUser(String email, String atoken, String secret) {
+    private void registerUser(String backend, String email, String atoken, String secret) {
         if (Utils.isOnline(getActivity())) {
             mRegistrationController = ControllersFactory.getRegistrationController();
-            mRegistrationController.request(Constants.BACKEND_TWITTER, atoken, secret, email);
+            mRegistrationController.request(backend, atoken, secret, email);
 
         }else{
             Toast.makeText(getActivity(), getString(R.string.no_connection), Toast.LENGTH_LONG).show();
@@ -177,7 +177,7 @@ public class LoginTabFragment extends Fragment implements RegistrationResponseLi
                             String email = user.getString("email");
                             //Need User email address after login success.
                             SharedPreferenceController.getInstance().setFacebookAccess(accessToken.getToken());
-                            registerUser(email, accessToken.getToken(), null);
+                            registerUser(Constants.BACKEND_FACEBOOK, email, accessToken.getToken(), null);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
