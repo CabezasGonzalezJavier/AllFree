@@ -32,4 +32,8 @@
     <string name="add_item_no_image">Please, select an existing image or take a picture of the item</string>
     <string name="add_item_error_image">An error occurred, please try again and/or select another picture.</string>
     <string name="add_item_img_source">Select Source</string>
+
+    <string name="action_our_apps">Our Apps</string>
+    <string name="action_about_us">About us</string>
+
 </resources>
