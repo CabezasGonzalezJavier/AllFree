@@ -1,8 +1,10 @@
 package com.lumbralessoftware.freeall.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -14,13 +16,17 @@ import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -45,13 +51,14 @@ import java.util.Locale;
  * Use the {@link AddObject#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddObject extends Fragment implements View.OnClickListener {
+public class AddObject extends Fragment implements View.OnClickListener,View.OnFocusChangeListener {
 
     public static final String SAVED_PHOTO_PATH = "mCapturedPhotoPath";
     public static final String SAVED_IMG_PATH = "mImagePath";
     private EditText mNameEditText;
     private EditText mDescripitionEditText;
-    private Button mAddPhotoButton;
+    private Button mAddCategoryButton;
+    private String[] mCategoriesList;
     private ImageView mImageView;
     private static int RESULT_LOAD_IMAGE = 147;
     private String mCapturedPhotoPath;
@@ -84,12 +91,17 @@ public class AddObject extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_object, container, false);
         mNameEditText = (EditText) view.findViewById(R.id.fragment_add_object_name_edittext);
+        mNameEditText.setOnFocusChangeListener(this);
         mDescripitionEditText = (EditText) view.findViewById(R.id.fragment_add_object_description_edittext);
-
-        mAddPhotoButton = (Button) view.findViewById(R.id.fragment_add_object_add_photo_button);
-        mAddPhotoButton.setOnClickListener(this);
+        mDescripitionEditText.setOnFocusChangeListener(this);
 
         mImageView = (ImageView) view.findViewById(R.id.fragment_add_object_add_photo_imgView);
+        mImageView.setOnClickListener(this);
+
+        mAddCategoryButton = (Button) view.findViewById(R.id.fragment_add_object_add_item_category);
+        mAddCategoryButton.setOnClickListener(this);
+
+        mCategoriesList = getResources().getStringArray(R.array.fragment_add_object_category);
 
         if (savedInstanceState != null) {
             mImagePath = savedInstanceState.getString(SAVED_IMG_PATH);
@@ -99,34 +111,74 @@ public class AddObject extends Fragment implements View.OnClickListener {
         }
 
         Button newItem = (Button) view.findViewById(R.id.fragment_add_object_add_item_button);
-        newItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Item item = new Item();
-                item.setName("Test name");
-                item.setDescription("test desc");
-                item.setCategory("Other");
-
-                if (mImagePath != null) {
-                    item.setImage(mImagePath);
-                    LatLng latLng = Utils.getLastLocation(getActivity());
-                    Location location = new Location();
-                    location.setLatPosition(String.valueOf(latLng.latitude));
-                    location.setLongPosition(String.valueOf(latLng.longitude));
-                    location.setLocation("");
-                    item.setLocation(location);
-                    Client.createItem(item);
-                } else {
-                    Toast.makeText(
-                            getActivity(),
-                            getString(R.string.add_item_no_image),
-                            Toast.LENGTH_SHORT
-                    ).show();
-                }
-            }
-        });
+        newItem.setOnClickListener(this);
 
         return view;
+    }
+
+    public void sendArticle(){
+
+
+        Item item = new Item();
+        if (mNameEditText.getText().toString().equals("")) {
+        mNameEditText.setError(getString(R.string.add_item_empty_field));
+        } else if (mDescripitionEditText.getText().toString().equals("")) {
+        mDescripitionEditText.setError(getString(R.string.add_item_empty_field));
+        } else if (mAddCategoryButton.getText().equals(getResources().getString(R.string.fragment_add_object_category_chose))) {
+            Toast.makeText(
+                    getActivity(),
+                    getString(R.string.add_item_no_category),
+                    Toast.LENGTH_SHORT
+            ).show();
+        } else if (mImagePath != null) {
+            Toast.makeText(
+                    getActivity(),
+                    getString(R.string.add_item_no_image),
+                    Toast.LENGTH_SHORT
+            ).show();
+        } else {
+            item.setName(mNameEditText.getText().toString());
+
+            item.setDescription(mDescripitionEditText.getText().toString());
+            item.setCategory(mAddCategoryButton.getText().toString());
+            item.setImage(mImagePath);
+            LatLng latLng = Utils.getLastLocation(getActivity());
+            Location location = new Location();
+            location.setLatPosition(String.valueOf(latLng.latitude));
+            location.setLongPosition(String.valueOf(latLng.longitude));
+            location.setLocation("");
+            item.setLocation(location);
+            Client.createItem(item);
+            showAlertView();
+        }
+
+
+
+    }
+
+    public void showAlertView() {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setTitle(getString(R.string.add_item_succesful_title));
+        alert.setMessage("");
+        alert.setCancelable(false);
+        alert.setPositiveButton(getString(android.R.string.ok),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mNameEditText.setText("");
+                        mDescripitionEditText.setText("");
+                        mAddCategoryButton.setText("");
+                        mImageView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.no_image));
+                        dialog.cancel();
+                    }
+                }
+        );
+        AlertDialog alert11 = alert.create();
+        alert11.show();
+        TextView messageText = (TextView) alert11.findViewById(android.R.id.message);
+        messageText.setGravity(Gravity.CENTER);
+        messageText.setText(R.string.add_item_succesful_title);
+
     }
 
     /**
@@ -173,11 +225,48 @@ public class AddObject extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        openImageIntent();
+        switch (v.getId()) {
+            case R.id.fragment_add_object_add_photo_imgView:
+                openImageIntent();
+                break;
+            case R.id.fragment_add_object_add_item_category:
+                setCategory();
+                break;
+            case R.id.fragment_add_object_add_item_button:
+                sendArticle();
+                break;
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        switch (v.getId()){
+            case R.id.fragment_add_object_description_edittext:
+                mDescripitionEditText.setError(null);
+                break;
+            case R.id.fragment_add_object_name_edittext:
+                mNameEditText.setError(null);
+                break;
+        }
     }
 
 
     public interface OnFragmentInteractionListener {
+    }
+
+    public void setCategory() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(getString(R.string.fragment_add_object_category_title));
+        builder.setItems(mCategoriesList, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                mAddCategoryButton.setText(mCategoriesList[item]);
+                mAddCategoryButton.setBackgroundColor(getResources().getColor(android.R.color.white));
+                mAddCategoryButton.setTextColor(getResources().getColor(android.R.color.black));
+                dialog.cancel();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private void openImageIntent() {
