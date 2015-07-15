@@ -7,12 +7,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.content.Intent;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -32,6 +34,8 @@ import com.lumbralessoftware.freeall.interfaces.RegistrationResponseListener;
 import com.lumbralessoftware.freeall.models.Registration;
 import com.lumbralessoftware.freeall.utils.Constants;
 import com.lumbralessoftware.freeall.utils.Utils;
+import com.lumbralessoftware.freeall.views.TwitterLogoutButton;
+import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterApiException;
@@ -56,10 +60,11 @@ import org.json.JSONObject;
  */
 public class LoginTabFragment extends Fragment implements RegistrationResponseListener {
     private TwitterLoginButton mTwitterButton;
+    private TwitterLogoutButton mTwitterLogoutButton;
+
     private RegistrationController mRegistrationController;
 
     private CallbackManager callbackManager;
-
 
 
     private OnFragmentInteractionListener mListener;
@@ -92,10 +97,34 @@ public class LoginTabFragment extends Fragment implements RegistrationResponseLi
         mTwitterButton = (TwitterLoginButton) view.findViewById(R.id.activity_login_twitter_button);
         setupTwitterLogin();
 
+        mTwitterLogoutButton = (TwitterLogoutButton) view.findViewById(R.id.activity_logout_twitter_button);
+        mTwitterLogoutButton.setText(getString(R.string.logout));
+        mTwitterLogoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Twitter.getSessionManager().clearActiveSession();
+                mTwitterLogoutButton.setVisibility(View.GONE);
+                mTwitterButton.setVisibility(View.VISIBLE);
+                SharedPreferenceController.getInstance().setTwitterAccess("");
+            }
+        });
+
+        // Show log in or log out button depending on whether user is already logged in or not
+        if (SharedPreferenceController.getInstance().getTwitterAccess().equals("")) {
+            mTwitterLogoutButton.setVisibility(View.GONE);
+        } else {
+            mTwitterButton.setVisibility(View.GONE);
+        }
+
         LoginButton facebookLoginButton = (LoginButton) view.findViewById(R.id.login_button);
         setupFacebookLogin(facebookLoginButton);
 
         return view;
+    }
+
+    boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email)
+                .matches();
     }
 
     private void setupTwitterLogin() {
@@ -104,39 +133,53 @@ public class LoginTabFragment extends Fragment implements RegistrationResponseLi
             public void success(Result<TwitterSession> result) {
                 // Do something with result, which provides a TwitterSession for making API calls
                 final TwitterAuthToken authToken = result.data.getAuthToken();
+                /*
+                 * @see http://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
+                 */
+                final EditText input = new EditText(getActivity());
+                input.setHint(getString(R.string.email_hint));
+                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                input.setText(SharedPreferenceController.getInstance().getTwitterEmail());
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                        .setTitle(getString(R.string.login_email))
+                        .setMessage(getString(R.string.login_email_text))
+                        .setView(input)
+                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
 
-                if (SharedPreferenceController.getInstance().getTwitterEmail().equals("")) {
-                    final EditText input = new EditText(getActivity());
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle("Enter your email")
-                            .setMessage("Please, enter your email so that we can put you in touch with the people you deal with.")
-                            .setView(input)
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    String email = input.getText().toString();
-                                    String atoken = authToken.token;
-                                    Log.d("tokenTwitter", atoken);
-                                    String secret = authToken.secret;
-                                    Log.d("secrettokenTwitter", secret);
-                                    SharedPreferenceController.getInstance().setTwitterAccess(atoken);
-                                    SharedPreferenceController.getInstance().setTwitterSecret(secret);
-                                    SharedPreferenceController.getInstance().setTwitterEmail(email);
-                                    registerUser(Constants.BACKEND_TWITTER, email, atoken, secret);
-                                }
-                            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            // Do nothing.
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                Toast.makeText(getActivity(), getString(R.string.login_error), Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String email = input.getText().toString();
+                        if (isEmailValid(email)) {
+                            String atoken = authToken.token;
+                            String secret = authToken.secret;
+
+                            SharedPreferenceController.getInstance().setTwitterAccess(atoken);
+                            SharedPreferenceController.getInstance().setTwitterSecret(secret);
+                            SharedPreferenceController.getInstance().setTwitterEmail(email);
+                            registerUser(Constants.BACKEND_TWITTER, email, atoken, secret);
+                            dialog.dismiss();
+
+                            //TODO: Move this to the onSuccess of registerUser
+                            // Hide log in button, show logout button
+                            mTwitterButton.setVisibility(View.GONE);
+                            mTwitterLogoutButton.setVisibility(View.VISIBLE);
+                        } else {
+                            input.setError(getString(R.string.invalid_email));
                         }
-                    }).show();
-                } else {
-                    String atoken = authToken.token;
-                    Log.d("tokenTwitter", atoken);
-                    String secret = authToken.secret;
-                    Log.d("secrettokenTwitter", secret);
-                    SharedPreferenceController.getInstance().setTwitterAccess(atoken);
-                    SharedPreferenceController.getInstance().setTwitterSecret(secret);
-                    registerUser(Constants.BACKEND_TWITTER, SharedPreferenceController.getInstance().getTwitterEmail(), atoken, secret);
-                }
+                    }
+                });
             }
 
             @Override
@@ -151,7 +194,7 @@ public class LoginTabFragment extends Fragment implements RegistrationResponseLi
             mRegistrationController = ControllersFactory.getRegistrationController();
             mRegistrationController.request(backend, atoken, secret, email);
 
-        }else{
+        } else {
             Toast.makeText(getActivity(), getString(R.string.no_connection), Toast.LENGTH_LONG).show();
         }
     }

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Reusame</string>
 
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
@@ -32,7 +34,12 @@
     <string name="navigation_drawer_open"></string>
     <string name="navigation_drawer_close"></string>
     <string name="no_connection">Connection error. Please, check your connection and retry.</string>
+    <string name="logout">Log Out</string>
     <string name="login_error">Login failed, please try again later.</string>
+    <string name="login_email">Confirm your email</string>
+    <string name="email_hint">your@email.com</string>
+    <string name="invalid_email">Please, enter a valid email and try again.</string>
+    <string name="login_email_text">Please, enter your email so that we can put you in touch with the people you deal with.</string>
     <string name="menu_search">Search</string>
     <string name="activity_detail_title">DetailActivity</string>
     <string name="activity_detail_title_date">Added</string>

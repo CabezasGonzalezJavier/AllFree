@@ -1,4 +1,6 @@
 <resources>
+    <string name="ok">Aceptar</string>
+    <string name="cancel">Cancelar</string>
     <string name="fragment_map_title">Mapa</string>
     <string name="fragment_map_marker_button">Lo quiero!</string>
     <string name="fragment_add_image">Escoge una foto</string>
@@ -9,7 +11,12 @@
     <string name="fragment_add_object_title_name">Nombre:</string>
     <string name="fragment_add_object_title_description">Descripción:</string>
     <string name="no_connection">Error de conexión. Por favor, comprueba tu conexión y vuelve a intentarlo.</string>
+    <string name="logout">Cerrar Sessión</string>
     <string name="login_error">Error al iniciar sesion, por favor vuelve a intentarlo.</string>
+    <string name="login_email">Confirma tu email</string>
+    <string name="email_hint">tu@email.com</string>
+    <string name="invalid_email">Por favor, introduce un email valido.</string>
+    <string name="login_email_text">Por favor, danos tu email para que podamos ponerte en contacto con la gente con la que hagas tratos.</string>
     <string name="menu_search">Buscar</string>
     <string name="activity_detail_title">DetailActivity</string>
     <string name="activity_detail_title_date">Añadido</string>
