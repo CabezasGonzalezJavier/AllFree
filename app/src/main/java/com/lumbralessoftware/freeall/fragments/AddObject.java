@@ -130,7 +130,7 @@ public class AddObject extends Fragment implements View.OnClickListener,View.OnF
                     getString(R.string.add_item_no_category),
                     Toast.LENGTH_SHORT
             ).show();
-        } else if (mImagePath != null) {
+        } else if (mImagePath == null) {
             Toast.makeText(
                     getActivity(),
                     getString(R.string.add_item_no_image),
