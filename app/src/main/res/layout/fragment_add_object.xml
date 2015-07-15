@@ -80,26 +80,26 @@
                     style="@style/NormalText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="@string/fragment_add_object_title_category" />
 
-            </LinearLayout>
                 <Button
                     android:id="@+id/fragment_add_object_add_item_category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/fragment_add_object_linear_layout_category"
                     android:background="@android:color/black"
                     android:text="@string/fragment_add_object_category_chose"
                     android:textColor="@android:color/white" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/fragment_add_object_linear_layout_image"
                 style="@style/AppTheme.Relative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/fragment_add_object_add_item_category"
+                android:layout_below="@+id/fragment_add_object_linear_layout_category"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/activity_detail_margeTop"
                 android:background="@android:color/white"
@@ -109,8 +109,9 @@
                     android:id="@+id/fragment_add_object_add_photo_imgView"
                     android:layout_width="match_parent"
                     android:layout_height="190dp"
-                    android:background="@drawable/no_image"
-                    android:scaleType="centerCrop" />
+
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/no_image" />
 
             </LinearLayout>
 

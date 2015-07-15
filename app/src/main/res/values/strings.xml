@@ -23,12 +23,22 @@
     <string name="fragment_add_object_category_title">Categories</string>
     <string name="fragment_add_object_category_chose">Choose category</string>
     <string-array name="fragment_add_object_category">
-        <item>Category 1</item>
-        <item>Category 2</item>
-        <item>Category 3</item>
-        <item>Category 4</item>
-        <item>Category 5</item>
-        <item>Category 6</item>
+        <item>Accessories</item>
+        <item>Art &amp; Collectibles</item>
+        <item>Bags &amp; Purses</item>
+        <item>Bath &amp; Beauty</item>
+        <item>Books, Movies &amp; Music</item>
+        <item>Clothing</item>
+        <item>Craft Supplies &amp; Tools</item>
+        <item>Electronics &amp; Accessories</item>
+        <item>Home &amp; Living</item>
+        <item>Jewelry</item>
+        <item>Other</item>
+        <item>Paper Goods &amp; Party Supplies</item>
+        <item>Pet Supplies</item>
+        <item>Shoes</item>
+        <item>Sports &amp; Accessories</item>
+        <item>Toys &amp; Games</item>
     </string-array>
     
     <string name="navigation_drawer_open"></string>
