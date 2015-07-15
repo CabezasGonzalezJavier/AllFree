@@ -1,5 +1,6 @@
 package com.lumbralessoftware.freeall.fragments;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -11,6 +12,7 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
@@ -167,8 +169,11 @@ public class AddObject extends Fragment implements View.OnClickListener,View.OnF
                     public void onClick(DialogInterface dialog, int id) {
                         mNameEditText.setText("");
                         mDescripitionEditText.setText("");
-                        mAddCategoryButton.setText("");
-                        mImageView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.no_image));
+                        mAddCategoryButton.setText(getString(R.string.fragment_add_object_category_chose));
+                        mAddCategoryButton.setTextColor(getResources().getColor(android.R.color.white));
+                        mAddCategoryButton.setBackgroundColor(getResources().getColor(android.R.color.black));
+                        mImageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.no_image));
+
                         dialog.cancel();
                     }
                 }
@@ -177,7 +182,7 @@ public class AddObject extends Fragment implements View.OnClickListener,View.OnF
         alert11.show();
         TextView messageText = (TextView) alert11.findViewById(android.R.id.message);
         messageText.setGravity(Gravity.CENTER);
-        messageText.setText(R.string.add_item_succesful_title);
+        messageText.setText(R.string.add_item_succesful);
 
     }
 
