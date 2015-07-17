@@ -21,7 +21,7 @@
         android:layout_toRightOf="@id/row_list_icon"
         android:orientation="vertical">
 
-        <com.lumbralessoftware.freeall.views.CustomTextView
+        <com.lumbralessoftware.reusame.views.CustomTextView
             android:id="@+id/row_list_name"
             style="@style/TittleText"
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
             android:singleLine="true"
             android:textSize="16sp" />
 
-        <com.lumbralessoftware.freeall.views.CustomTextView
+        <com.lumbralessoftware.reusame.views.CustomTextView
             android:id="@+id/row_list_category"
             style="@style/NormalText"
             android:layout_width="match_parent"

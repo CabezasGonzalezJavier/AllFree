@@ -46,6 +46,7 @@
     <string name="no_connection">Connection error. Please, check your connection and retry.</string>
     <string name="logout">Log Out</string>
     <string name="login_error">Login failed, please try again later.</string>
+    <string name="login_ok">You have successfully logged in.</string>
     <string name="login_email">Confirm your email</string>
     <string name="email_hint">your@email.com</string>
     <string name="invalid_email">Please, enter a valid email and try again.</string>

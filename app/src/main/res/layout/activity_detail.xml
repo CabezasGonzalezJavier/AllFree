@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.lumbralessoftware.freeall.activities.DetailActivity"
+    tools:context="com.lumbralessoftware.reusame.activities.DetailActivity"
     android:focusableInTouchMode="true">
 
     <ScrollView
@@ -42,13 +42,13 @@
                     android:layout_toRightOf="@+id/activity_detail_icon"
                     android:orientation="vertical">
 
-                    <com.lumbralessoftware.freeall.views.CustomTextView
+                    <com.lumbralessoftware.reusame.views.CustomTextView
                         android:id="@+id/activity_detail_name"
                         style="@style/TittleText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
-                    <com.lumbralessoftware.freeall.views.CustomTextView
+                    <com.lumbralessoftware.reusame.views.CustomTextView
                         android:id="@+id/activity_detail_category"
                         style="@style/NormalText"
                         android:layout_width="wrap_content"
@@ -57,7 +57,7 @@
 
             </RelativeLayout>
 
-            <com.lumbralessoftware.freeall.views.CustomTextView
+            <com.lumbralessoftware.reusame.views.CustomTextView
                 android:id="@+id/activity_detail_date"
                 style="@style/NormalText"
                 android:layout_width="match_parent"
@@ -70,7 +70,7 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin" />
 
-            <com.lumbralessoftware.freeall.views.CustomTextView
+            <com.lumbralessoftware.reusame.views.CustomTextView
                 android:id="@+id/activity_detail_description"
                 style="@style/NormalText"
                 android:layout_width="match_parent"

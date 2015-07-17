@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lumbralessoftware.freeall.fragments.LoginTabFragment">
+    tools:context="com.lumbralessoftware.reusame.fragments.LoginTabFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/fragment_login_size_button"
                 android:layout_marginBottom="@dimen/activity_vertical_margin" />
-            <com.lumbralessoftware.freeall.views.TwitterLogoutButton
+            <com.lumbralessoftware.reusame.views.TwitterLogoutButton
                 android:id="@+id/activity_logout_twitter_button"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/fragment_login_size_button"

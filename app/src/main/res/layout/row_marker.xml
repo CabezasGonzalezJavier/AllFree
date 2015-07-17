@@ -18,7 +18,7 @@
         android:layout_toRightOf="@id/row_marker_icon"
         android:orientation="vertical">
 
-        <com.lumbralessoftware.freeall.views.CustomTextView
+        <com.lumbralessoftware.reusame.views.CustomTextView
             android:id="@+id/row_marker_name"
             style="@style/TittleText"
             android:layout_width="match_parent"
@@ -29,7 +29,7 @@
             android:singleLine="true"
             android:textSize="16sp" />
 
-        <com.lumbralessoftware.freeall.views.CustomTextView
+        <com.lumbralessoftware.reusame.views.CustomTextView
             android:id="@+id/row_marker_category"
             style="@style/NormalText"
             android:layout_width="match_parent"

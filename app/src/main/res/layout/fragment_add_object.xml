@@ -20,7 +20,7 @@
                 android:background="@android:color/white"
                 android:orientation="vertical">
 
-                <com.lumbralessoftware.freeall.views.CustomTextView
+                <com.lumbralessoftware.reusame.views.CustomTextView
                     android:id="@+id/fragment_add_object_name"
                     style="@style/NormalText"
                     android:layout_width="match_parent"
@@ -48,7 +48,7 @@
                 android:background="@android:color/white"
                 android:orientation="vertical">
 
-                <com.lumbralessoftware.freeall.views.CustomTextView
+                <com.lumbralessoftware.reusame.views.CustomTextView
                     android:id="@+id/fragment_add_object_description"
                     style="@style/NormalText"
                     android:layout_width="match_parent"
@@ -75,7 +75,7 @@
                 android:background="@android:color/white"
                 android:orientation="vertical">
 
-                <com.lumbralessoftware.freeall.views.CustomTextView
+                <com.lumbralessoftware.reusame.views.CustomTextView
                     android:id="@+id/fragment_add_object_category_title"
                     style="@style/NormalText"
                     android:layout_width="match_parent"
