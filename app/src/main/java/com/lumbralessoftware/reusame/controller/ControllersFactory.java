@@ -1,5 +1,6 @@
 package com.lumbralessoftware.reusame.controller;
 
+import com.lumbralessoftware.reusame.interfaces.AddItemResponseListener;
 import com.lumbralessoftware.reusame.interfaces.ItemRequestResponseListener;
 import com.lumbralessoftware.reusame.interfaces.ItemResponseListener;
 import com.lumbralessoftware.reusame.interfaces.RegistrationResponseListener;
@@ -13,12 +14,14 @@ public class ControllersFactory {
     private  static ItemsController sItemsController;
     private  static UserController sUserController;
     public  static SearchController sSearchController;
+    private  static AddItemController sAddItemController;
 
     private  static ItemResponseListener sItemsResponseListener;
     private  static ItemRequestResponseListener sItemRequestResponseListener;
     private  static VoteResponseListener sVoteResponseListener;
     private  static RegistrationController sRegistrationController;
     private  static RegistrationResponseListener sRegistrationResponseListener;
+    private static AddItemResponseListener sAddItemResponseListener;
 
     public static void setItemResponseListener(ItemResponseListener responseListener){
         sItemsResponseListener = responseListener;
@@ -28,6 +31,19 @@ public class ControllersFactory {
     }
     public static void setItemRequestResponseListener(ItemRequestResponseListener responseListener){
         sItemRequestResponseListener = responseListener;
+    }
+    public static void setRegistrationResponseListener(RegistrationResponseListener responseListener){
+        sRegistrationResponseListener = responseListener;
+    }
+    public static void setAddItemResponseListener(AddItemResponseListener responseListener){
+        sAddItemResponseListener = responseListener;
+    }
+
+    public static AddItemController getAddItemController() {
+        if (sAddItemController == null) {
+            sAddItemController = new AddItemController(sAddItemResponseListener);
+        }
+        return sAddItemController;
     }
 
     public static ItemsController getItemsController() {
@@ -52,9 +68,6 @@ public class ControllersFactory {
         return sUserController;
     }
 
-    public static void setRegistrationResponseListener(RegistrationResponseListener responseListener){
-        sRegistrationResponseListener = responseListener;
-    }
 
     public static RegistrationController getRegistrationController() {
         if (sRegistrationController == null) {

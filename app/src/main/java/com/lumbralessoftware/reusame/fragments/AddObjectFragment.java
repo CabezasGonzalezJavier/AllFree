@@ -2,6 +2,7 @@ package com.lumbralessoftware.reusame.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,15 +25,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.lumbralessoftware.reusame.R;
+import com.lumbralessoftware.reusame.controller.AddItemController;
+import com.lumbralessoftware.reusame.controller.ControllersFactory;
+import com.lumbralessoftware.reusame.interfaces.AddItemResponseHandler;
+import com.lumbralessoftware.reusame.interfaces.AddItemResponseListener;
+import com.lumbralessoftware.reusame.interfaces.ItemResponseListener;
 import com.lumbralessoftware.reusame.models.Item;
 import com.lumbralessoftware.reusame.models.Location;
 import com.lumbralessoftware.reusame.utils.Utils;
-import com.lumbralessoftware.reusame.webservice.Client;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -44,12 +50,12 @@ import java.util.Locale;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AddObject.OnFragmentInteractionListener} interface
+ * {@link AddObjectFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link AddObject#newInstance} factory method to
+ * Use the {@link AddObjectFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddObject extends Fragment implements View.OnClickListener,View.OnFocusChangeListener {
+public class AddObjectFragment extends Fragment implements View.OnClickListener, View.OnFocusChangeListener, AddItemResponseListener {
 
     public static final String SAVED_PHOTO_PATH = "mCapturedPhotoPath";
     public static final String SAVED_IMG_PATH = "mImagePath";
@@ -64,13 +70,17 @@ public class AddObject extends Fragment implements View.OnClickListener,View.OnF
     private static final String IMAGE_DIRECTORY_NAME = "reusame";
     public static final int MEDIA_TYPE_IMAGE = 1;
 
-    public static AddObject newInstance() {
-        AddObject fragment = new AddObject();
+    public ProgressDialog mDialogLoading;
+
+    public AddItemController mAddItemController;
+
+    public static AddObjectFragment newInstance() {
+        AddObjectFragment fragment = new AddObjectFragment();
         Bundle args = new Bundle();
         return fragment;
     }
 
-    public AddObject() {
+    public AddObjectFragment() {
         // Required empty public constructor
     }
 
@@ -88,6 +98,9 @@ public class AddObject extends Fragment implements View.OnClickListener,View.OnF
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_object, container, false);
+
+        mDialogLoading = new ProgressDialog(getActivity());
+
         mNameEditText = (EditText) view.findViewById(R.id.fragment_add_object_name_edittext);
         mNameEditText.setOnFocusChangeListener(this);
         mDescripitionEditText = (EditText) view.findViewById(R.id.fragment_add_object_description_edittext);
@@ -114,14 +127,14 @@ public class AddObject extends Fragment implements View.OnClickListener,View.OnF
         return view;
     }
 
-    public void sendArticle(){
+    public void sendArticle() {
 
 
         Item item = new Item();
         if (mNameEditText.getText().toString().equals("")) {
-        mNameEditText.setError(getString(R.string.add_item_empty_field));
+            mNameEditText.setError(getString(R.string.add_item_empty_field));
         } else if (mDescripitionEditText.getText().toString().equals("")) {
-        mDescripitionEditText.setError(getString(R.string.add_item_empty_field));
+            mDescripitionEditText.setError(getString(R.string.add_item_empty_field));
         } else if (mAddCategoryButton.getText().equals(getResources().getString(R.string.fragment_add_object_category_chose))) {
             Toast.makeText(
                     getActivity(),
@@ -146,10 +159,9 @@ public class AddObject extends Fragment implements View.OnClickListener,View.OnF
             location.setLongPosition(String.valueOf(latLng.longitude));
             location.setLocation("");
             item.setLocation(location);
-            Client.createItem(item);
-            showAlertView();
+            showProgress();
+            sendItemtoWebService(item);
         }
-
 
 
     }
@@ -241,7 +253,7 @@ public class AddObject extends Fragment implements View.OnClickListener,View.OnF
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.fragment_add_object_description_edittext:
                 mDescripitionEditText.setError(null);
                 break;
@@ -249,6 +261,18 @@ public class AddObject extends Fragment implements View.OnClickListener,View.OnF
                 mNameEditText.setError(null);
                 break;
         }
+    }
+
+    @Override
+    public void onSuccess(Item successResponse) {
+        hideProgress();
+        showAlertView();
+    }
+
+    @Override
+    public void onError(String errorResponse) {
+        hideProgress();
+        Toast.makeText(getActivity(), R.string.add_error, Toast.LENGTH_LONG).show();
     }
 
 
@@ -348,6 +372,16 @@ public class AddObject extends Fragment implements View.OnClickListener,View.OnF
         return mediaFile;
     }
 
+    public void sendItemtoWebService(Item item) {
+        if (Utils.isOnline(getActivity())) {
+            ControllersFactory.setAddItemResponseListener(this);
+            mAddItemController = ControllersFactory.getAddItemController();
+            mAddItemController.request(item);
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.no_connection), Toast.LENGTH_LONG).show();
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -392,4 +426,14 @@ public class AddObject extends Fragment implements View.OnClickListener,View.OnF
         savedInstanceState.putString(SAVED_PHOTO_PATH, mCapturedPhotoPath);
         savedInstanceState.putString(SAVED_IMG_PATH, mImagePath);
     }
+
+    public void showProgress()
+    {
+        mDialogLoading.show();
+        mDialogLoading.setCancelable(false);
+    }
+    public void hideProgress() {
+        mDialogLoading.dismiss();
+    }
+
 }

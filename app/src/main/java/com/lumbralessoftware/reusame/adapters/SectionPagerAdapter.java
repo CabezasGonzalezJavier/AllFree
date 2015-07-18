@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.lumbralessoftware.reusame.R;
-import com.lumbralessoftware.reusame.fragments.AddObject;
+import com.lumbralessoftware.reusame.fragments.AddObjectFragment;
 import com.lumbralessoftware.reusame.fragments.MapTabFragment;
 import com.lumbralessoftware.reusame.fragments.ListFragment;
 import com.lumbralessoftware.reusame.fragments.LoginTabFragment;
@@ -45,7 +45,7 @@ public class SectionPagerAdapter extends FragmentPagerAdapter {
                 break;
             case 3:
             default:
-                fragment = new AddObject();
+                fragment = new AddObjectFragment();
                 break;
 
         }

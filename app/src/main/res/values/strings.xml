@@ -65,6 +65,7 @@
     <string name="add_item_img_source">Select Source</string>
     <string name="add_item_succesful">Your item was added with succesful.&#xA; Thank very much for this contribution.</string>
     <string name="add_item_succesful_title">From Lumbrales Software</string>
+    <string name="add_error">There were problems to add, &#xA;try again, please.</string>
 
     <string name="action_our_apps">Our Apps</string>
     <string name="action_about_us">About us</string>

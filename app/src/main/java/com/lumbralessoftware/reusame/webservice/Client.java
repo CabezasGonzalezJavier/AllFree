@@ -3,6 +3,7 @@ package com.lumbralessoftware.reusame.webservice;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.lumbralessoftware.reusame.interfaces.AddItemResponseHandler;
 import com.lumbralessoftware.reusame.interfaces.ItemRequestResponseHandler;
 import com.lumbralessoftware.reusame.interfaces.ItemResponseHandler;
 import com.lumbralessoftware.reusame.interfaces.RegistrationResponseHandler;
@@ -145,19 +146,19 @@ public class Client {
         Client.initRestAdapter().postRequestItem(itemId, item, Utils.getAuthorizationHeader(), callback);
     }
 
-    public static void createItem(Item item)
+    public static void createItem(final AddItemResponseHandler addItemResponseHandler, Item item)
     {
         Callback<Item> callback = new Callback<Item>() {
             @Override
             public void success(Item data, Response response) {
-                Log.e("Upload", "success");
+                addItemResponseHandler.sendResponseSusccesful(data);
 
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Utils.logResponse("Upload", error);
-                Log.e("Upload", "error");
+                addItemResponseHandler.sendResponseFail(error.getBody().toString());
             }
         };
         TypedFile typedFile = new TypedFile("multipart/form-data", new File(item.getImage()));
