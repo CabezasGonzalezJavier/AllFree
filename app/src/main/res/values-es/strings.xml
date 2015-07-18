@@ -50,4 +50,9 @@
     <string name="add_item_img_source">Selecciona...</string>
     <string name="add_item_error">Hubo problemas al añadirlo.&#xA; Intentelo otro vez,&#xA; disculpe las molestias.</string>
     <string name="add_item_loading">Cargando&#8230;</string>
+    <string name="add_item_no_date">Please, selecione una fecha.</string>
+
+    <string name="dialog_custom_year">Año:</string>
+    <string name="dialog_custom_month">Mes:</string>
+    <string name="dialog_custom_day">Día:</string>
 </resources>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.lumbralessoftware.reusame.views.CustomTextView
+        android:id="@+id/dialog_custom_ten_text_year_title"
+        style="@style/NormalText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/dialog_custom_year" />
+    <EditText
+        android:id="@+id/dialog_custom_ten_edittext_year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.lumbralessoftware.reusame.views.CustomTextView
+        android:id="@+id/dialog_custom_ten_text_month_title"
+        style="@style/NormalText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/dialog_custom_year" />
+    <EditText
+        android:id="@+id/dialog_custom_ten_edittext_month"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <com.lumbralessoftware.reusame.views.CustomTextView
+        android:id="@+id/dialog_custom_ten_text_day_title"
+        style="@style/NormalText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/dialog_custom_day" />
+    <EditText
+        android:id="@+id/dialog_custom_ten_edittext_day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/dialog_custom_ten_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

@@ -70,6 +70,7 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
     private EditText mNameEditText;
     private EditText mDescripitionEditText;
     private Button mAddCategoryButton;
+    private Button mAddDate;
     private String[] mCategoriesList;
     private ImageView mImageView;
     private static int RESULT_LOAD_IMAGE = 147;
@@ -81,6 +82,7 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
     public ProgressDialog mDialogLoading;
 
     public AddItemController mAddItemController;
+    private DateListener mListener;
 
     public static AddObjectFragment newInstance() {
         AddObjectFragment fragment = new AddObjectFragment();
@@ -109,6 +111,17 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
 
         mDialogLoading = new ProgressDialog(getActivity());
 
+        mListener = new DateListener() {
+            @Override
+            public void getDate(int year, int month, int day) {
+                String currentDate = new StringBuilder().append(day).append(".")
+                        .append(month + 1).append(".").append(year).toString();
+                mAddDate.setText(currentDate);
+                mAddDate.setBackgroundColor(getResources().getColor(android.R.color.white));
+                mAddDate.setTextColor(getResources().getColor(android.R.color.black));
+            }
+        };
+
         mNameEditText = (EditText) view.findViewById(R.id.fragment_add_object_name_edittext);
         mNameEditText.setOnFocusChangeListener(this);
         mDescripitionEditText = (EditText) view.findViewById(R.id.fragment_add_object_description_edittext);
@@ -119,6 +132,9 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
 
         mAddCategoryButton = (Button) view.findViewById(R.id.fragment_add_object_add_item_category);
         mAddCategoryButton.setOnClickListener(this);
+
+        mAddDate = (Button) view.findViewById(R.id.fragment_add_object_add_item_experies_on);
+        mAddDate.setOnClickListener(this);
 
         mCategoriesList = getResources().getStringArray(R.array.fragment_add_object_category);
 
@@ -143,6 +159,12 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
             mNameEditText.setError(getString(R.string.add_item_empty_field));
         } else if (mDescripitionEditText.getText().toString().equals("")) {
             mDescripitionEditText.setError(getString(R.string.add_item_empty_field));
+        } else if (mAddDate.getText().equals(getResources().getString(R.string.fragment_add_object_expires_on))) {
+            Toast.makeText(
+                    getActivity(),
+                    getString(R.string.add_item_no_date),
+                    Toast.LENGTH_SHORT
+            ).show();
         } else if (mAddCategoryButton.getText().equals(getResources().getString(R.string.fragment_add_object_category_chose))) {
             Toast.makeText(
                     getActivity(),
@@ -160,6 +182,7 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
 
             item.setDescription(mDescripitionEditText.getText().toString());
             item.setCategory(mAddCategoryButton.getText().toString());
+            item.setExpiresOn(mAddDate.getText().toString());
             item.setImage(mImagePath);
             LatLng latLng = Utils.getLastLocation(getActivity());
             Location location = new Location();
@@ -185,6 +208,9 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
                     public void onClick(DialogInterface dialog, int id) {
                         mNameEditText.setText("");
                         mDescripitionEditText.setText("");
+                        mAddDate.setText(getString(R.string.fragment_add_object_expires_on));
+                        mAddDate.setTextColor(getResources().getColor(android.R.color.white));
+                        mAddDate.setBackgroundColor(getResources().getColor(android.R.color.black));
                         mAddCategoryButton.setText(getString(R.string.fragment_add_object_category_chose));
                         mAddCategoryButton.setTextColor(getResources().getColor(android.R.color.white));
                         mAddCategoryButton.setBackgroundColor(getResources().getColor(android.R.color.black));
@@ -256,6 +282,9 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
             case R.id.fragment_add_object_add_item_button:
                 sendArticle();
                 break;
+            case R.id.fragment_add_object_add_item_experies_on:
+                showDatePickerDialog(v);
+                break;
         }
     }
 
@@ -282,7 +311,6 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
         hideProgress();
         Toast.makeText(getActivity(), R.string.add_item_error, Toast.LENGTH_LONG).show();
     }
-
 
     public interface OnFragmentInteractionListener {
     }
@@ -435,14 +463,62 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
         savedInstanceState.putString(SAVED_IMG_PATH, mImagePath);
     }
 
-    public void showProgress()
-    {
+    public void showProgress() {
         mDialogLoading.show();
         mDialogLoading.setMessage(getString(R.string.add_item_loading));
         mDialogLoading.setCancelable(false);
     }
+
     public void hideProgress() {
         mDialogLoading.dismiss();
+    }
+
+    public void showDatePickerDialog(View v) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+            DialogFragment newFragment = new DatePickerFragment(mListener);
+            newFragment.show(getActivity().getFragmentManager(), "datePicker");
+        } else{
+            apiLevelTen();
+        }
+    }
+
+    public void apiLevelTen(){
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.dialog_custom_ten);
+        dialog.setTitle(R.string.fragment_add_object_expires_on_title);
+
+        // set the custom dialog components - text, image and button
+        final EditText year = (EditText) dialog.findViewById(R.id.dialog_custom_ten_edittext_year);
+        final EditText month = (EditText) dialog.findViewById(R.id.dialog_custom_ten_edittext_month);
+        final EditText day = (EditText) dialog.findViewById(R.id.dialog_custom_ten_edittext_day);
+
+
+        Button dialogButton = (Button) dialog.findViewById(R.id.dialog_custom_ten_button);
+        // if button is clicked, close the custom dialog
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                checkDate(dialog, year, month, day);
+            }
+        });
+
+        dialog.show();
+    }
+
+    public void checkDate(Dialog dialog, EditText year, EditText month, EditText day) {
+        if (year.getText().toString().equals("")) {
+            year.setError(getString(R.string.add_item_empty_field));
+        } else if (month.getText().toString().equals("")) {
+            month.setError(getString(R.string.add_item_empty_field));
+        } else if (day.getText().toString().equals("")) {
+            day.setError(getString(R.string.add_item_empty_field));
+        } else {
+            String currentDate = new StringBuilder().append(day.getText().toString()).append(".")
+                    .append(month.getText().toString()).append(".").append(year.getText().toString()).toString();
+            mAddDate.setText(year.getText());
+            dialog.dismiss();
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)

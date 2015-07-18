@@ -62,6 +62,7 @@
     <string name="activity_detail_vote">Do you want to vote with %1$s this object?</string>
     <string name="add_item_empty_field">Empty field</string>
     <string name="add_item_no_category">Please, select a category</string>
+    <string name="add_item_no_date">Please, select a date</string>
     <string name="add_item_no_image">Please, select an existing image or take a picture of the item</string>
     <string name="add_item_error_image">An error occurred, please try again and/or select another picture.</string>
     <string name="add_item_img_source">Select Source</string>
@@ -72,5 +73,9 @@
 
     <string name="action_our_apps">Our Apps</string>
     <string name="action_about_us">About us</string>
+
+    <string name="dialog_custom_year">Year:</string>
+    <string name="dialog_custom_month">Month:</string>
+    <string name="dialog_custom_day">Day:</string>
 
 </resources>
