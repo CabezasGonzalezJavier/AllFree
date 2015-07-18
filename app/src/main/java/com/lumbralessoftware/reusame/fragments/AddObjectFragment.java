@@ -272,7 +272,7 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onError(String errorResponse) {
         hideProgress();
-        Toast.makeText(getActivity(), R.string.add_error, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), R.string.add_item_error, Toast.LENGTH_LONG).show();
     }
 
 
@@ -430,6 +430,7 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
     public void showProgress()
     {
         mDialogLoading.show();
+        mDialogLoading.setMessage(getString(R.string.add_item_loading));
         mDialogLoading.setCancelable(false);
     }
     public void hideProgress() {

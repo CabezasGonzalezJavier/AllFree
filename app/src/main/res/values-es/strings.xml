@@ -28,5 +28,6 @@
     <string name="add_item_no_image">Por favor, selecciona una imagen o haz una foto del objeto</string>
     <string name="add_item_error_image">Ha ocurrido un error, por favor intentalo de nuevo y/o selecciona otra foto.</string>
     <string name="add_item_img_source">Selecciona...</string>
-    <string name="add_error">Hubo problemas al añadirlo.&#xA; Intentelo otro vez,&#xA; disculpe las molestias.</string>
+    <string name="add_item_error">Hubo problemas al añadirlo.&#xA; Intentelo otro vez,&#xA; disculpe las molestias.</string>
+    <string name="add_item_loading">Cargando&#8230;</string>
 </resources>
