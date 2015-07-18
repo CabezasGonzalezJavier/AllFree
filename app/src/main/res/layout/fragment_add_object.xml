@@ -65,6 +65,36 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/fragment_add_object_linear_layout_experies_on"
+                style="@style/AppTheme.Relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_add_object_linear_layout_title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/activity_detail_margeTop"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
+                <com.lumbralessoftware.reusame.views.CustomTextView
+                    android:id="@+id/fragment_add_object_experies_on"
+                    style="@style/NormalText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@string/fragment_add_object_title_description" />
+
+                <Button
+                    android:id="@+id/fragment_add_object_add_item_experies_on"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/black"
+                    android:text="@string/fragment_add_object_category_chose"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/fragment_add_object_linear_layout_category"
                 style="@style/AppTheme.Relative"
                 android:layout_width="match_parent"
