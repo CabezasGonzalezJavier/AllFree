@@ -18,6 +18,7 @@ import com.lumbralessoftware.reusame.utils.Utils;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 import retrofit.Callback;
@@ -57,7 +58,7 @@ public class Client {
                       @Part("location.location") String loc,
                       @Part("location.lat_position") String lat,
                       @Part("location.long_position") String lng,
-                      //@Part("expires_on") Date expires, //TODO: Add this
+                      @Part("expires_on") String expires,
                       @Header("Authorization") String authorization,
                     Callback<Item> callback);
         @Headers({
@@ -170,6 +171,7 @@ public class Client {
                 item.getLocation().getLocation(),
                 item.getLocation().getLatPosition(),
                 item.getLocation().getLongPosition(),
+                (String) item.getExpiresOn(),
                 Utils.getAuthorizationHeader(),
                 callback
         );
