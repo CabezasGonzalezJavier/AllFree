@@ -114,8 +114,13 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
         mListener = new DateListener() {
             @Override
             public void getDate(int year, int month, int day) {
-                String currentDate = new StringBuilder().append(day).append(".")
-                        .append(month + 1).append(".").append(year).toString();
+                String currentDate = new StringBuilder()
+                        .append(year)
+                        .append("-")
+                        .append(month + 1)
+                        .append("-")
+                        .append(day)
+                        .append(" 00:00").toString();
                 mAddDate.setText(currentDate);
                 mAddDate.setBackgroundColor(getResources().getColor(android.R.color.white));
                 mAddDate.setTextColor(getResources().getColor(android.R.color.black));
@@ -514,8 +519,13 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
         } else if (day.getText().toString().equals("")) {
             day.setError(getString(R.string.add_item_empty_field));
         } else {
-            String currentDate = new StringBuilder().append(day.getText().toString()).append(".")
-                    .append(month.getText().toString()).append(".").append(year.getText().toString()).toString();
+            String currentDate = new StringBuilder()
+                    .append(year.getText().toString())
+                    .append("-")
+                    .append(month.getText().toString())
+                    .append("-")
+                    .append(day.getText().toString())
+                    .append(" 00:00").toString();
             mAddDate.setText(year.getText());
             dialog.dismiss();
         }
