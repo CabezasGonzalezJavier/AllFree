@@ -13,21 +13,21 @@
     <string name="fragment_add_object_expires_on_title">Caduca en:</string>
     <string name="fragment_add_object_expires_on">Elija fecha</string>
     <string-array name="fragment_add_object_category">
-        <item>Acesorios</item>
+        <item>Accesorios</item>
         <item>Arte y Coleccionables</item>
         <item>Bolsos y Monederos</item>
-        <item>Baño y Belleza</item>
+        <item>Salud y Belleza</item>
         <item>Libros, Películas y Música</item>
         <item>Ropa</item>
         <item>Bricolaje y Herramientas</item>
-        <item>Electrónica y Acesorios</item>
-        <item>Hogar y Vida</item>
-        <item>Joyas</item>
-        <item>Otras</item>
+        <item>Electrónica y Accesorios</item>
+        <item>Vida En El Hogar</item>
+        <item>Joyería</item>
+        <item>Otros</item>
         <item>Papelería</item>
-        <item>Suministros de mascotas</item>
+        <item>Mascotas</item>
         <item>Zapatos</item>
-        <item>Deporte y Acesorios</item>
+        <item>Deportes y Acesorios</item>
         <item>Jueguetes y Juegos</item>
     </string-array>
     <string name="no_connection">Error de conexión. Por favor, comprueba tu conexión y vuelve a intentarlo.</string>
