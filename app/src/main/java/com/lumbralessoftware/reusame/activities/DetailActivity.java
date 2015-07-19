@@ -83,7 +83,9 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
         name.setText(mItem.getName());
         category.setText(mItem.getCategory());
         description.setText(mItem.getDescription());
-        mRatingBar.setRating(Float.valueOf(String.valueOf(mItem.getUserRating())));
+        if (mItem.getUserRating() != null) {
+            mRatingBar.setRating(Float.valueOf(String.valueOf(mItem.getUserRating())));
+        }
         dateTextView.setText(stringBuilderWithDate());
 
         sentButton.setOnClickListener(this);
@@ -93,7 +95,7 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
 
     }
 
-    public String stringBuilderWithDate(){
+    public String stringBuilderWithDate() {
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         StringBuilder stringBuilderDate = new StringBuilder();
@@ -190,7 +192,7 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
         return false;
     }
 
-    public void sendMessage(){
+    public void sendMessage() {
         if (mEditText.getText().equals("")) {
             requestItem(getString(R.string.activity_detail_hint_edittext));
         } else {
@@ -200,7 +202,7 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
         mProgressDialog.show();
     }
 
-    public void alertDialog(final float vote){
+    public void alertDialog(final float vote) {
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.activity_detail_vote_title))
                 .setMessage(getString(R.string.activity_detail_vote, String.valueOf(vote)))
