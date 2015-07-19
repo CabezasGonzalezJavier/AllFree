@@ -63,13 +63,36 @@
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
-
+            <LinearLayout
+                android:id="@+id/fragment_add_object_linear_layout_conditions"
+                style="@style/AppTheme.Relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_add_object_linear_layout_description"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/activity_detail_margeTop"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+                <com.lumbralessoftware.reusame.views.CustomTextView
+                    android:id="@+id/fragment_add_object_title_conditions"
+                    style="@style/NormalText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@string/title_conditions" />
+                <EditText
+                    android:id="@+id/fragment_add_object_conditions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/conditions" />
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/fragment_add_object_linear_layout_experies_on"
                 style="@style/AppTheme.Relative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/fragment_add_object_linear_layout_description"
+                android:layout_below="@+id/fragment_add_object_linear_layout_conditions"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/activity_detail_margeTop"
                 android:background="@android:color/white"
@@ -145,7 +168,6 @@
                     android:src="@drawable/no_image" />
 
             </LinearLayout>
-
             <Button
                 android:id="@+id/fragment_add_object_add_item_button"
                 android:layout_width="match_parent"
@@ -155,33 +177,6 @@
                 android:background="@android:color/black"
                 android:text="@string/fragment_add_item"
                 android:textColor="@android:color/white" />
-            <LinearLayout
-                android:id="@+id/fragment_add_object_linear_layout_conditions"
-                style="@style/AppTheme.Relative"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/fragment_add_object_add_item_button"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/activity_detail_margeTop"
-                android:background="@android:color/white"
-                android:orientation="vertical">
-                <com.lumbralessoftware.reusame.views.CustomTextView
-                    android:id="@+id/fragment_add_object_title_conditions"
-                    style="@style/NormalText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:text="@string/title_conditions" />
-
-                <com.lumbralessoftware.reusame.views.CustomTextView
-                    android:id="@+id/fragment_add_object_conditions"
-                    style="@style/NormalText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/conditions" />
-
-            </LinearLayout>
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

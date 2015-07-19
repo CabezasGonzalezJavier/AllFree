@@ -39,6 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.lumbralessoftware.reusame.R;
 import com.lumbralessoftware.reusame.controller.AddItemController;
 import com.lumbralessoftware.reusame.controller.ControllersFactory;
+import com.lumbralessoftware.reusame.controller.SharedPreferenceController;
 import com.lumbralessoftware.reusame.interfaces.AddItemResponseHandler;
 import com.lumbralessoftware.reusame.interfaces.AddItemResponseListener;
 import com.lumbralessoftware.reusame.interfaces.DateListener;
@@ -69,6 +70,7 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
     public static final String SAVED_IMG_PATH = "mImagePath";
     private EditText mNameEditText;
     private EditText mDescripitionEditText;
+    private EditText mDealEditText;
     private Button mAddCategoryButton;
     private Button mAddDate;
     private String[] mCategoriesList;
@@ -132,6 +134,8 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
         mDescripitionEditText = (EditText) view.findViewById(R.id.fragment_add_object_description_edittext);
         mDescripitionEditText.setOnFocusChangeListener(this);
 
+        mDealEditText = (EditText) view.findViewById(R.id.fragment_add_object_conditions);
+
         mImageView = (ImageView) view.findViewById(R.id.fragment_add_object_add_photo_imgView);
         mImageView.setOnClickListener(this);
 
@@ -158,6 +162,14 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
 
     public void sendArticle() {
 
+        if (SharedPreferenceController.getInstance().getAccessToken().matches("")) {
+            Toast.makeText(
+                    getActivity(),
+                    getString(R.string.not_logged_in),
+                    Toast.LENGTH_SHORT
+            ).show();
+            return;
+        }
 
         Item item = new Item();
         if (mNameEditText.getText().toString().equals("")) {
@@ -189,6 +201,12 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
             item.setCategory(mAddCategoryButton.getText().toString());
             item.setExpiresOn(mAddDate.getText().toString());
             item.setImage(mImagePath);
+
+            if (mDealEditText.getText().toString().matches("")) {
+                item.setDeal(mDealEditText.getHint().toString());
+            } else {
+                item.setDeal(mDealEditText.getText().toString());
+            }
             LatLng latLng = Utils.getLastLocation(getActivity());
             Location location = new Location();
             location.setLatPosition(String.valueOf(latLng.latitude));

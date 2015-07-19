@@ -70,6 +70,7 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
         TextView name = (TextView) findViewById(R.id.activity_detail_name);
         TextView category = (TextView) findViewById(R.id.activity_detail_category);
         TextView description = (TextView) findViewById(R.id.activity_detail_description);
+        TextView deal = (TextView) findViewById(R.id.activity_detail_conditions);
         TextView dateTextView = (TextView) findViewById(R.id.activity_detail_date);
         TextView expireTextView = (TextView) findViewById(R.id.activity_detail_expire);
         TextView location = (TextView) findViewById(R.id.activity_detail_location);
@@ -89,6 +90,7 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
         name.setText(mItem.getName());
         category.setText(mItem.getCategory());
         description.setText(mItem.getDescription());
+        deal.setText(mItem.getDeal());
         expireTextView.setText(stringBuilderWithDate(String.valueOf(mItem.getExpiresOn())));
 
 
@@ -133,7 +135,7 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
             stringBuilderDate.append(String.valueOf(calendar.get(Calendar.MONTH)));
             stringBuilderDate.append("/");
             stringBuilderDate.append(String.valueOf(calendar.get(Calendar.YEAR)));
-            stringBuilderDate.append(" at ");
+            stringBuilderDate.append(" ");
             stringBuilderDate.append(String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
             stringBuilderDate.append(":");
             stringBuilderDate.append(String.valueOf(calendar.get(Calendar.MINUTE)));

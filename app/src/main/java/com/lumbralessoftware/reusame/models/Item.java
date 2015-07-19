@@ -17,6 +17,8 @@ public class Item implements Serializable {
     @Expose
     private String description;
     @Expose
+    private String deal;
+    @Expose
     private String image;
     @Expose
     private String category;
@@ -85,6 +87,24 @@ public class Item implements Serializable {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    /**
+     *
+     * @return
+     * The description
+     */
+    public String getDeal() {
+        return deal;
+    }
+
+    /**
+     *
+     * @param deal
+     * The description
+     */
+    public void setDeal(String deal) {
+        this.deal = deal;
     }
 
     /**

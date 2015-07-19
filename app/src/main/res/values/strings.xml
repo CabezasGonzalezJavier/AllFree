@@ -43,6 +43,7 @@
     <string name="navigation_drawer_close"></string>
     <string name="no_connection">Connection error. Please, check your connection and retry.</string>
     <string name="logout">Log Out</string>
+    <string name="not_logged_in">Please, login first and retry.</string>
     <string name="login_error">Login failed, please try again later.</string>
     <string name="login_ok">You have successfully logged in.</string>
     <string name="login_email">Confirm your email</string>

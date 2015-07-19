@@ -32,6 +32,7 @@
     </string-array>
     <string name="no_connection">Error de conexión. Por favor, comprueba tu conexión y vuelve a intentarlo.</string>
     <string name="logout">Cerrar Sessión</string>
+    <string name="not_logged_in">Por favor, inicia sesión primero y vuelve a intentarlo.</string>
     <string name="login_error">Error al iniciar sesion, por favor vuelve a intentarlo.</string>
     <string name="login_ok">Sesión iniciada correctamente.</string>
     <string name="login_email">Confirma tu email</string>
