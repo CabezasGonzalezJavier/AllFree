@@ -79,4 +79,7 @@
     <string name="dialog_custom_month">Month:</string>
     <string name="dialog_custom_day">Day:</string>
 
+    <string name="conditions">I only ask you to give something away in this website and the item is yours.</string>
+    <string name="title_conditions">Conditions:</string>
+
 </resources>

@@ -79,6 +79,6 @@
 
 
 
-
-
+    <string name="conditions">No quiero nada, solo me gustaría que des algo a cambio en esta web.</string>
+    <string name="title_conditions">Condiciones:</string>
 </resources>

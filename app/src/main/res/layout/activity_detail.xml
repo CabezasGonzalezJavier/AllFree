@@ -249,6 +249,33 @@
                 android:background="@android:color/black"
                 android:text="@string/fragment_map_marker_button"
                 android:textColor="@android:color/white" />
+            <LinearLayout
+                android:id="@+id/activity_detail_linear_layout_conditions"
+                style="@style/AppTheme.Relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_detail_button"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/activity_detail_margeTop"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+                <com.lumbralessoftware.reusame.views.CustomTextView
+                    android:id="@+id/activity_detail_title_conditions"
+                    style="@style/NormalText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@string/title_conditions" />
+
+                <com.lumbralessoftware.reusame.views.CustomTextView
+                    android:id="@+id/activity_detail_conditions"
+                    style="@style/NormalText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/conditions" />
+
+            </LinearLayout>
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>
