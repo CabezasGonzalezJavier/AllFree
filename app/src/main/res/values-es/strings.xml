@@ -11,7 +11,7 @@
     <string name="fragment_add_object_title_name">Nombre:</string>
     <string name="fragment_add_object_title_description">Descripción:</string>
     <string name="fragment_add_object_expires_on_title">Caduca en:</string>
-    <string name="fragment_add_object_expires_on">Elija fecha</string>
+    <string name="fragment_add_object_expires_on">¿Cuándo expira esta oferta?</string>
     <string-array name="fragment_add_object_category">
         <item>Acesorios</item>
         <item>Arte y Coleccionables</item>

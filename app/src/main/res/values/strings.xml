@@ -19,7 +19,7 @@
     <string name="fragment_add_object_category_title">Categories</string>
     <string name="fragment_add_object_category_chose">Choose category</string>
     <string name="fragment_add_object_expires_on_title">Experies on:</string>
-    <string name="fragment_add_object_expires_on">Choose date</string>
+    <string name="fragment_add_object_expires_on">When does the item expires?</string>
     <string-array name="fragment_add_object_category">
         <item>Accessories</item>
         <item>Art &amp; Collectibles</item>
