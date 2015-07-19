@@ -80,16 +80,17 @@
                     style="@style/NormalText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="@string/fragment_add_object_title_description" />
+                    android:text="@string/activity_detail_title_expire" />
 
                 <Button
                     android:id="@+id/fragment_add_object_add_item_experies_on"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/black"
-                    android:text="@string/fragment_add_object_category_chose"
+                    android:text="@string/fragment_add_object_expires_on"
                     android:textColor="@android:color/white" />
 
             </LinearLayout>
