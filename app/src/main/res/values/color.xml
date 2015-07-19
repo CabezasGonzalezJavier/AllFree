@@ -2,4 +2,5 @@
 <resources>
     <color name="red_action_bar">#ad1825</color>
     <color name="gray">#E0E0E0</color>
+    <color name="green">#66CC00</color>
 </resources>
