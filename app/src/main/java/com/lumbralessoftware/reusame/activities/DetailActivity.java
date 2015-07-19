@@ -70,6 +70,11 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
         TextView category = (TextView) findViewById(R.id.activity_detail_category);
         TextView description = (TextView) findViewById(R.id.activity_detail_description);
         TextView dateTextView = (TextView) findViewById(R.id.activity_detail_date);
+        TextView expireTextView = (TextView) findViewById(R.id.activity_detail_expire);
+        TextView location = (TextView) findViewById(R.id.activity_detail_location);
+        TextView user = (TextView) findViewById(R.id.activity_detail_user);
+
+
         mRatingBar = (RatingBar) findViewById(R.id.activity_detail_ratingBar);
         //LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         //stars.getDrawable(2).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP);
@@ -83,10 +88,14 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
         name.setText(mItem.getName());
         category.setText(mItem.getCategory());
         description.setText(mItem.getDescription());
+        expireTextView.setText(stringBuilderWithDate(String.valueOf(mItem.getExpiresOn())));
+        location.setText(String.valueOf(mItem.getLocation()));
+        user.setText(mItem.getOwner());
+
         if (mItem.getUserRating() != null) {
             mRatingBar.setRating(Float.valueOf(String.valueOf(mItem.getUserRating())));
         }
-        dateTextView.setText(stringBuilderWithDate());
+        dateTextView.setText(stringBuilderWithDate(mItem.getCreated()));
 
         sentButton.setOnClickListener(this);
         mRatingBar.setOnRatingBarChangeListener(this);
@@ -95,13 +104,13 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
 
     }
 
-    public String stringBuilderWithDate() {
+    public String stringBuilderWithDate(String dateString) {
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         StringBuilder stringBuilderDate = new StringBuilder();
 
         try {
-            Date date = formatter.parse(mItem.getCreated());
+            Date date = formatter.parse(dateString);
             Calendar calendar = Utils.dateToCalendar(date);
             stringBuilderDate.append(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
             stringBuilderDate.append("/");
