@@ -25,6 +25,7 @@ import com.lumbralessoftware.reusame.interfaces.ItemRequestResponseListener;
 import com.lumbralessoftware.reusame.interfaces.VoteResponseListener;
 import com.lumbralessoftware.reusame.models.Item;
 import com.lumbralessoftware.reusame.models.ItemRequest;
+import com.lumbralessoftware.reusame.models.Location;
 import com.lumbralessoftware.reusame.models.VotingResult;
 import com.lumbralessoftware.reusame.utils.Constants;
 import com.lumbralessoftware.reusame.utils.Utils;
@@ -89,7 +90,11 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
         category.setText(mItem.getCategory());
         description.setText(mItem.getDescription());
         expireTextView.setText(stringBuilderWithDate(String.valueOf(mItem.getExpiresOn())));
-        location.setText(String.valueOf(mItem.getLocation()));
+
+
+
+        location.setText(mItem.getLocation().getLocation());
+
         user.setText(mItem.getOwner());
 
         if (mItem.getUserRating() != null) {
@@ -104,9 +109,20 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
 
     }
 
+    public String lookForPoint(String stringInfo){
+
+        String havePoint;
+        if (stringInfo.contains(".")){
+            havePoint = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+        } else {
+            havePoint = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+        }
+        return havePoint;
+    }
+
     public String stringBuilderWithDate(String dateString) {
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        SimpleDateFormat formatter = new SimpleDateFormat(lookForPoint(dateString));
         StringBuilder stringBuilderDate = new StringBuilder();
 
         try {
