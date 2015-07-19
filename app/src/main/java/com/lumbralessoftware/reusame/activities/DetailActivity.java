@@ -156,7 +156,7 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
 
     @Override
     public void onSuccess(ItemRequest successResponse) {
-        Toast.makeText(this, "OK", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.activity_detail_want_success), Toast.LENGTH_LONG).show();
         mProgressDialog.dismiss();
     }
 
@@ -191,7 +191,7 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
     }
 
     public void sendMessage() {
-        if (mEditText.getText().equals("")) {
+        if (mEditText.getText().toString().matches("")) {
             requestItem(getString(R.string.activity_detail_hint_edittext));
         } else {
             requestItem(mEditText.getText().toString());

@@ -49,6 +49,7 @@
     <string name="activity_detail_sending">Enviando...</string>
     <string name="activity_detail_vote_title">Votar</string>
     <string name="activity_detail_vote">Deseas votar con un %1$s este objeto?</string>
+    <string name="activity_detail_want_success">Hemos contactado al usuario informandole de su interés en este trato. En caso de que este interesado pronto se pondra en contacto con usted.</string>
     <string name="add_item_no_image">Por favor, selecciona una imagen o haz una foto del objeto</string>
     <string name="add_item_error_image">Ha ocurrido un error, por favor intentalo de nuevo y/o selecciona otra foto.</string>
     <string name="add_item_img_source">Selecciona...</string>
