@@ -55,8 +55,30 @@
     <string name="add_item_error">Hubo problemas al añadirlo.&#xA; Intentelo otro vez,&#xA; disculpe las molestias.</string>
     <string name="add_item_loading">Cargando&#8230;</string>
     <string name="add_item_no_date">Please, selecione una fecha.</string>
+    <string name="add_item_empty_field">Campo vacío</string>
+    <string name="add_item_no_category">Por favor, selecione una categoría</string>
+    <string name="add_item_succesful">Tu objeto fué incluido con éxito.&#xA; Gracias por esta contribución.</string>
+    <string name="add_item_succesful_title">From Lumbrales Software</string>
 
     <string name="dialog_custom_year">Año:</string>
     <string name="dialog_custom_month">Mes:</string>
     <string name="dialog_custom_day">Día:</string>
+
+    <string name="app_name">Reusame</string>
+
+    <string name="fragment_add_object_title_category">Categoría:</string>
+    <string name="fragment_add_object_category_title">Categorias</string>
+    <string name="fragment_add_object_category_chose">Elige categoría</string>
+
+
+    <string name="navigation_drawer_open"></string>
+    <string name="navigation_drawer_close"></string>
+
+    <string name="action_our_apps">Nuestras Apps</string>
+    <string name="action_about_us">Sobre nosotros</string>
+
+
+
+
+
 </resources>
