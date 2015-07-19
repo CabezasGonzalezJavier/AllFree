@@ -231,6 +231,7 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
                     public void onClick(DialogInterface dialog, int id) {
                         mNameEditText.setText("");
                         mDescripitionEditText.setText("");
+                        mDealEditText.setText("");
                         mAddDate.setText(getString(R.string.fragment_add_object_expires_on));
                         mAddDate.setTextColor(getResources().getColor(android.R.color.white));
                         mAddDate.setBackgroundColor(getResources().getColor(android.R.color.black));
