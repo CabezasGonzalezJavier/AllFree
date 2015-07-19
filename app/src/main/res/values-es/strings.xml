@@ -13,21 +13,21 @@
     <string name="fragment_add_object_expires_on_title">Caduca en:</string>
     <string name="fragment_add_object_expires_on">¿Cuándo expira esta oferta?</string>
     <string-array name="fragment_add_object_category">
-        <item>Acesorios</item>
+        <item>Accesorios</item>
         <item>Arte y Coleccionables</item>
         <item>Bolsos y Monederos</item>
-        <item>Baño y Belleza</item>
+        <item>Salud y Belleza</item>
         <item>Libros, Películas y Música</item>
         <item>Ropa</item>
         <item>Bricolaje y Herramientas</item>
-        <item>Electrónica y Acesorios</item>
-        <item>Hogar y Vida</item>
-        <item>Joyas</item>
-        <item>Otras</item>
+        <item>Electrónica y Accesorios</item>
+        <item>Vida En El Hogar</item>
+        <item>Joyería</item>
+        <item>Otros</item>
         <item>Papelería</item>
-        <item>Suministros de mascotas</item>
+        <item>Mascotas</item>
         <item>Zapatos</item>
-        <item>Deporte y Acesorios</item>
+        <item>Deportes y Acesorios</item>
         <item>Jueguetes y Juegos</item>
     </string-array>
     <string name="no_connection">Error de conexión. Por favor, comprueba tu conexión y vuelve a intentarlo.</string>
@@ -49,6 +49,7 @@
     <string name="activity_detail_sending">Enviando...</string>
     <string name="activity_detail_vote_title">Votar</string>
     <string name="activity_detail_vote">Deseas votar con un %1$s este objeto?</string>
+    <string name="activity_detail_want_success">Hemos contactado al usuario informandole de su interés en este trato. En caso de que este interesado pronto se pondra en contacto con usted.</string>
     <string name="add_item_no_image">Por favor, selecciona una imagen o haz una foto del objeto</string>
     <string name="add_item_error_image">Ha ocurrido un error, por favor intentalo de nuevo y/o selecciona otra foto.</string>
     <string name="add_item_img_source">Selecciona...</string>
