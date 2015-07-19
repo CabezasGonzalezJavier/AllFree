@@ -40,7 +40,11 @@
     <string name="login_email_text">Por favor, danos tu email para que podamos ponerte en contacto con la gente con la que hagas tratos.</string>
     <string name="menu_search">Buscar</string>
     <string name="activity_detail_title">DetailActivity</string>
-    <string name="activity_detail_title_date">Añadido</string>
+    <string name="activity_detail_title_user">Usuario:</string>
+    <string name="activity_detail_title_date">Añadido:</string>
+    <string name="activity_detail_title_location">Localización:</string>
+    <string name="activity_detail_title_descripition">Descripción:</string>
+    <string name="activity_detail_title_expire">Expirará el:</string>
     <string name="activity_detail_hint_edittext">Hola, He visto tu producto y estoy muy interesado. Cuando podemos quedar?</string>
     <string name="activity_detail_sending">Enviando...</string>
     <string name="activity_detail_vote_title">Votar</string>

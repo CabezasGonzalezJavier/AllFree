@@ -141,12 +141,7 @@ public class DetailActivity extends AppCompatActivity implements RatingBar.OnRat
             e.printStackTrace();
         }
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(getString(R.string.activity_detail_title_date));
-        stringBuilder.append(": ");
-        stringBuilder.append(stringBuilderDate);
-
-        return stringBuilder.toString();
+        return stringBuilderDate.toString();
     }
 
     private void voteItem(Double rating) {

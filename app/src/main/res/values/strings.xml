@@ -55,7 +55,11 @@
     <string name="login_email_text">Please, enter your email so that we can put you in touch with the people you deal with.</string>
     <string name="menu_search">Search</string>
     <string name="activity_detail_title">DetailActivity</string>
-    <string name="activity_detail_title_date">Added</string>
+    <string name="activity_detail_title_user">User:</string>
+    <string name="activity_detail_title_date">Added:</string>
+    <string name="activity_detail_title_location">Location:</string>
+    <string name="activity_detail_title_descripition">Description:</string>
+    <string name="activity_detail_title_expire">Expire on:</string>
     <string name="activity_detail_hint_edittext">Hi, I saw your product and I am very interested. When can we meet up?</string>
     <string name="activity_detail_sending">Sending...</string>
     <string name="activity_detail_vote_title">Vote</string>
