@@ -499,7 +499,8 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
 
     public void showDatePickerDialog(View v) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            DialogFragment newFragment = new DatePickerFragment(mListener);
+            DatePickerFragment newFragment = new DatePickerFragment();
+            newFragment.setListener(mListener);
             newFragment.show(getActivity().getFragmentManager(), "datePicker");
         } else{
             apiLevelTen();
@@ -554,11 +555,16 @@ public class AddObjectFragment extends Fragment implements View.OnClickListener,
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
-        public DatePickerFragment(DateListener mListener) {
+        DateListener mListener;
+
+        public DatePickerFragment() {
+
+        }
+
+        public void setListener(DateListener mListener) {
             this.mListener = mListener;
         }
 
-        DateListener mListener;
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
