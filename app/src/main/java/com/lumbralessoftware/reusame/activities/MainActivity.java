@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
+            toolbar.setNavigationIcon(R.mipmap.ic_launcher);
         }
         getData();
         mAdapter = new SectionPagerAdapter(getSupportFragmentManager(),this);
