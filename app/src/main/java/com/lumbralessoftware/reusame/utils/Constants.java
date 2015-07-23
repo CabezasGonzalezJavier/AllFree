@@ -21,5 +21,6 @@ public class Constants {
 
     public static final String OUR_APPS = "https://play.google.com/store/apps/developer?id=Lumbrales+Software";
     public static final String ABOUT_US = "http://www.lumbrales-software.com/";
+    public static final String APP_PNAME = "com.lumbralessoftware.reusame";
 
 }

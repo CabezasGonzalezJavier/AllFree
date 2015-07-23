@@ -84,4 +84,9 @@
     <string name="conditions">I only ask you to give something away in this website and the item is yours.</string>
     <string name="title_conditions">Conditions:</string>
 
+    <string name="app_rate">App Rate</string>
+    <string name="app_rate_rate">Rate Resusame</string>
+    <string name="app_rate_enjoying">If you enjoy usuing Reusame, pelase take a minute to rate it.&#xA; Thanks for your support!</string>
+    <string name="app_rate_no_rate">No thanks</string>
+
 </resources>

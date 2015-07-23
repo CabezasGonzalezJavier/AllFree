@@ -22,15 +22,18 @@ import com.lumbralessoftware.reusame.controller.ItemsController;
 import com.lumbralessoftware.reusame.controller.ControllersFactory;
 import com.lumbralessoftware.reusame.controller.SearchController;
 import com.lumbralessoftware.reusame.controller.SharedPreferenceController;
+import com.lumbralessoftware.reusame.interfaces.RefreshListener;
 import com.lumbralessoftware.reusame.models.Item;
+import com.lumbralessoftware.reusame.utils.AppRate;
 import com.lumbralessoftware.reusame.utils.Constants;
 import com.lumbralessoftware.reusame.utils.Utils;
 import com.lumbralessoftware.reusame.interfaces.ItemResponseListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements ItemResponseListener {
+public class MainActivity extends AppCompatActivity implements ItemResponseListener, RefreshListener {
 
     public static final int LOGIN_FRAGMENT = 2;
     public static final int ADD_FRAGMENT = 3;
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
             toolbar.setNavigationIcon(R.mipmap.ic_launcher);
         }
         getData();
-        mAdapter = new SectionPagerAdapter(getSupportFragmentManager(),this);
+        mAdapter = new SectionPagerAdapter(getSupportFragmentManager(),this,this);
         mViewPager.setAdapter(mAdapter);
         tabLayout.setupWithViewPager(mViewPager);
     }
@@ -82,6 +85,8 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
             mSearchController = ControllersFactory.getsSearchController();
             mSearchController.request(name);
         }else{
+            List<Item> successResponse = new ArrayList<>();
+            mAdapter.update(successResponse);
             Toast.makeText(this, getString(R.string.no_connection), Toast.LENGTH_LONG).show();
         }
     }
@@ -162,6 +167,9 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
                 startActivity(browserIntentApps);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 break;
+            case R.id.action_app_rate:
+                AppRate.showRateDialog(this);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -169,5 +177,10 @@ public class MainActivity extends AppCompatActivity implements ItemResponseListe
     @Override
     public void onError(String errorResponse) {
         Toast.makeText(this, errorResponse, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void refreshList() {
+        getData();
     }
 }

@@ -3,6 +3,11 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="actionBarStyle">@style/AppTheme.ActionBarStyle</item>
+    </style>
+
+    <style name="AppTheme.ActionBarStyle" >
+        <item name="titleTextStyle">@style/TitleBarTextColor</item>
     </style>
 
     <style name="AppTheme.Relative">
@@ -29,6 +34,10 @@
     <style name="NormalText" parent="@style/TextAppearance.AppCompat">
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TitleBarTextColor" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
 </resources>

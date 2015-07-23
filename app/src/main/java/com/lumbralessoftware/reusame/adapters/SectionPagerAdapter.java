@@ -10,6 +10,7 @@ import com.lumbralessoftware.reusame.fragments.AddObjectFragment;
 import com.lumbralessoftware.reusame.fragments.MapTabFragment;
 import com.lumbralessoftware.reusame.fragments.ListFragment;
 import com.lumbralessoftware.reusame.fragments.LoginTabFragment;
+import com.lumbralessoftware.reusame.interfaces.RefreshListener;
 import com.lumbralessoftware.reusame.interfaces.UpdateableFragment;
 import com.lumbralessoftware.reusame.models.Item;
 import com.lumbralessoftware.reusame.utils.Constants;
@@ -21,12 +22,14 @@ import java.util.List;
  */
 public class SectionPagerAdapter extends FragmentPagerAdapter {
 
+    private static RefreshListener sResfreshListener;
     private List<Item> mItems;
     private Activity mActivity;
 
-    public SectionPagerAdapter(FragmentManager fm, Activity activity) {
+    public SectionPagerAdapter(FragmentManager fm, Activity activity, RefreshListener resfreshListener) {
         super(fm);
         mActivity = activity;
+        sResfreshListener = resfreshListener;
     }
 
     @Override
@@ -38,7 +41,7 @@ public class SectionPagerAdapter extends FragmentPagerAdapter {
                 fragment = new MapTabFragment();
                 break;
             case 1:
-                fragment = new ListFragment();
+                fragment = new ListFragment(sResfreshListener);
                 break;
             case 2:
                 fragment = new LoginTabFragment();

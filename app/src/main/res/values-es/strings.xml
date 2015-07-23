@@ -83,4 +83,9 @@
 
     <string name="conditions">No quiero nada, solo me gustaría que des algo a cambio en esta web.</string>
     <string name="title_conditions">Condiciones:</string>
+
+    <string name="app_rate">Calificala</string>
+    <string name="app_rate_rate">Califica Resusame</string>
+    <string name="app_rate_enjoying">Si disfrutas con Reusame, por favor puntuala. &#xA;¡Gracias por tu opinión!</string>
+    <string name="app_rate_no_rate">No thanks</string>
 </resources>

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.ListView;
 import com.lumbralessoftware.reusame.R;
 import com.lumbralessoftware.reusame.activities.DetailActivity;
 import com.lumbralessoftware.reusame.adapters.ItemsAdapter;
+import com.lumbralessoftware.reusame.interfaces.RefreshListener;
 import com.lumbralessoftware.reusame.interfaces.UpdateableFragment;
 import com.lumbralessoftware.reusame.models.Item;
 import com.lumbralessoftware.reusame.utils.Constants;
@@ -25,11 +27,12 @@ import java.util.List;
  * Activities that contain this fragment must implement the
  * {@link ListFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ListFragment extends Fragment implements UpdateableFragment, AdapterView.OnItemClickListener {
+public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, UpdateableFragment, AdapterView.OnItemClickListener {
 
+    private static RefreshListener sResfreshListener;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private ItemsAdapter mAdapter;
     private ListView mListView;
     private OnFragmentInteractionListener mListener;
@@ -44,13 +47,15 @@ public class ListFragment extends Fragment implements UpdateableFragment, Adapte
 
      * @return A new instance of fragment SecondFragment.
      */
-    public static ListFragment newInstance() {
-        ListFragment fragment = new ListFragment();
-        return fragment;
-    }
+//    public static ListFragment newInstance(RefreshListener listener) {
+//        ListFragment fragment = new ListFragment();
+//        sResfreshListener = listener;
+//        return fragment;
+//    }
 
-    public ListFragment() {
+    public ListFragment(RefreshListener listener) {
         // Required empty public constructor
+        sResfreshListener = listener;
     }
 
     @Override
@@ -65,6 +70,10 @@ public class ListFragment extends Fragment implements UpdateableFragment, Adapte
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list, container, false);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.activity_feed_swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
 
         mListView = (ListView) view.findViewById(R.id.fragment_list_listView);
         mListView.setOnItemClickListener(this);
@@ -115,6 +124,12 @@ public class ListFragment extends Fragment implements UpdateableFragment, Adapte
         intent.putExtra(Constants.DETAIL, mItems.get(position));
         startActivity(intent);
 
+    }
+
+    @Override
+    public void onRefresh() {
+        sResfreshListener.refreshList();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     /**
