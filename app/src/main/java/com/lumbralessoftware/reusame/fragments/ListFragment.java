@@ -53,9 +53,16 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 //        return fragment;
 //    }
 
-    public ListFragment(RefreshListener listener) {
-        // Required empty public constructor
-        sResfreshListener = listener;
+    public ListFragment (){}
+
+//    public ListFragment(RefreshListener listener) {
+//        // Required empty public constructor
+//        sResfreshListener = listener;
+//    }
+
+
+    public static void setsResfreshListener(RefreshListener sResfreshListener) {
+        ListFragment.sResfreshListener = sResfreshListener;
     }
 
     @Override
