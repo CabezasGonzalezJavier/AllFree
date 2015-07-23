@@ -47,13 +47,11 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
      * @return A new instance of fragment SecondFragment.
      */
-    public static ListFragment newInstance(RefreshListener listener) {
-        ListFragment fragment = new ListFragment(listener);
-        sResfreshListener = listener;
-        return fragment;
-    }
-
-    public ListFragment(){}
+//    public static ListFragment newInstance(RefreshListener listener) {
+//        ListFragment fragment = new ListFragment();
+//        sResfreshListener = listener;
+//        return fragment;
+//    }
 
     public ListFragment(RefreshListener listener) {
         // Required empty public constructor
