@@ -41,8 +41,9 @@ public class SectionPagerAdapter extends FragmentPagerAdapter {
                 fragment = new MapTabFragment();
                 break;
             case 1:
-                fragment = new ListFragment();
-                fragment.setsResfreshListener(sResfreshListener);
+                ListFragment listFragment = new ListFragment();
+                listFragment.setsResfreshListener(sResfreshListener);
+                fragment = listFragment;
                 break;
             case 2:
                 fragment = new LoginTabFragment();
